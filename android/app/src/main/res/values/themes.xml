@@ -2,8 +2,9 @@
 <resources>
     <style name="Theme.PuntoSalute" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
-        <item name="android:statusBarColor">@color/ps_navy</item>
-        <item name="android:navigationBarColor">@color/ps_navy</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/ps_white</item>
+        <item name="android:navigationBarColor">@color/ps_white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
     </style>
 </resources>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ps_navy">#0B1F33</color>
-    <color name="ps_teal">#0E8F95</color>
-    <color name="ps_icon_bg">#0B1F33</color>
+    <color name="ps_white">#FFFFFF</color>
+    <color name="ps_navy">#0F172A</color>
+    <color name="ps_sky">#0EA5E9</color>
+    <color name="ps_petrol">#0B7285</color>
+    <color name="ps_ice">#E2F6F9</color>
 </resources>

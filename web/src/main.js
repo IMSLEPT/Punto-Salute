@@ -9,6 +9,8 @@ import { TYPES, MODULES } from './core/types.js';
 import { block, rt, routeFor } from './core/text.js';
 import { openSearch, closeSearch } from './ui/search.js';
 import { renderHome } from './ui/home.js';
+import { renderNotes } from './ui/notes.js';
+import { renderProfile } from './ui/profile.js';
 import { renderEntity, entityToText, chipFor, mapBlock } from './ui/entity.js';
 import { renderTypeList, renderHub, renderFavorites } from './ui/lists.js';
 import { LOGO } from './ui/common.js';
@@ -54,12 +56,12 @@ if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListen
 // ------------------------------------------------------------------ tab bar
 const TABS = [
   { id: 'home', path: '/', label: 'Home', icon: 'house' },
-  { id: 'anatomia', path: '/anatomia', label: 'Anatomia', icon: 'bone' },
-  { id: 'pratica', path: '/pratica', label: 'Pratica', icon: 'syringe' },
-  { id: 'clinica', path: '/clinica', label: 'Clinica', icon: 'stethoscope' },
-  { id: 'studio', path: '/studio', label: 'Studio', icon: 'graduation-cap' },
+  { id: 'cerca', path: null, label: 'Cerca', icon: 'search' },
+  { id: 'preferiti', path: '/preferiti', label: 'Preferiti', icon: 'heart' },
+  { id: 'note', path: '/note', label: 'Note', icon: 'file-text' },
+  { id: 'profilo', path: '/profilo', label: 'Profilo', icon: 'user' },
 ];
-tabbar.innerHTML = TABS.map((t) => `<button class="tab" data-tab="${t.id}" data-path="${t.path}"><span class="pill">${icon(t.icon)}</span>${t.label}</button>`).join('');
+tabbar.innerHTML = TABS.map((t) => `<button class="tab" data-tab="${t.id}" data-path="${t.path || ''}"><span class="pill">${icon(t.icon)}</span>${t.label}</button>`).join('');
 
 function setTab(id) { $$('.tab', tabbar).forEach((b) => b.classList.toggle('active', b.dataset.tab === id)); }
 
@@ -72,8 +74,7 @@ function setBar(d) {
       ${depth > 0 ? `<button class="iconbtn" data-back aria-label="Indietro">${icon('arrow-left')}</button>` : `<div style="width:8px"></div>`}
       <div class="title">${d.kicker ? `<small>${esc(d.kicker)}</small>` : ''}${esc(d.title || '')}</div>
       ${(d.actions || []).join('')}
-      <button class="iconbtn" data-open-search aria-label="Cerca">${icon('search')}</button>
-      <button class="iconbtn" data-go="/impostazioni" aria-label="Impostazioni">${icon('settings')}</button>`;
+      <button class="iconbtn" data-open-search aria-label="Cerca">${icon('search')}</button>`;
   }
   tabbar.classList.toggle('hidden', d.tabs === false);
   setTab(d.tab || 'home');
@@ -88,6 +89,10 @@ R('/', (r) => renderHome(r));
 R('/pratica', (r) => renderHub(r, 'pratica'));
 R('/clinica', (r) => renderHub(r, 'clinica'));
 R('/preferiti', (r) => renderFavorites(r));
+R('/note', (r) => renderNotes(r));
+R('/profilo', (r) => renderProfile(r));
+R('/impostazioni', (r) => renderProfile(r));
+R('/anatomia', async (r, cur) => { const m = await import('./ui/anatomy.js'); return m.renderAnatomy(r, cur); });
 R('/e/:id', (r, { params }) => renderEntity(r, params.id));
 R('/patologie', (r) => renderTypeList(r, { types: ['patho'], module: 'patologie', groupKey: 'cat' }));
 R('/procedure', (r) => renderTypeList(r, { types: ['proc'], module: 'procedure', groupKey: 'cat' }));
@@ -118,7 +123,7 @@ startRouter(async (cur, rt0, restore) => {
 document.addEventListener('click', (ev) => {
   const t = ev.target;
   const tab = t.closest('[data-tab]');
-  if (tab) { navigate(tab.dataset.path, { replace: true }); return; }
+  if (tab) { if (tab.dataset.tab === 'cerca') openSearch(); else navigate(tab.dataset.path, { replace: true }); return; }
   if (t.closest('[data-back]')) { window.__psBack(); return; }
   if (t.closest('[data-open-search]')) { openSearch(); return; }
   const sq = t.closest('[data-search]');

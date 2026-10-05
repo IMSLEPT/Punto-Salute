@@ -1,0 +1,11 @@
+import { serve, launch } from './lib.mjs';
+const [css, out] = process.argv.slice(2);
+const { srv, url } = await serve();
+const { browser, page } = await launch({});
+await page.goto(url + '/index.html#/');
+await page.addStyleTag({ content: css });
+await page.waitForTimeout(900);
+await page.evaluate(() => { document.getElementById('view').scrollTop = 700; });
+await page.waitForTimeout(500);
+await page.screenshot({ path: out });
+await browser.close(); srv.close();

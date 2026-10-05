@@ -34,11 +34,7 @@ export function renderTypeList(root, { types, module, groupKey = 'cat', filterLa
   return { title: m.name, tab: tabFor(types[0]) };
 }
 
-export function tabFor(type) {
-  if (['anat'].includes(type)) return 'anatomia';
-  if (['proc', 'dev', 'tube', 'care', 'ndx', 'calc', 'scale'].includes(type)) return 'pratica';
-  return 'clinica';
-}
+export function tabFor() { return 'home'; }
 
 export function renderHub(root, kind) {
   const ids = kind === 'pratica'
@@ -50,7 +46,7 @@ export function renderHub(root, kind) {
     <div class="phead"><div><h1>${title}</h1><p>${sub}</p></div></div>
     <div class="grid2">${ids.map((id) => moduleTile(MODULES.find((m) => m.id === id))).join('')}</div>
     ${DISCLAIMER}</div>`;
-  return { title, tab: kind };
+  return { title, tab: 'home' };
 }
 
 export function renderFavorites(root) {
@@ -58,5 +54,5 @@ export function renderFavorites(root) {
   root.innerHTML = `<div class="page">
     <div class="phead"><div class="tile-ic" style="--c:var(--c-emergenze)">${icon('bookmark')}</div><div><h1>Salvate</h1><p>Le tue schede preferite, disponibili offline</p></div></div>
     ${list.length ? listOf(list) : emptyState('bookmark', 'Ancora nulla', 'Tocca “Salva” in alto in qualsiasi scheda per ritrovarla qui.')}</div>`;
-  return { title: 'Salvate', tab: 'home' };
+  return { title: 'Salvate', tab: 'preferiti' };
 }

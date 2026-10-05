@@ -5,7 +5,7 @@ const routes = [];
 let current = { path: '/', params: {}, query: {} };
 let onChange = () => {};
 const scrollPos = new Map();
-const TAB_ROOTS = ['/', '/anatomia', '/pratica', '/clinica', '/studio'];
+const TAB_ROOTS = ['/', '/preferiti', '/note', '/profilo'];
 
 export function route(pattern, handler, opts = {}) {
   const keys = [];

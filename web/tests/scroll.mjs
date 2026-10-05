@@ -1,0 +1,11 @@
+import { serve, launch } from './lib.mjs';
+const [route, y, out, dark] = process.argv.slice(2);
+const { srv, url } = await serve();
+const { browser, page, errors } = await launch({ dark: dark === 'dark' });
+await page.goto(url + '/index.html#' + route);
+await page.waitForTimeout(900);
+await page.evaluate((y) => { document.getElementById('view').scrollTop = +y; }, y);
+await page.waitForTimeout(400);
+await page.screenshot({ path: out });
+if (errors.length) console.log(errors.join('\n'));
+await browser.close(); srv.close();

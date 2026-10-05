@@ -4,7 +4,7 @@ import { BY_ID, relatedGroups, sourceList, get } from '../core/data.js';
 import { TYPES, MAP_ORDER } from '../core/types.js';
 import { LAYOUTS, OPEN, VERIFY, DEFAULT_SOURCES } from '../core/schemas.js';
 import { rt, block, routeFor, plain } from '../core/text.js';
-import { favs, notes, recents } from '../core/store.js';
+import { favs, notes, recents, store } from '../core/store.js';
 import { shareText, toast } from '../core/ui.js';
 import { figure } from '../viz/index.js';
 import { navigate } from '../core/router.js';
@@ -147,6 +147,8 @@ export function renderEntity(root, id) {
       $$('[data-sec]', root).forEach((x) => x.classList.toggle('active', x === b));
     });
   });
+  const markSeen = (k) => { const m = store.get('seen', {}); const l = m[e.id] || (m[e.id] = []); if (!l.includes(k)) { l.push(k); store.set('seen', m); } };
+  $$('details.sec', root).forEach((d) => { if (d.open) markSeen(d.id.slice(4)); d.addEventListener('toggle', () => { if (d.open) markSeen(d.id.slice(4)); }); });
   const nt = $('[data-note]', root);
   if (nt) nt.addEventListener('input', debounce(() => notes.set(e.id, nt.value), 300));
   return { title: t.label, id: e.id };
