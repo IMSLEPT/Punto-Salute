@@ -46,7 +46,7 @@ import{A as li,B as ci,C as ne,D as se,E as C,F as S,G as di,H as pi,I as E,J as
       <div class="bar"><div class="progress"><i style="width:${d}%"></i></div><em>${d}%</em></div></div>${f("chevron-right","go")}</button></section>`:""}
     <div class="hsec">Tutte le sezioni</div>
     <div class="hgrid" style="padding-top:12px">${t.map(Le).join("")}</div>
-    <div class="hfoot">${q}</div>
+    <div class="hfoot">${q}<br><span class="hver">Versione ${l(window.PuntoSalute&&PuntoSalute.version&&PuntoSalute.version()||"web")}</span></div>
   </div>`,e.querySelector("[data-news]").addEventListener("click",m=>{m.stopPropagation(),$a()}),{title:"Punto Salute",bar:"none",tab:"home",bars:["#FFFFFF",!1]}}function zi(e){let i=Object.entries(ai.all()).map(([t,n])=>({e:S(t),text:n})).filter(t=>t.e),a=y.get("plans",[]);return e.innerHTML=`<div class="page">
     <div class="phead"><div class="tile-ic" style="--c:var(--c-assistenza)">${f("file-text")}</div><div><h1>Note</h1><p>Protocolli locali, appunti e piani assistenziali</p></div></div>
     <div class="sec-title"><h2>Piani assistenziali</h2><button class="more" data-go="/assistenza/piano">Apri</button></div>

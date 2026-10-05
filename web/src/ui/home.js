@@ -93,7 +93,7 @@ export function renderHome(root) {
       <div class="bar"><div class="progress"><i style="width:${pr}%"></i></div><em>${pr}%</em></div></div>${icon('chevron-right', 'go')}</button></section>` : ''}
     <div class="hsec">Tutte le sezioni</div>
     <div class="hgrid" style="padding-top:12px">${rest.map(moduleTile).join('')}</div>
-    <div class="hfoot">${DISCLAIMER}</div>
+    <div class="hfoot">${DISCLAIMER}<br><span class="hver">Versione ${esc((window.PuntoSalute && PuntoSalute.version && PuntoSalute.version()) || 'web')}</span></div>
   </div>`;
   root.querySelector('[data-news]').addEventListener('click', (e) => { e.stopPropagation(); openNews(); });
   return { title: 'Punto Salute', bar: 'none', tab: 'home', bars: ['#FFFFFF', false] };

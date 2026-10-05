@@ -38,6 +38,7 @@ import java.util.Map;
  */
 public class MainActivity extends Activity {
 
+    static final String APP_VERSION = "1.2.4";
     private static final String HOST = "appassets.androidplatform.net";
     private static final String ORIGIN = "https://" + HOST;
     private static final String START_URL = ORIGIN + "/index.html";
@@ -97,7 +98,13 @@ public class MainActivity extends Activity {
         s.setTextZoom(100);
         s.setSaveFormData(false);
         s.setGeolocationEnabled(false);
-        s.setCacheMode(WebSettings.LOAD_DEFAULT);
+        s.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        // dopo un aggiornamento dell'app si svuota la cache della WebView, cosi' non puo' restare grafica della versione precedente
+        android.content.SharedPreferences prefs = getSharedPreferences("ps", MODE_PRIVATE);
+        if (!APP_VERSION.equals(prefs.getString("webVersion", ""))) {
+            webView.clearCache(true);
+            prefs.edit().putString("webVersion", APP_VERSION).apply();
+        }
 
         webView.setWebViewClient(new AssetClient());
         webView.setWebChromeClient(new WebChromeClient());
@@ -107,7 +114,7 @@ public class MainActivity extends Activity {
         if (savedInstanceState != null && webView.restoreState(savedInstanceState) != null) {
             return;
         }
-        webView.loadUrl(START_URL);
+        webView.loadUrl(START_URL + "?v=" + APP_VERSION);
     }
 
     private void hideSplash() {
@@ -226,7 +233,7 @@ public class MainActivity extends Activity {
                 InputStream in = getAssets().open("www" + path);
                 Map<String, String> headers = new HashMap<String, String>();
                 headers.put("Access-Control-Allow-Origin", ORIGIN);
-                headers.put("Cache-Control", "no-cache");
+                headers.put("Cache-Control", "no-store");
                 String mime = mimeFor(path);
                 String enc = mime.startsWith("text/") || mime.indexOf("json") >= 0 || mime.indexOf("svg") >= 0 ? "utf-8" : null;
                 return new WebResourceResponse(mime, enc, 200, "OK", headers, in);
@@ -302,7 +309,7 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.2.3";
+            return APP_VERSION;
         }
 
         @JavascriptInterface

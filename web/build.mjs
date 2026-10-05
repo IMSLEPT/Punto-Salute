@@ -44,6 +44,9 @@ function genIcons() {
 function copyStatic() {
   fs.mkdirSync(OUT, { recursive: true });
   let html = fs.readFileSync(path.join(SRC, 'index.html'), 'utf8');
+  // versione negli URL di app.css/app.js: dopo un aggiornamento non puo' essere riusata una copia vecchia
+  const ver = fs.readFileSync(path.join(SRC, '..', '..', 'VERSION'), 'utf8').trim();
+  html = html.replace('href="/app.css"', `href="/app.css?v=${ver}"`).replace('src="/app.js"', `src="/app.js?v=${ver}"`);
   fs.writeFileSync(path.join(OUT, 'index.html'), html);
 }
 
