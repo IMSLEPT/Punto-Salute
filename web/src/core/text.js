@@ -50,7 +50,7 @@ export function rt(str, ctx = {}) {
   let m;
   while ((m = re.exec(s))) {
     out += termify(s.slice(last, m.index), ctx);
-    if (m[1] !== undefined) out += `<b>${termify(m[1], ctx)}</b>`;
+    if (m[1] !== undefined) out += `<b>${rt(m[1], ctx)}</b>`;
     else {
       const e = BY_ID.get(m[2]);
       const label = m[3] || (e ? e.title : m[2]);

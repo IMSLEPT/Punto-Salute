@@ -3,7 +3,7 @@
 Manuale infermieristico digitale interattivo, **offline**, per Android (minSdk 24).
 Guscio nativo Java con `WebView` + web app (JavaScript vanilla, esbuild, Three.js) inclusa negli asset: nessun permesso, nessuna rete, nessun dato inviato.
 
-**Moduli:** ricerca universale · schemi di studio · anatomia 3D · assistenza infermieristica (processo, Gordon, Henderson, diagnosi con titoli indicativi NANDA-I/NOC/NIC, costruttore di piano) · procedure · provette ed esami (ordine di prelievo, protocollo locale configurabile) · drenaggi, cateteri e dispositivi · patologie · specialistiche · ABCDE ed emergenze (didattiche) · farmacologia (senza posologie) · calcolatore con procedimento · terminologia · scale con punteggio automatico · modalità studio (quiz, flashcard, casi clinici, simulazione d’esame).
+**Moduli:** ricerca universale · schemi di studio · anatomia 3D · assistenza infermieristica (processo, Gordon, Henderson, diagnosi con titoli indicativi NANDA-I/NOC/NIC, costruttore di piano) · procedure · provette ed esami (ordine di prelievo, protocollo locale configurabile) · drenaggi, cateteri e dispositivi · patologie · specialistiche · ABCDE ed emergenze (didattiche) · farmacologia (senza posologie) · calcolatore con procedimento · terminologia · scale con punteggio automatico · modalità studio (quiz, flashcard, casi clinici fissi e generati con storico/revisione, simulazione d’esame) · **Genera**: riassunto, mappa concettuale, schema e infografica illustrata di qualsiasi scheda (PNG/PDF) · **Assistente** con risposte dalle schede, azioni nell’app, ricerca web e AI open source facoltativa.
 Ogni scheda riporta fonti, versione, data di revisione e l’avviso di verificare protocolli locali e fonti ufficiali.
 
 ## Build

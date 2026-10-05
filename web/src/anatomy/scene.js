@@ -284,6 +284,58 @@ export async function createAnatomy(container, { onSelect, onFrame } = {}) {
       const d = new THREE.Vector3(...(dirs[name] || dirs.front));
       flyTo(t, home.dist, d);
     },
+    /** Istantanea della vista 3D su sfondo chiaro (JPEG) per schemi e riassunti. */
+    snapshot(maxW = 900) {
+      try {
+        renderer.render(scene, camera);
+        const src = renderer.domElement;
+        const k = Math.min(1, maxW / src.width);
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(src.width * k)); c.height = Math.max(1, Math.round(src.height * k));
+        const x = c.getContext('2d');
+        const gr = x.createLinearGradient(0, 0, 0, c.height); gr.addColorStop(0, '#f4f9fd'); gr.addColorStop(1, '#dbeafe');
+        x.fillStyle = gr; x.fillRect(0, 0, c.width, c.height);
+        x.drawImage(src, 0, 0, c.width, c.height);
+        return c.toDataURL('image/jpeg', 0.88);
+      } catch { return null; }
+    },
+    /** Ritratto di una struttura per le infografiche: PNG trasparente. isolate=true mostra solo l'organo; altrimenti lo evidenzia nel corpo. */
+    portrait(ent, { w = 512, h = 512, isolate = true, dir = [0.22, 0.1, 1], fitK = 2.05, distance = 0 } = {}) {
+      try {
+        if (!entMeshes.has(ent)) return null;
+        api.select(ent, { fly: false });
+        // colori naturali: l'evidenziazione della vista interattiva qui sbiadirebbe l'organo
+        for (const [key, mat] of mats) {
+          const isSel = key === ent || key.startsWith(ent + '\u0000');
+          if (isSel) mat.emissive.copy(mat.userData.color).multiplyScalar(isolate ? 0.07 : 0.5);
+          else if (!isolate) { mat.opacity = mat.userData.skin ? 0.16 : 0.38; }
+          mat.needsUpdate = true;
+        }
+        if (isolate) { for (const m of meshes) m.visible = m.userData.ent === ent; }
+        const box = entBox(ent);
+        if (box.isEmpty()) return null;
+        const c = box.getCenter(new THREE.Vector3());
+        const sz = box.getSize(new THREE.Vector3());
+        const big = Math.max(sz.x, sz.y * (w / h), sz.z);
+        const dist = distance || THREE.MathUtils.clamp(big * fitK + 0.05, 0.4, 4.2);
+        const d = new THREE.Vector3(...dir).normalize();
+        controls.target.copy(c);
+        camera.position.copy(c).add(d.multiplyScalar(dist));
+        const prev = renderer.getSize(new THREE.Vector2());
+        const prevAspect = camera.aspect;
+        const prevPR = renderer.getPixelRatio();
+        renderer.setPixelRatio(1);   // dimensioni esatte dell'immagine, indipendenti dalla densita' dello schermo
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+        controls.update();
+        renderer.render(scene, camera);
+        const out = renderer.domElement.toDataURL('image/png');
+        renderer.setPixelRatio(prevPR);
+        renderer.setSize(prev.x, prev.y, false);
+        camera.aspect = prevAspect; camera.updateProjectionMatrix();
+        return out;
+      } catch { return null; }
+    },
     reset() { selected = null; applyVisibility(); flyTo(home.target, home.dist, new THREE.Vector3(0, 0.04, 1)); if (onSelect) onSelect(null); },
     focusUp(ent) { api.select(ent, { fly: true }); },
     resize,

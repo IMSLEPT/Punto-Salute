@@ -20,7 +20,8 @@ import './viz/devices.js';
 import './viz/schemi.js';
 import { renderScales, renderScale, renderCalcHub, renderCalc } from './ui/tools.js';
 import { renderAssistenza, renderPlans, renderPlan } from './ui/assistenza.js';
-import { renderStudio, renderQuiz, renderExam, renderFlash, renderCases, renderCase } from './ui/studio.js';
+import { renderStudio, renderQuiz, renderExam, renderFlash } from './ui/studio.js';
+import { renderCases, renderCase } from './ui/cases.js';
 import { renderGlossary, renderSpec, renderSources } from './ui/more.js';
 
 const root = document.documentElement;
@@ -92,6 +93,8 @@ function setBar(d) {
 
 // ------------------------------------------------------------------ rotte
 const R = (pattern, fn) => route(pattern, fn);
+// una rotta caricata in modo asincrono che nel frattempo non e' piu' quella corrente non deve disegnare nulla
+const STALE = { stale: true };
 
 R('/', (r) => renderHome(r));
 R('/pratica', (r) => renderHub(r, 'pratica'));
@@ -100,7 +103,7 @@ R('/preferiti', (r) => renderFavorites(r));
 R('/note', (r) => renderNotes(r));
 R('/profilo', (r) => renderProfile(r));
 R('/impostazioni', (r) => renderProfile(r));
-R('/anatomia', async (r, cur) => { const m = await import('./ui/anatomy.js'); return m.renderAnatomy(r, cur); });
+R('/anatomia', async (r, cur) => { const m = await import('./ui/anatomy.js'); if (currentRoute() !== cur) return STALE; return m.renderAnatomy(r, cur); });
 R('/provette', (r) => renderTubes(r));
 R('/scale', (r) => renderScales(r));
 R('/scala/:id', (r, { params }) => renderScale(r, params.id));
@@ -120,11 +123,13 @@ R('/assistenza', (r) => renderAssistenza(r));
 R('/assistenza/piano', (r) => renderPlans(r));
 R('/assistenza/piano/:id', (r, { params }) => renderPlan(r, params.id));
 R('/studio', (r) => renderStudio(r));
-R('/studio/quiz', (r) => renderQuiz(r));
+R('/studio/quiz', (r, { query }) => renderQuiz(r, query || {}));
 R('/studio/esame', (r) => renderExam(r));
 R('/studio/flash', (r) => renderFlash(r));
-R('/studio/casi', (r) => renderCases(r));
-R('/studio/caso/:id', (r, { params }) => renderCase(r, params.id));
+R('/studio/casi', (r, { query }) => renderCases(r, query || {}));
+R('/studio/caso/:id', (r, { params, query }) => renderCase(r, params.id, query || {}));
+R('/genera/:id', async (r, cur) => { const g = await import('./ui/generate.js'); if (currentRoute() !== cur) return STALE; return g.renderGenerate(r, cur.params.id, cur.query || {}); });
+R('/assistente', async (r, cur) => { const a = await import('./ui/assistant.js'); if (currentRoute() !== cur) return STALE; return a.renderAssistant(r, cur.query || {}); });
 R('/emergenze', (r) => renderTypeList(r, { types: ['emerg'], module: 'emergenze', groupKey: 'cat' }));
 
 // i listener registrati dalle pagine sul contenitore condiviso vengono rimossi a ogni cambio di rotta
@@ -177,6 +182,7 @@ startRouter(async (cur, rt0, restore) => {
     view.innerHTML = `<div class="page"><div class="empty">${icon('triangle-alert')}<h3>Errore</h3><p>${esc(err.message)}</p></div></div>`;
     d = { title: 'Errore' };
   }
+  if (d && d.stale) return;
   leaveHook = (d && d.onLeave) || null;
   setBar(d || {});
   if (restore) { const y = savedScroll(); view.scrollTop = y || 0; } else view.scrollTop = 0;
@@ -210,6 +216,8 @@ document.addEventListener('click', (ev) => {
   if (more) { openMore(more.dataset.more); return; }
   const ext = t.closest('[data-ext]');
   if (ext) { try { PuntoSalute.openExternal(ext.dataset.ext); } catch { window.open(ext.dataset.ext, '_blank'); } return; }
+  const gen = t.closest('[data-gen]');
+  if (gen) { const [gid, gk] = gen.dataset.gen.split(':'); navigate(`/genera/${encodeURIComponent(gid)}?k=${encodeURIComponent(gk || 'riassunto')}`); return; }
   const go = t.closest('[data-go]');
   if (go) { ev.preventDefault(); navigate(go.dataset.go); }
 });

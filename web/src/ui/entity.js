@@ -8,6 +8,7 @@ import { favs, notes, recents, store } from '../core/store.js';
 import { shareText, toast } from '../core/ui.js';
 import { figure } from '../viz/index.js';
 import { navigate } from '../core/router.js';
+import { genButtons } from './genbtn.js';
 
 import { alertsFor } from '../core/updates.js';
 export const REVISION = '2026-10';
@@ -132,6 +133,7 @@ export function renderEntity(root, id) {
       ${aliases ? `<div class="alias">${esc(aliases)}</div>` : ''}
       ${e.summary ? `<p class="sum">${rt(e.summary, ctx)}</p>` : ''}
       <div class="actions">${actions(e)}</div>
+      ${e.type === 'calc' || e.type === 'scale' ? '' : genButtons(e.id)}
     </div>
     ${nav}
     <div style="padding:14px 16px 28px">

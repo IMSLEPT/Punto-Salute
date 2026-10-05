@@ -66,7 +66,7 @@ export function openNews() {
 export function renderHome(root) {
   const mods = Object.fromEntries(MODULES.map((m) => [m.id, m]));
   const top = ['anatomia', 'patologie', 'procedure', 'scale'].map((id) => mods[id]);
-  const rest = ['assistenza', 'provette', 'dispositivi', 'specialistiche', 'emergenze', 'terminologia'].map((id) => mods[id]).concat([STUDIO]);
+  const rest = ['assistente', 'assistenza', 'provette', 'dispositivi', 'specialistiche', 'emergenze', 'terminologia'].map((id) => mods[id]).concat([STUDIO]);
 
   const rec = recents.list().map(get).filter(Boolean);
   const cont = rec.find((e) => !['term', 'sign'].includes(e.type) && sectionProgress(e.id) < 100) || rec[0] || get('braden') || BY_TYPE.scale?.[0];

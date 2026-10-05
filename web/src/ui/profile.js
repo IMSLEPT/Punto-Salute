@@ -6,6 +6,8 @@ import { ALL, BY_TYPE } from '../core/data.js';
 import { CONTENT_VERSION, REVISION } from './entity.js';
 import { logoImg, wordmark } from './home.js';
 import { updates, checkUpdates, patchCount, resetFeed } from '../core/updates.js';
+import { aiCard, bindAi } from './aisettings.js';
+import { currentRoute } from '../core/router.js';
 
 export function renderProfile(root) {
   const s = settings.get();
@@ -41,9 +43,11 @@ export function renderProfile(root) {
       <div class="xs muted" id="updst">${esc(upd.status || (upd.last ? 'Ultimo controllo: ' + new Date(upd.last).toLocaleDateString('it-IT') : 'Mai controllato'))}${patchCount() ? ` · ${patchCount()} schede aggiornate in uso` : ''}</div>
     </div>
 
+    ${aiCard()}
+
     <div class="card pad stack">
       <h3>Dati e privacy</h3>
-      <p class="small muted">Punto Salute non richiede la rete e non invia alcun dato: note, preferiti, piani e progressi restano su questo dispositivo. <b>Non inserire dati identificativi di pazienti reali</b> nelle note o nei piani.</p>
+      <p class="small muted">Tutti i contenuti funzionano offline. La rete si usa solo per funzioni facoltative: controllo giornaliero degli aggiornamenti (sola lettura, nessun dato inviato) e, <b>solo se li attivi</b>, assistente AI e ricerca web (inviano la tua domanda al servizio scelto). Note, preferiti, piani e progressi restano su questo dispositivo. <b>Non inserire dati identificativi di pazienti reali</b> in note, piani o domande.</p>
       <div class="row wrap"><button class="btn sm ghost" id="export">${icon('upload')}Esporta backup</button><button class="btn sm ghost" id="import">${icon('download')}Importa backup</button><button class="btn sm danger" id="reset">${icon('trash-2')}Cancella dati</button></div>
     </div>
 
@@ -54,6 +58,8 @@ export function renderProfile(root) {
     </div>
   </div>`;
 
+  bindAi(root);
+  if ((currentRoute().query || {}).sec === 'ai') setTimeout(() => root.querySelector('#aicard')?.scrollIntoView({ block: 'start' }), 60);
   const seg = (id, fn) => root.querySelector(id).addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (!b) return; root.querySelectorAll(id + ' button').forEach((x) => x.classList.toggle('on', x === b)); fn(b.dataset.v); });
   seg('#theme', (v) => { settings.set({ theme: v }); window.__psTheme(); });
   seg('#fs', (v) => { settings.set({ fs: parseFloat(v) }); window.__psTheme(); });

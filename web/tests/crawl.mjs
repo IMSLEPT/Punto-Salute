@@ -15,7 +15,7 @@ const ALL = [];
 for (const f of files) { const m = await import(pathToFileURL(path.join(D, f)).href); if (Array.isArray(m.default)) ALL.push(...m.default); }
 const routeFor = (e) => (e.type === 'scale' ? '/scala/' : e.type === 'calc' ? '/calcolatore/' : e.type === 'spec' ? '/spec/' : '/e/') + e.id;
 
-const STATIC = ['/', '/pratica', '/clinica', '/preferiti', '/note', '/profilo', '/anatomia', '/anatomia?s=aorta', '/anatomia?s=muscoli-adduttori', '/provette', '/scale', '/calcolatore', '/patologie', '/procedure', '/dispositivi', '/emergenze', '/farmaci', '/specialistiche', '/glossario', '/fonti', '/assistenza', '/assistenza/piano', '/assistenza/piano/nuovo', '/studio', '/studio/quiz', '/studio/esame', '/studio/flash', '/studio/casi', '/studio/caso/caso-sepsi'];
+const STATIC = ['/assistente', '/genera/sepsi?k=riassunto', '/genera/sepsi?k=mappa', '/genera/sepsi?k=schema', '/genera/cuore?k=schema', '/genera/prelievo-venoso?k=riassunto', '/profilo?sec=ai', '/', '/pratica', '/clinica', '/preferiti', '/note', '/profilo', '/anatomia', '/anatomia?s=aorta', '/anatomia?s=muscoli-adduttori', '/provette', '/scale', '/calcolatore', '/patologie', '/procedure', '/dispositivi', '/emergenze', '/farmaci', '/specialistiche', '/glossario', '/fonti', '/assistenza', '/assistenza/piano', '/assistenza/piano/nuovo', '/studio', '/studio/quiz', '/studio/esame', '/studio/flash', '/studio/casi', '/studio/caso/caso-sepsi'];
 const perType = {};
 const sample = [];
 const ALLP = process.argv.includes('--all');

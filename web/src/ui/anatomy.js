@@ -1,4 +1,6 @@
 // Vista Anatomia 3D (caricata in lazy: contiene three.js)
+import { genButtons } from './genbtn.js';
+import { saveSnapshot } from '../kit/figures.js';
 import { $, $$, esc, icon, el } from '../core/dom.js';
 import { BY_ID, get } from '../core/data.js';
 import { TYPES } from '../core/types.js';
@@ -96,6 +98,7 @@ export async function renderAnatomy(root, { query }) {
         <div class="row"><div class="grow"><h2>${esc(e.title)}</h2><div class="small muted">${esc((e.aliases || []).slice(0, 3).join(' · '))}</div></div>
           <button class="btn sm ghost" data-go="/e/${e.id}">Scheda</button></div>
         <p class="sum">${rt(e.summary || '', ctx)}</p>
+        ${genButtons(e.id, { compact: true })}
         <div class="chips" id="atabs">${tabs.map(([k, l], i) => `<button class="chip ${i === 0 ? 'active' : ''}" data-sec="${k}">${l}</button>`).join('')}</div>
         <div class="body" id="atab"></div>
         ${mapBlock(e.id, { limit: 6, title: 'Collegamenti clinici' })}
@@ -144,6 +147,8 @@ export async function renderAnatomy(root, { query }) {
     if (ev.target.closest('[data-reset]')) { api.reset(); return; }
     const s = ev.target.closest('[data-sex]');
     if (s) { api.setSex(s.dataset.sex); $$('#sexseg button', root).forEach((b) => b.classList.toggle('on', b === s)); return; }
+    const gen = ev.target.closest('[data-gen]');
+    if (gen) { try { saveSnapshot(gen.dataset.gen.split(':')[0], api.snapshot()); } catch { /* noop */ } return; }
     const pk = ev.target.closest('[data-pick]');
     if (pk) { api.select(pk.dataset.pick); sync(); return; }
   });

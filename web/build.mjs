@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const SRC = path.join(here, 'src');
-const OUT = path.resolve(here, '../android/app/src/main/assets/www');
+const OUT = process.env.PS_OUT ? path.resolve(process.env.PS_OUT) : path.resolve(here, '../android/app/src/main/assets/www');
 const watch = process.argv.includes('--watch');
 
 // ---------------------------------------------------------------- icone Lucide

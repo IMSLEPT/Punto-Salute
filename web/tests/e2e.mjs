@@ -21,18 +21,21 @@ ok((await text()).length > 50, 'home renderizzata');
 
 // 1) ogni scheda si apre senza errori e mostra il titolo
 const routeFor = (e) => (e.type === 'scale' ? '/scala/' : e.type === 'calc' ? '/calcolatore/' : e.type === 'spec' ? '/spec/' : '/e/') + e.id;
-let bad = 0, n = 0;
+let bad = 0, n = 0, markup = 0;
 for (const e of ALL) {
   await page.goto(url + '/index.html#' + routeFor(e));
   await page.waitForTimeout(40);
   const t = await text();
   n++;
+  const full = await page.evaluate(() => document.getElementById('view').textContent);
+  if (/\[\[|\]\]|\*\*/.test(full)) { markup++; if (markup < 8) console.log('  markup grezzo visibile:', e.id, (/.{0,30}(\[\[|\]\]|\*\*).{0,30}/.exec(full) || [''])[0]); }
   if (!t.includes(e.title.slice(0, 12)) && !t.toLowerCase().includes(e.title.slice(0, 8).toLowerCase())) { bad++; if (bad < 8) console.log('  titolo assente:', e.id); }
 }
 ok(bad === 0, `tutte le ${n} schede si aprono con il titolo (${bad} anomale)`);
+ok(markup === 0, `nessun marcatore grezzo ([[ ]] o **) visibile nelle schede (${markup} anomale)`);
 
 // 2) rotte di modulo
-for (const r of ['/pratica', '/clinica', '/preferiti', '/note', '/profilo', '/provette', '/scale', '/calcolatore', '/patologie', '/procedure', '/dispositivi', '/emergenze', '/farmaci', '/specialistiche', '/glossario', '/fonti', '/assistenza', '/assistenza/piano', '/studio', '/studio/quiz', '/studio/esame', '/studio/flash', '/studio/casi']) {
+for (const r of ['/pratica', '/clinica', '/preferiti', '/note', '/profilo', '/provette', '/scale', '/calcolatore', '/patologie', '/procedure', '/dispositivi', '/emergenze', '/farmaci', '/specialistiche', '/glossario', '/fonti', '/assistenza', '/assistenza/piano', '/studio', '/studio/quiz', '/studio/esame', '/studio/flash', '/studio/casi', '/assistente', '/genera/sepsi?k=riassunto', '/genera/sepsi?k=mappa', '/genera/cuore?k=schema']) {
   await go(r, 200);
   const t = await text();
   ok(t.length > 40 && !/Errore/.test(t.slice(0, 60)), 'rotta ' + r);

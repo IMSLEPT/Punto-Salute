@@ -5,10 +5,11 @@ import { ALL, BY_TYPE, get } from '../core/data.js';
 import { TYPES } from '../core/types.js';
 import { plain, routeFor } from '../core/text.js';
 import { toast } from '../core/ui.js';
+import { search } from '../core/search.js';
 import { pageHead, DISCLAIMER } from './common.js';
 import { chipFor } from './entity.js';
 import BANK from '../data/quizbank.js';
-import CASES from '../data/cases.js';
+import { caseStats } from './cases.js';
 
 const C = '--c-studio';
 const shuffle = (a) => { const r = a.slice(); for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
@@ -76,7 +77,7 @@ export function renderStudio(root) {
     <div class="grid2">
       ${T('/studio/quiz', 'circle-help', 'Quiz', `${allQuestions().length} domande per argomento`)}
       ${T('/studio/flash', 'layers', 'Flashcard', 'Ripasso a intervalli crescenti')}
-      ${T('/studio/casi', 'clipboard-check', 'Casi clinici', `${CASES.length} casi “costruisci la diagnosi”`, `<div class="xs muted">${Object.keys(done).length}/${CASES.length} completati</div>`)}
+      ${T('/studio/casi', 'clipboard-check', 'Casi clinici', 'Raccolta e casi generati: costruisci la diagnosi', (() => { const cs = caseStats(); return `<div class="xs muted">${cs.done}/${cs.total} svolti · ${cs.gen} generati</div>`; })())}
       ${T('/studio/esame', 'timer', 'Simulazione d’esame', '20 domande a tempo')}
     </div>
     <div class="callout note">${icon('info')}<div>Domande e casi sono didattici e scritti per questo manuale: verifica sempre le risposte con testi e protocolli ufficiali. Il progresso resta solo sul tuo dispositivo.</div></div>
@@ -111,7 +112,7 @@ function runQuiz(root, { list, title, exam = false, minutes = 0, back = '/studio
         return `<button class="${cls}" data-k="${k}"><span class="l">${'ABCD'[k]}</span><span class="grow">${esc(o.t)}</span></button>`;
       }).join('')}</div>
       ${shown ? `<div class="callout ${q.opts[a].ok ? 'ok' : 'warn'}">${icon(q.opts[a].ok ? 'circle-check' : 'triangle-alert')}<div><b>${q.opts[a].ok ? 'Corretto.' : 'Non esatto.'}</b> ${fmtMd(q.x || '')}</div></div>
-      ${(q.rel || []).length ? `<div class="chips wrap">${q.rel.map(get).filter(Boolean).map((e) => chipFor(e)).join('')}</div>` : ''}` : ''}
+      ${(q.rel || []).length ? `<div class="chips wrap" style="margin-top:22px">${q.rel.map(get).filter(Boolean).map((e) => chipFor(e)).join('')}</div>` : ''}` : ''}
       <div class="row">${exam && i > 0 ? `<button class="btn ghost" id="prev">Indietro</button>` : ''}<div class="grow"></div>
         ${(shown || exam) ? `<button class="btn" id="next" ${exam && a == null ? '' : ''}>${i === qs.length - 1 ? 'Termina' : 'Avanti'}</button>` : ''}</div>
     </div>`;
@@ -149,7 +150,7 @@ function runQuiz(root, { list, title, exam = false, minutes = 0, back = '/studio
   draw();
 }
 
-export function renderQuiz(root) {
+export function renderQuiz(root, query = {}) {
   const tp = topics();
   root.innerHTML = `<div class="page stack-lg">
     ${pageHead({ title: 'Quiz', sub: 'Scegli argomento e numero di domande', icon: 'circle-help', c: C })}
@@ -160,6 +161,14 @@ export function renderQuiz(root) {
     </div>${DISCLAIMER}</div>`;
   let n = 10;
   root.querySelector('#num').onclick = (e) => { const b = e.target.closest('[data-v]'); if (!b) return; n = +b.dataset.v; root.querySelectorAll('#num button').forEach((x) => x.classList.toggle('on', x === b)); };
+  if (query.q) {
+    // quiz mirato: domande collegate alle schede che corrispondono al testo, altrimenti mix
+    const ids = new Set(search(query.q, { limit: 8 }).map((r) => r.e.id));
+    const nq = norm(query.q);
+    const pool = allQuestions().filter((q) => (q.rel || []).some((id) => ids.has(id)) || norm(q.q).includes(nq));
+    if (pool.length >= 3) { setTimeout(() => runQuiz(root, { list: pick(pool, Math.min(10, pool.length)), title: `Quiz: ${query.q}` }), 0); return { title: 'Quiz', tab: 'home' }; }
+    setTimeout(() => toast(`Poche domande su “${query.q}”: ti propongo il mix`), 400);
+  }
   root.querySelector('#go').onclick = () => {
     const t = root.querySelector('#topic').value;
     const pool = t === '*' ? allQuestions() : t === '~' ? BANK : t === '#' ? generated() : BANK.filter((q) => q.t === t);
@@ -205,7 +214,7 @@ export function renderFlash(root) {
         <button class="card pad flash" id="flip" style="--c:var(${t.c})">${flipped
           ? `<div class="stack"><div class="xs muted">${esc(e.title)}</div><div style="line-height:1.5">${esc(plain(e.summary))}</div></div>`
           : `<div class="center"><div class="tile-ic soft" style="--c:var(${t.c});margin:0 auto 12px">${icon(t.icon)}</div><div style="font-size:1.25rem;font-weight:750">${esc(e.title)}</div><div class="xs muted" style="margin-top:8px">Tocca per vedere la risposta</div></div>`}</button>
-        ${flipped ? `<div class="grid3"><button class="btn danger sm" data-r="0">Non la so</button><button class="btn ghost sm" data-r="1">Quasi</button><button class="btn sm" data-r="2">La so</button></div><a class="lk center" data-go="${routeFor(e)}">Apri la scheda completa</a>` : ''}</div>`;
+        ${flipped ? `<div class="grid3"><button class="btn danger sm" data-r="0">Non la so</button><button class="btn ghost sm" data-r="1">Quasi</button><button class="btn sm" data-r="2">La so</button></div><div class="center" style="margin-top:22px"><a class="lk" style="display:inline-block;padding:10px 6px" data-go="${routeFor(e)}">Apri la scheda completa</a></div>` : ''}</div>`;
     };
     root.onclick = (ev) => {
       if (ev.target.closest('#flip')) { flipped = true; card(); return; }
@@ -234,45 +243,3 @@ export function renderFlash(root) {
   return { title: 'Flashcard', tab: 'home' };
 }
 
-// ------------------------------------------------------------------ casi clinici
-export function renderCases(root) {
-  const done = store.get('cases', {});
-  root.innerHTML = `<div class="page stack-lg">
-    ${pageHead({ title: 'Casi clinici', sub: 'Costruisci la diagnosi passo dopo passo', icon: 'clipboard-check', c: C })}
-    <div class="list">${CASES.map((c) => `<button class="item" data-go="/studio/caso/${c.id}"><div class="tile-ic sm" style="--c:var(${C})">${icon('clipboard-check')}</div><div class="grow"><div class="t">${esc(c.title)}</div><div class="d">${esc(c.spec)} · ${esc(c.level)} · ${esc(c.time)}${done[c.id] != null ? ` · ultimo risultato ${done[c.id]}%` : ''}</div></div>${icon('chevron-right', 'go')}</button>`).join('')}</div>
-    <div class="callout warn">${icon('triangle-alert')}<div>Casi fittizi a scopo didattico. Le decisioni cliniche reali seguono linee guida, protocolli e prescrizioni.</div></div></div>`;
-  return { title: 'Casi clinici', tab: 'home' };
-}
-
-export function renderCase(root, id) {
-  const c = CASES.find((x) => x.id === id);
-  if (!c) { root.innerHTML = '<div class="page"><div class="empty"><h3>Caso non trovato</h3></div></div>'; return { title: 'Caso' }; }
-  let step = 0, good = 0, picked = null;
-  const steps = c.steps.map((s) => ({ ...s, opts: shuffle(s.opts) }));
-  function draw() {
-    if (step >= steps.length) {
-      const score = pct(good, steps.length);
-      const d = store.get('cases', {}); d[c.id] = score; store.set('cases', d);
-      root.innerHTML = `<div class="page stack-lg"><div class="card pad center stack"><div class="statn" style="font-size:2.2rem">${good}/${steps.length}</div><div class="small muted">decisioni corrette al primo tentativo</div></div>
-        <div class="callout note">${icon('info')}<div>${esc(c.outro)}</div></div>
-        <div class="sec-title"><h2>Schede collegate</h2></div><div class="chips wrap">${c.rel.map(get).filter(Boolean).map((e) => chipFor(e)).join('')}</div>
-        <div class="row wrap"><button class="btn" id="retry">Rifai il caso</button><button class="btn ghost" data-go="/studio/casi">Altri casi</button></div></div>`;
-      root.querySelector('#retry').onclick = () => { step = 0; good = 0; picked = null; draw(); };
-      root.onclick = null; return;
-    }
-    const s = steps[step];
-    root.innerHTML = `<div class="page stack-lg">
-      <div class="xs muted">${esc(c.spec)} · passo ${step + 1}/${steps.length}</div><h2 style="font-size:1.2rem">${esc(c.title)}</h2>
-      <div class="card pad"><div class="xs muted" style="margin-bottom:4px">Scenario</div>${esc(c.intro)}</div>
-      <div class="card pad"><b>${esc(s.q)}</b></div>
-      <div class="stack">${s.opts.map((o, k) => `<button class="opt ${picked === k ? (o[1] ? 'good' : 'bad') : picked != null && o[1] ? 'good' : ''}" data-k="${k}"><span class="l">${'ABCD'[k]}</span><span class="grow">${esc(o[0])}</span></button>`).join('')}</div>
-      ${picked != null ? `<div class="callout ${s.opts[picked][1] ? 'ok' : 'warn'}">${icon(s.opts[picked][1] ? 'circle-check' : 'triangle-alert')}<div>${esc(s.opts[picked][2])}${s.opts[picked][1] ? '' : `<br><b>Risposta migliore:</b> ${esc(s.opts.find((o) => o[1])[0])}`}</div></div><div class="row"><div class="grow"></div><button class="btn" id="next">${step === steps.length - 1 ? 'Vedi il risultato' : 'Avanti'}</button></div>` : ''}</div>`;
-  }
-  root.onclick = (ev) => {
-    const o = ev.target.closest('.opt');
-    if (o && picked == null) { picked = +o.dataset.k; if (steps[step].opts[picked][1]) good++; draw(); return; }
-    if (ev.target.closest('#next')) { step++; picked = null; draw(); window.scrollTo(0, 0); }
-  };
-  draw();
-  return { title: 'Caso clinico', tab: 'home' };
-}

@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class MainActivity extends Activity {
 
-    static final String APP_VERSION = "1.2.5";
+    static final String APP_VERSION = "1.3.0";
     private static final String HOST = "appassets.androidplatform.net";
     private static final String ORIGIN = "https://" + HOST;
     private static final String START_URL = ORIGIN + "/index.html";
@@ -385,6 +385,160 @@ public class MainActivity extends Activity {
                         if (c != null) c.disconnect();
                     }
                     final String js = "window.__psFeed && window.__psFeed(" + ok + "," + org.json.JSONObject.quote(result) + ")";
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (webView != null) webView.evaluateJavascript(js, null);
+                        }
+                    });
+                }
+            }).start();
+        }
+
+
+        /** Salva un file (PDF, PNG) nei Download del telefono; opzionalmente apre la condivisione. Esito a window.__psSaved(ok, messaggio). */
+        @JavascriptInterface
+        public void saveFile(final String name, final String mime, final String base64, final boolean share) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean ok = false;
+                    String msg;
+                    Uri saved = null;
+                    try {
+                        byte[] data = android.util.Base64.decode(base64, android.util.Base64.DEFAULT);
+                        if (data.length == 0 || data.length > 40 * 1024 * 1024) throw new IOException("file non valido");
+                        String safe = name == null ? "punto-salute" : name.replaceAll("[^A-Za-z0-9._-]", "_");
+                        if (safe.length() > 80) safe = safe.substring(safe.length() - 80);
+                        if (safe.length() == 0 || safe.startsWith(".")) safe = "punto-salute" + safe;
+                        String type = (mime == null || mime.length() == 0) ? "application/octet-stream" : mime;
+                        if (Build.VERSION.SDK_INT >= 29) {
+                            android.content.ContentValues v = new android.content.ContentValues();
+                            v.put(android.provider.MediaStore.MediaColumns.DISPLAY_NAME, safe);
+                            v.put(android.provider.MediaStore.MediaColumns.MIME_TYPE, type);
+                            v.put(android.provider.MediaStore.MediaColumns.RELATIVE_PATH, android.os.Environment.DIRECTORY_DOWNLOADS + "/Punto Salute");
+                            v.put(android.provider.MediaStore.MediaColumns.IS_PENDING, 1);
+                            android.content.ContentResolver cr = getContentResolver();
+                            Uri uri = cr.insert(android.provider.MediaStore.Downloads.EXTERNAL_CONTENT_URI, v);
+                            if (uri == null) throw new IOException("impossibile creare il file");
+                            java.io.OutputStream os = cr.openOutputStream(uri);
+                            if (os == null) throw new IOException("impossibile scrivere il file");
+                            try { os.write(data); os.flush(); } finally { os.close(); }
+                            android.content.ContentValues done = new android.content.ContentValues();
+                            done.put(android.provider.MediaStore.MediaColumns.IS_PENDING, 0);
+                            cr.update(uri, done, null, null);
+                            saved = uri;
+                            msg = "Salvato in Download/Punto Salute";
+                        } else {
+                            java.io.File dir = getExternalFilesDir(android.os.Environment.DIRECTORY_DOWNLOADS);
+                            if (dir == null) throw new IOException("memoria non disponibile");
+                            if (!dir.exists()) dir.mkdirs();
+                            java.io.File f = new java.io.File(dir, safe);
+                            java.io.FileOutputStream fo = new java.io.FileOutputStream(f);
+                            try { fo.write(data); fo.flush(); } finally { fo.close(); }
+                            msg = "Salvato in " + f.getAbsolutePath();
+                        }
+                        ok = true;
+                        if (share && saved != null) {
+                            final Uri su = saved;
+                            final String st = type;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Intent send = new Intent(Intent.ACTION_SEND);
+                                        send.setType(st);
+                                        send.putExtra(Intent.EXTRA_STREAM, su);
+                                        send.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                                        startActivity(Intent.createChooser(send, "Condividi"));
+                                    } catch (Exception ignored) {
+                                        // condivisione non disponibile: il file e' comunque salvato
+                                    }
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        msg = String.valueOf(e.getMessage());
+                    }
+                    final String js = "window.__psSaved && window.__psSaved(" + ok + "," + org.json.JSONObject.quote(msg) + ")";
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (webView != null) webView.evaluateJavascript(js, null);
+                        }
+                    });
+                }
+            }).start();
+        }
+
+        /**
+         * Richiesta HTTPS generica per assistente e ricerca web. reqJson: {url, method, headers, body, timeout}.
+         * Solo https, host pubblici (niente indirizzi IP o reti locali), nessun reindirizzamento, risposta max 2 MB.
+         * Esito a window.__psHttp(id, ok, stato, corpo).
+         */
+        @JavascriptInterface
+        public void http(final String id, final String reqJson) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean ok = false;
+                    int status = 0;
+                    String result;
+                    java.net.HttpURLConnection c = null;
+                    try {
+                        org.json.JSONObject req = new org.json.JSONObject(reqJson);
+                        String url = req.getString("url");
+                        Uri u = Uri.parse(url);
+                        String host = u.getHost() == null ? "" : u.getHost().toLowerCase();
+                        boolean ipLiteral = host.matches("[0-9.]+") || host.contains(":");
+                        if (!"https".equals(u.getScheme()) || host.length() == 0 || ipLiteral || host.equals("localhost")
+                                || !host.contains(".") || host.endsWith(".local") || host.endsWith(".internal")) {
+                            throw new IOException("indirizzo non consentito");
+                        }
+                        String method = req.optString("method", "GET").toUpperCase();
+                        if (!"GET".equals(method) && !"POST".equals(method)) throw new IOException("metodo non consentito");
+                        c = (java.net.HttpURLConnection) new java.net.URL(url).openConnection();
+                        c.setConnectTimeout(10000);
+                        c.setReadTimeout(Math.min(req.optInt("timeout", 30000), 90000));
+                        c.setInstanceFollowRedirects(false);
+                        c.setRequestMethod(method);
+                        c.setRequestProperty("User-Agent", "PuntoSalute/" + APP_VERSION + " (Android)");
+                        org.json.JSONObject hd = req.optJSONObject("headers");
+                        if (hd != null) {
+                            java.util.Iterator<String> it = hd.keys();
+                            while (it.hasNext()) {
+                                String k = it.next();
+                                if (k.matches("(?i)content-type|authorization|accept|http-referer|x-title")) c.setRequestProperty(k, hd.getString(k));
+                            }
+                        }
+                        if ("POST".equals(method)) {
+                            byte[] body = req.optString("body", "").getBytes("UTF-8");
+                            if (body.length > 1024 * 1024) throw new IOException("richiesta troppo grande");
+                            c.setDoOutput(true);
+                            c.setFixedLengthStreamingMode(body.length);
+                            java.io.OutputStream os = c.getOutputStream();
+                            try { os.write(body); } finally { os.close(); }
+                        }
+                        status = c.getResponseCode();
+                        InputStream in = status >= 400 ? c.getErrorStream() : c.getInputStream();
+                        java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream();
+                        if (in != null) {
+                            byte[] buf = new byte[8192];
+                            int n, total = 0;
+                            while ((n = in.read(buf)) > 0) {
+                                total += n;
+                                if (total > 2 * 1024 * 1024) throw new IOException("risposta troppo grande");
+                                bo.write(buf, 0, n);
+                            }
+                        }
+                        result = bo.toString("UTF-8");
+                        ok = status >= 200 && status < 300;
+                    } catch (Exception e) {
+                        result = String.valueOf(e.getMessage());
+                    } finally {
+                        if (c != null) c.disconnect();
+                    }
+                    final String js = "window.__psHttp && window.__psHttp(" + org.json.JSONObject.quote(id) + "," + ok + "," + status + "," + org.json.JSONObject.quote(result) + ")";
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
