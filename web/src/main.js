@@ -161,12 +161,14 @@ import { applyStoredFeed, checkUpdates } from './core/updates.js';
 applyStoredFeed();
 setTimeout(() => { checkUpdates().then((f) => { if (f && f.changed) toast('Contenuti aggiornati: li vedrai al prossimo avvio'); }).catch(() => {}); }, 4000);
 
+let leaveHook = null;
 let first = true;
 startRouter(async (cur, rt0, restore) => {
   closeSearch();
   while (closeTopOverlay()) { /* chiude overlay residui */ }
   view.classList.remove('enter');
   resetView();
+  if (leaveHook) { try { leaveHook(); } catch (e) { console.warn(e); } leaveHook = null; }
   let d;
   try {
     d = await rt0.handler(view, cur);
@@ -175,6 +177,7 @@ startRouter(async (cur, rt0, restore) => {
     view.innerHTML = `<div class="page"><div class="empty">${icon('triangle-alert')}<h3>Errore</h3><p>${esc(err.message)}</p></div></div>`;
     d = { title: 'Errore' };
   }
+  leaveHook = (d && d.onLeave) || null;
   setBar(d || {});
   if (restore) { const y = savedScroll(); view.scrollTop = y || 0; } else view.scrollTop = 0;
   void view.offsetWidth;

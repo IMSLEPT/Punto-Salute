@@ -60,7 +60,9 @@ python3 tools/build_apk.py --out dist/PuntoSalute.apk   # APK firmato SENZA Andr
 ```
 cd web && npm ci && node tools/validate.mjs && node build.mjs && node tests/e2e.mjs && node tests/feed.mjs
 node tests/crawl.mjs [--noclick] [--all] [--w=360] [--fs=1.25]    # debug: clic su ogni elemento / overflow
-node tests/anat-stress.mjs
+node tests/anat-stress.mjs && node tests/anat-dock.mjs   # anatomia: stress e schede del pannello
+node tests/links.mjs && node tests/tools-all.mjs && node tests/misc.mjs   # link interni, scale/calcolatori, ricerca/preferiti/note/provette/tema
+node tests/monkey.mjs --steps=500 --seed=1   # percorsi casuali (rotte non valide, errori, 'Pagina non trovata')
 node tools/build-feed.mjs                                           # rigenera web/feed/sources.json
 cd .. && python3 tools/build_apk.py --out dist/PuntoSalute-1.1.0.apk && python3 -m apksigtool verify dist/PuntoSalute-1.1.0.apk
 ```

@@ -170,6 +170,7 @@ export async function createAnatomy(container, { onSelect, onFrame } = {}) {
   function invalidate() { dirty = true; if (!running) { running = true; requestAnimationFrame(loop); } }
   const tween = { active: false, t: 0, from: null, to: null };
   function loop() {
+    if (!renderer) { running = false; return; }
     if (!renderer) return;
     let moving = false;
     if (tween.active) {
@@ -299,7 +300,9 @@ export async function createAnatomy(container, { onSelect, onFrame } = {}) {
       controls.dispose();
       meshes.forEach((m) => m.geometry.dispose());
       mats.forEach((m) => m.dispose());
+      try { scene.traverse((o) => { if (o.material && o.material.map) o.material.map.dispose(); }); if (scene.environment) scene.environment.dispose(); scene.clear(); } catch { /* noop */ }
       renderer.dispose();
+      try { renderer.forceContextLoss(); } catch { /* noop */ }
       renderer.domElement.remove();
       renderer = null;
     },

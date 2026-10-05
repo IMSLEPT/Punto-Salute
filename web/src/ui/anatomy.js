@@ -46,13 +46,16 @@ export async function renderAnatomy(root, { query }) {
   const fitStage = () => { root.style.setProperty('--dock', Math.min(dock.offsetHeight, root.clientHeight * 0.46) + 'px'); };
   let roRaf = 0;
   new ResizeObserver(() => { cancelAnimationFrame(roRaf); roRaf = requestAnimationFrame(fitStage); }).observe(dock);
+  const alive = () => root.isConnected && $('#dock', root);
   const sync = () => {
+    if (!alive() || !api) return;
     const act = api.layers();
     $$('.lay', root).forEach((b) => b.classList.toggle('on', act.has(b.dataset.lay)));
     $('#sexseg', root).hidden = !act.has('riproduttivo');
   };
 
   const showInfo = (ent) => {
+    if (!alive()) return;
     const e = ent && get(ent);
     if (!ent || !e) {
       label.hidden = true;
@@ -95,6 +98,7 @@ export async function renderAnatomy(root, { query }) {
   api = await createAnatomy(stage, {
     onSelect: (ent) => { showInfo(ent); sync(); },
     onFrame: (cam, dom) => {
+      if (!alive()) return;
       const sel = api && api.selected();
       if (!sel) return;
       const p = api.project(sel);
@@ -125,7 +129,7 @@ export async function renderAnatomy(root, { query }) {
     if (api && api.selected()) { api.reset(); sync(); return true; }
     return false;
   };
-  return { title: 'Anatomia 3D', kicker: 'Interattiva', tab: 'anatomia', onLeave: () => { window.__psCustomBack = null; } };
+  return { title: 'Anatomia 3D', kicker: 'Interattiva', tab: 'anatomia', onLeave: () => { clearInterval(watchTimer); cancelAnimationFrame(roRaf); disposeAnatomy(); window.__anat = null; } };
 }
 
 export function disposeAnatomy() { if (api) { try { api.dispose(); } catch { /* noop */ } api = null; } window.__psCustomBack = null; }
