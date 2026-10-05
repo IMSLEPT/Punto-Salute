@@ -18,7 +18,8 @@ const routeFor = (e) => (e.type === 'scale' ? '/scala/' : e.type === 'calc' ? '/
 const STATIC = ['/', '/pratica', '/clinica', '/preferiti', '/note', '/profilo', '/anatomia', '/provette', '/scale', '/calcolatore', '/patologie', '/procedure', '/dispositivi', '/emergenze', '/farmaci', '/specialistiche', '/glossario', '/fonti', '/assistenza', '/assistenza/piano', '/assistenza/piano/nuovo', '/studio', '/studio/quiz', '/studio/esame', '/studio/flash', '/studio/casi', '/studio/caso/caso-sepsi'];
 const perType = {};
 const sample = [];
-for (const e of ALL) { (perType[e.type] ||= []); if (perType[e.type].length < 3) { perType[e.type].push(e); sample.push(routeFor(e)); } }
+const ALLP = process.argv.includes('--all');
+for (const e of ALL) { (perType[e.type] ||= []); if (ALLP || perType[e.type].length < 3) { perType[e.type].push(e); sample.push(routeFor(e)); } }
 const ROUTES = [...STATIC, ...sample].filter((r) => r.startsWith(ONLY));
 
 const { srv, url } = await serve();
