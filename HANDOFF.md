@@ -35,27 +35,34 @@ python3 tools/build_apk.py --out dist/PuntoSalute.apk   # APK firmato SENZA Andr
   Formato contenuti: stringa | array (bullet) | `{ol:[]}` `{ul:[]}` `{p}` `{note|warn|danger|ok}` `{table:{head,rows}}` `{kv}` `{svg:'figId'}`.
 - `anatomy/`: scena Three.js procedurale (geo, shape, body-*.js, scene.js). Ogni mesh ha `ent` = id scheda anatomica; livelli: cute, scheletro, muscoli, cardiovascolare, vasi, nervoso, respiratorio, digerente, urinario, riproduttivo, endocrino, linfatico, organi.
 
-## FATTO (aggiornato 2026-10-05, fine contesto chat 1)
-- Toolchain APK senza SDK + shell WebView; design system; router; ricerca (refusi/sinonimi); scheda generica con mappa "Collegamenti clinici"; Home da mockup; Note/Profilo/Preferiti.
-- **3D realistico**: BodyParts3D 4.0 (CC BY 4.0, © DBCLS) per scheletro/muscoli/dischi/legamenti (`anatomy/real.js`), organi/vasi/nervi/cute procedurali adattati con `anatomy/fit.js`, sterno procedurale (`body-sternum.js`). Verificato con screenshot Chromium headless (scheletro+organi, muscoli).
-- **Dati** (`web/src/data`): sources, anatomy(1-3, ~110 schede), physiology(17), pathologies(20)+pathologies2(8: ictus, diabete, ipoglicemia, DKA, sepsi, lesioni da pressione, emorragia digestiva, cirrosi), procedures(10), devices(12), tubes(9+emocolture), exams(~26), terms(~18), scales(10: GCS, NEWS2, Braden, Barthel, Katz, MUST, NRS/VAS, FLACC, qSOFA, CPSS), calcs(10), ndx(~28, titoli indicativi), care(5), emergencies(5), specs(16).
-- **UI**: `ui/tools.js` (scale con punteggio automatico, NEWS2 dedicata, calcolatori con procedimento), `ui/tubes.js` (rack provette, ordine di prelievo, protocollo locale configurabile), `viz/tubes.js`. Rotte registrate in `main.js`: `/ /pratica /clinica /preferiti /note /profilo /impostazioni /anatomia /provette /scale /scala/:id /calcolatore[/:id] /e/:id /patologie /procedure /dispositivi /emergenze`.
-- Ultimo `node build.mjs`: OK (6238 KB). Ultimo APK di prova (`/tmp/ps-test.apk`) PRIMA degli ultimi moduli dati: firma v2 verificata con apksigtool.
+## FATTO (aggiornato 2026-10-05, chat 2)
+- Toolchain APK senza SDK + progetto **Gradle** (`android/settings|build.gradle.kts`, `app/build.gradle.kts`; wrapper jar assente: la CI usa `gradle/actions/setup-gradle` 8.7) + workflow `.github/workflows/build-apk.yml` (job Gradle e job SDK-less). Versione unica in `VERSION`.
+- APK `dist/PuntoSalute-1.0.0.apk` (3,5 MB, firma v2 verificata con apksigtool, minSdk 24/targetSdk 34, versionCode 10000). `dist/` è in .gitignore.
+- Anatomia 3D: BodyParts3D 4.0 (CC BY 4.0) + organi/vasi/nervi/cute procedurali adattati (`anatomy/fit.js`).
+- **Contenuti (555 schede, 0 link orfani, 0 errori di validazione)**: 110 anatomia, 17 fisiologia, 51 patologie (`pathologies.js`, `pathologies2.js`, `pathologies3.js`), 27 procedure (`procedures.js`, `procedures2.js`), 12 dispositivi, 9 provette, 27 esami, 23 farmaci (`drugs.js`, senza posologie), 17 scale (`scales.js`, `scales2.js`: + 4AT, PAINAD, RASS, Lawton, Apgar, Morse, Tinetti), 10 calcolatori, 34 diagnosi infermieristiche (titoli indicativi), 7 schede assistenza (incl. Gordon e Henderson), 6 emergenze (incl. SCA), 16 specialistiche, 174 termini/segni (`terms.js`, `glossary.js`, parte di `extras.js`). `data/figmap.js` associa le figure SVG alle schede.
+- **UI**: assistenza + costruttore di piano (`ui/assistenza.js`: accertamento, Gordon, diagnosi dall'elenco con suggerimenti, obiettivi, interventi, rivalutazione, condivisione testo, salvataggio locale), modalità studio (`ui/studio.js`: 59 quiz scritti a mano in `data/quizbank.js` + ~330 generati dalle schede, flashcard con Leitner, 6 casi clinici in `data/cases.js`, simulazione d'esame 20 domande/20 min), glossario A–Z, pagina specialità, Fonti e licenze (`ui/more.js`), figure SVG (`viz/devices.js`: Foley, drenaggio toracico 3 camere, PICC/CVC/port, elettrodi ECG, misura SNG; `viz/tubes.js`).
+- Bug corretto: i listener registrati sul contenitore `#view` si accumulavano tra una rotta e l'altra (reset in `main.js`).
+- Strumenti: `web/tools/validate.mjs` (ID duplicati/orfani, fonti, quiz, casi, entità 3D), `web/tests/e2e.mjs` (apre tutte le 555 schede e le rotte, prova ricerca, piano, quiz, esame, flashcard, caso, termine, calcolatore: tutto verde in Chromium headless).
 
 ## NON TESTATO
-- La shell Java NON è mai stata eseguita su dispositivo/emulatore (nessun emulatore qui).
-- Nessun test e2e dei nuovi moduli (tools/tubes) oltre al build; nessun validatore link.
-- Home non ancora confrontata pixel-per-pixel col mockup.
+- La shell Java (`MainActivity`) e l'APK NON sono mai stati eseguiti su dispositivo/emulatore (nessuno disponibile qui). Il progetto Gradle non è stato compilato (SDK non scaricabile qui): verificare con la CI.
+- Prestazioni 3D su telefoni reali; rendering in dark mode di nuove pagine/figure solo parzialmente controllato.
+- Contenuti clinici scritti in modo didattico e rivisti per coerenza, **non** validati da un revisore clinico: da far rivedere prima di un uso reale.
 
 ## DA FARE (priorità)
-1. **Validatore** `web/tools/validate.mjs`: id dangling in `rel` e `[[id|label]]` (noti: `drenaggio-toracico`, `nervo-radiale-info`, `cvc-gestione|CVC`, `terapia-im`, `terapia-sc`, `medicazione-ferita`, `ecg-esecuzione`, `prelievo-arterioso`, `glicemia-capillare`, `sng-posizionamento`, `nutrizione-enterale`, `aspirazione-secrezioni`, `cateterismo-intermittente`, `trasfusione`, `anticoagulanti`, `insulina`, `diuretici`…) + ogni mesh 3D con scheda anatomica.
-2. Contenuti vuoti: `data/procedures2.js` (IM/SC, medicazioni, prelievo arterioso, ECG, SNG, PEG, stomie, aspirazione, trasfusione, mobilizzazione, aerosol, glicemia capillare…), `data/drugs.js` (classi, 10 G, high-alert, NIENTE posologie). Altre patologie (epilessia, meningite, Parkinson, demenza, tiroide, pancreatite, appendicite, occlusione, colecistite, MRGE, anemia, neutropenia febbrile, ICA, frattura femore, osteoporosi, lombalgia, delirium, malnutrizione, depressione, preeclampsia, bronchiolite, epistassi, ustioni), altre scale (Tinetti, Lawton, RASS, 4AT, Apgar, PAINAD, Conley: solo se affidabili + nota licenza), glossario a ~220 termini.
-3. UI mancanti: `/assistenza` (hub + costruttore di piano Accertamento→dati→problema→diagnosi→NOC→NIC→rivalutazione, salvato in locale), `/farmaci`, `/glossario` A–Z, `/studio` (quiz, flashcard SRS, casi "costruisci la diagnosi", simulazione esame), `/specialistiche`, `/spec/:id`, `/fonti` (attribuzioni: BodyParts3D CC BY 4.0, Lucide ISC, Inter OFL). Figure SVG: PICC/CVC/port, catetere 2/3 vie, drenaggio toracico 3 camere, Redon/JP, stomie, derivazioni ECG.
-4. Gradle `android/` (settings/build.gradle.kts/wrapper) + `.github/workflows/build-apk.yml` + README; e2e; APK finale: `cd web && node build.mjs && cd .. && python3 tools/build_apk.py --out dist/PuntoSalute-1.0.0.apk` (verifica: `python3 -m apksigtool verify`).
-5. Rifinitura 3D (sterno un po' pesante, rapporto semplificazione obliqui 0.035, etichette) e Home vs mockup.
+1. Provare l'APK su un telefono e correggere ciò che emerge (installazione, back, barre di sistema, 3D, ricerca).
+2. Scala **Conley** (richiesta dall'utente): non inclusa perché gli item non sono verificabili a memoria; aggiungere solo da fonte ufficiale/licenza. Altre scale da valutare: Glasgow pediatrico, Ramsay, Waterlow (licenza).
+3. Contenuti da ampliare: altre patologie (ICA come patologia è ok; mancano es. anemia falciforme, tumori comuni, ustioni, epistassi, pneumotorace iperteso come emergenza, depressione, trauma cranico), altri farmaci (antiaritmici, digossina, antipsicotici, antiepilettici, vaccini), altre procedure (clisma, lavanda gastrica, ossigeno ad alti flussi, ventilazione NIV, sutura/rimozione punti, lavaggio vescicale, urostomia/stomie dettaglio), più quiz/casi.
+4. Figure SVG mancanti: Redon/JP, stomie, siti di iniezione IM, PICC dettaglio, catetere ad ago di Huber.
+5. Rifiniture 3D (sterno un po' pesante, rapporto semplificazione obliqui, etichette) e dark mode delle nuove pagine.
+6. Chiave di firma di produzione (non committarla) e pubblicazione.
 
-## Attenzione
-- `keystore/puntosalute.p12` è una chiave di SVILUPPO committata (pw `puntosalute`): per la pubblicazione generarne una privata e NON committarla.
+## Comandi
+```
+cd web && npm ci && node tools/validate.mjs && node build.mjs && node tests/e2e.mjs
+cd .. && python3 tools/build_apk.py --out dist/PuntoSalute-1.0.0.apk && python3 -m apksigtool verify dist/PuntoSalute-1.0.0.apk
+node web/tests/shot.mjs /tmp/shots /rotta ...     # screenshot Chromium headless
+```
 
 ## Regole di contenuto (importanti)
 Italiano; nessuna posologia nelle schede farmaci (solo classe/precauzioni/monitoraggio; dosi = prescrizione + RCP AIFA);

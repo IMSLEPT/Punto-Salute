@@ -16,6 +16,7 @@ import { renderTypeList, renderHub, renderFavorites } from './ui/lists.js';
 import { LOGO } from './ui/common.js';
 import { renderTubes } from './ui/tubes.js';
 import './viz/tubes.js';
+import './viz/devices.js';
 import { renderScales, renderScale, renderCalcHub, renderCalc } from './ui/tools.js';
 import { renderAssistenza, renderPlans, renderPlan } from './ui/assistenza.js';
 import { renderStudio, renderQuiz, renderExam, renderFlash, renderCases, renderCase } from './ui/studio.js';

@@ -22,6 +22,7 @@ import specs from '../data/specs.js';
 import terms from '../data/terms.js';
 import glossary from '../data/glossary.js';
 import { SOURCES } from '../data/sources.js';
+import FIGMAP from '../data/figmap.js';
 
 export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, procedures, procedures2, devices, tubes, exams, drugs, care, ndx, scales, scales2, calcs, emergencies, specs, terms, glossary, extras);
 export const BY_ID = new Map();
@@ -29,6 +30,7 @@ export const BY_TYPE = {};
 export { SOURCES };
 
 for (const e of ALL) {
+  if (FIGMAP[e.id] && !e.figs) e.figs = FIGMAP[e.id];
   if (BY_ID.has(e.id)) console.warn('ID duplicato:', e.id);
   BY_ID.set(e.id, e);
   (BY_TYPE[e.type] ||= []).push(e);
