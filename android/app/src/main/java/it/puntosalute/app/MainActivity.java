@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class MainActivity extends Activity {
 
-    static final String APP_VERSION = "1.2.4";
+    static final String APP_VERSION = "1.2.5";
     private static final String HOST = "appassets.androidplatform.net";
     private static final String ORIGIN = "https://" + HOST;
     private static final String START_URL = ORIGIN + "/index.html";

@@ -21,7 +21,7 @@ export async function renderAnatomy(root, { query }) {
     </div>
     <div class="anat-label" id="alabel" hidden></div>
     <div class="anat-dock" id="dock">
-      <div class="dock-grab" data-grab></div>
+      <div class="dock-grab" data-grab role="button" aria-label="Abbassa o alza il pannello"><span class="dock-hint">Strutture e schede · scorri su</span></div>
       <div class="layers" id="layers">${LAYERS.map((l) => `<button class="lay" data-lay="${l.id}">${icon(l.icon)}<span>${l.label}</span></button>`).join('')}</div>
       <div class="dock-body" id="dockbody"></div>
     </div>
@@ -47,6 +47,28 @@ export async function renderAnatomy(root, { query }) {
   let roRaf = 0;
   new ResizeObserver(() => { cancelAnimationFrame(roRaf); roRaf = requestAnimationFrame(fitStage); }).observe(dock);
   const alive = () => root.isConnected && $('#dock', root);
+  // pannello a 3 posizioni: 0 abbassato (solo la maniglia, il modello occupa tutto lo spazio), 1 normale, 2 esteso
+  let dockState = 1;
+  const setDock = (n) => {
+    dockState = Math.max(0, Math.min(2, n));
+    dock.classList.toggle('collapsed', dockState === 0);
+    dock.classList.toggle('expanded', dockState === 2);
+    dock.scrollTop = 0;
+    fitStage();
+  };
+  {
+    const grab = $('[data-grab]', root);
+    let y0 = null, moved = false;
+    grab.addEventListener('pointerdown', (ev) => { y0 = ev.clientY; moved = false; try { grab.setPointerCapture(ev.pointerId); } catch { /* noop */ } });
+    grab.addEventListener('pointermove', (ev) => {
+      if (y0 == null) return;
+      const dy = ev.clientY - y0;
+      if (Math.abs(dy) > 24) { moved = true; setDock(dockState + (dy < 0 ? 1 : -1)); y0 = ev.clientY; }
+    });
+    const end = () => { if (y0 != null && !moved) setDock(dockState === 0 ? 1 : 0); y0 = null; };
+    grab.addEventListener('pointerup', end);
+    grab.addEventListener('pointercancel', () => { y0 = null; });
+  }
   const sync = () => {
     if (!alive() || !api) return;
     const act = api.layers();
@@ -59,7 +81,8 @@ export async function renderAnatomy(root, { query }) {
     const e = ent && get(ent);
     if (!ent || !e) {
       label.hidden = true;
-      dock.classList.remove('has-sel', 'expanded');
+      dock.classList.remove('has-sel');
+      if (dockState === 2) setDock(1);
       dockBody.innerHTML = `<p class="muted small" style="margin:8px 2px 0">Tocca un organo per aprire anatomia, rapporti, vascolarizzazione, fisiologia e patologie. Trascina per ruotare, pizzica per ingrandire.</p>
         ${structPicker()}`;
       return;
@@ -83,7 +106,7 @@ export async function renderAnatomy(root, { query }) {
     };
     if (tabs[0]) showTab(tabs[0][0]);
     $('#atabs', root).addEventListener('click', (ev) => { const b = ev.target.closest('[data-sec]'); if (b) showTab(b.dataset.sec); });
-    dock.classList.add('expanded');
+    setDock(dockState === 0 ? 1 : 2);
     dock.scrollTop = 0;
   };
 
@@ -123,7 +146,6 @@ export async function renderAnatomy(root, { query }) {
     if (s) { api.setSex(s.dataset.sex); $$('#sexseg button', root).forEach((b) => b.classList.toggle('on', b === s)); return; }
     const pk = ev.target.closest('[data-pick]');
     if (pk) { api.select(pk.dataset.pick); sync(); return; }
-    if (ev.target.closest('[data-grab]')) { dock.classList.toggle('expanded'); }
   });
   window.__psCustomBack = () => {
     if (api && api.selected()) { api.reset(); sync(); return true; }
