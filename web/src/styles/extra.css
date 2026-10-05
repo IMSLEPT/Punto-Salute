@@ -112,3 +112,16 @@
 :root[data-theme='dark'] .tabbar .tab .ic { color: var(--ink-2); }
 .tabbar .tab.active .ic { color: #0ea5e9; }
 .tab .pill { background: transparent !important; }
+
+/* scale */
+.opts { display: grid; gap: 8px; }
+.opt { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 13px; border: 1.5px solid var(--line-2); background: var(--surface); }
+.opt input { width: 20px; height: 20px; accent-color: #0ea5e9; flex: none; }
+.opt:has(input:checked) { border-color: #0ea5e9; background: rgb(14 165 233 / .08); }
+
+/* provette */
+.rack { display: flex; gap: 6px; justify-content: space-around; align-items: flex-end; padding: 10px 2px 4px; border-bottom: 6px solid #cbd5e1; border-radius: 0 0 6px 6px; overflow-x: auto; }
+.rk { display: flex; flex-direction: column; align-items: center; gap: 4px; transition: transform .12s; }
+.rk:active { transform: translateY(-4px); }
+.rk span { font-size: .72rem; font-weight: 800; color: var(--ink-3); }
+.rk svg { height: 150px; width: auto; }
