@@ -125,3 +125,17 @@
 .rk:active { transform: translateY(-4px); }
 .rk span { font-size: .72rem; font-weight: 800; color: var(--ink-3); }
 .rk svg { height: 150px; width: auto; }
+
+/* ---- studio, quiz, piano assistenziale */
+.statn { font-size: 1.6rem; font-weight: 800; color: var(--brand-2); }
+.bar { height: 6px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.bar > i { display: block; height: 100%; background: rgb(var(--c-studio)); border-radius: 99px; transition: width .25s; }
+.opt { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 13px 14px; min-height: 52px; border-radius: var(--r-sm); background: var(--surface); border: 1.5px solid var(--line); font-weight: 560; line-height: 1.35; }
+.opt .l { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: var(--surface-2); font-weight: 750; font-size: .82rem; flex: none; }
+.opt:active { background: var(--surface-2); }
+.opt.on { border-color: var(--brand); }
+.opt.good { border-color: var(--ok); background: rgb(21 128 61 / .09); }
+.opt.bad { border-color: var(--danger); background: rgb(185 28 28 / .08); }
+.flash { width: 100%; min-height: 220px; display: grid; place-items: center; text-align: left; }
+.chk { width: 22px; height: 22px; margin-top: 12px; accent-color: rgb(var(--c-assistenza)); flex: none; }
+.row > .textarea.grow { min-height: 64px; }

@@ -17,6 +17,9 @@ import { LOGO } from './ui/common.js';
 import { renderTubes } from './ui/tubes.js';
 import './viz/tubes.js';
 import { renderScales, renderScale, renderCalcHub, renderCalc } from './ui/tools.js';
+import { renderAssistenza, renderPlans, renderPlan } from './ui/assistenza.js';
+import { renderStudio, renderQuiz, renderExam, renderFlash, renderCases, renderCase } from './ui/studio.js';
+import { renderGlossary, renderSpec, renderSources } from './ui/more.js';
 
 const root = document.documentElement;
 const app = $('#app');
@@ -105,13 +108,37 @@ R('/e/:id', (r, { params }) => renderEntity(r, params.id));
 R('/patologie', (r) => renderTypeList(r, { types: ['patho'], module: 'patologie', groupKey: 'cat' }));
 R('/procedure', (r) => renderTypeList(r, { types: ['proc'], module: 'procedure', groupKey: 'cat' }));
 R('/dispositivi', (r) => renderTypeList(r, { types: ['dev'], module: 'dispositivi', groupKey: 'cat' }));
+R('/farmaci', (r) => renderTypeList(r, { types: ['drug'], module: 'farmaci', groupKey: 'cat' }));
+R('/specialistiche', (r) => renderTypeList(r, { types: ['spec'], module: 'specialistiche', groupKey: 'cat' }));
+R('/spec/:id', (r, { params }) => renderSpec(r, params.id));
+R('/glossario', (r) => renderGlossary(r));
+R('/fonti', (r) => renderSources(r));
+R('/assistenza', (r) => renderAssistenza(r));
+R('/assistenza/piano', (r) => renderPlans(r));
+R('/assistenza/piano/:id', (r, { params }) => renderPlan(r, params.id));
+R('/studio', (r) => renderStudio(r));
+R('/studio/quiz', (r) => renderQuiz(r));
+R('/studio/esame', (r) => renderExam(r));
+R('/studio/flash', (r) => renderFlash(r));
+R('/studio/casi', (r) => renderCases(r));
+R('/studio/caso/:id', (r, { params }) => renderCase(r, params.id));
 R('/emergenze', (r) => renderTypeList(r, { types: ['emerg'], module: 'emergenze', groupKey: 'cat' }));
+
+// i listener registrati dalle pagine sul contenitore condiviso vengono rimossi a ogni cambio di rotta
+const viewListeners = [];
+const addView = view.addEventListener.bind(view);
+view.addEventListener = (t, f, o) => { viewListeners.push([t, f, o]); addView(t, f, o); };
+function resetView() {
+  for (const [t, f, o] of viewListeners.splice(0)) view.removeEventListener(t, f, o);
+  view.onclick = view.oninput = view.onchange = null;
+}
 
 let first = true;
 startRouter(async (cur, rt0, restore) => {
   closeSearch();
   while (closeTopOverlay()) { /* chiude overlay residui */ }
   view.classList.remove('enter');
+  resetView();
   let d;
   try {
     d = await rt0.handler(view, cur);

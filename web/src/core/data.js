@@ -20,9 +20,10 @@ import calcs from '../data/calcs.js';
 import emergencies from '../data/emergencies.js';
 import specs from '../data/specs.js';
 import terms from '../data/terms.js';
+import glossary from '../data/glossary.js';
 import { SOURCES } from '../data/sources.js';
 
-export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, procedures, procedures2, devices, tubes, exams, drugs, care, ndx, scales, scales2, calcs, emergencies, specs, terms, extras);
+export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, procedures, procedures2, devices, tubes, exams, drugs, care, ndx, scales, scales2, calcs, emergencies, specs, terms, glossary, extras);
 export const BY_ID = new Map();
 export const BY_TYPE = {};
 export { SOURCES };

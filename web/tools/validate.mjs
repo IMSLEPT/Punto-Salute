@@ -36,6 +36,12 @@ for (const e of ALL) {
   if (!e.title || !e.summary) W(`${e.id}: titolo/sommario mancante`);
 }
 for (const [id, from] of [...dang].sort()) console.log(`DANGLING ${id}  <- ${[...from].slice(0, 4).join(', ')}${from.size > 4 ? '…' : ''}`);
+// quiz e casi
+const qb = (await import(pathToFileURL(path.join(D, 'quizbank.js')).href)).default;
+const cs = (await import(pathToFileURL(path.join(D, 'cases.js')).href)).default;
+for (const q of qb) { if (q.o.length !== 4) E('quiz: opzioni != 4: ' + q.q); for (const r of q.rel) if (!ids.has(r)) E(`quiz: id inesistente ${r}`); }
+for (const c of cs) for (const r of c.rel) if (!ids.has(r)) E(`caso ${c.id}: id inesistente ${r}`);
+console.log(`quiz scritti a mano: ${qb.length}, casi: ${cs.length}`);
 // mesh 3D -> schede
 const sc = fs.readFileSync('src/anatomy/scene.js', 'utf8') + fs.readdirSync('src/anatomy').map((f) => fs.readFileSync('src/anatomy/' + f, 'utf8')).join('\n');
 const ents = new Set([...sc.matchAll(/ent:\s*'([a-z0-9-]+)'/g)].map((m) => m[1]));

@@ -33,6 +33,6 @@ export async function launch({ dark = false, w = 412, h = 892, scale = 2, gl = t
   const page = await ctx.newPage();
   const errors = [];
   page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) errors.push(`[${m.type()}] ${m.text()}`); });
-  page.on('pageerror', (e) => errors.push('[pageerror] ' + e.message));
+  page.on('pageerror', (e) => errors.push('[pageerror] ' + e.message + ' @ ' + (e.stack || '').split('\n').slice(1, 3).join(' | ')));
   return { browser, ctx, page, errors };
 }
