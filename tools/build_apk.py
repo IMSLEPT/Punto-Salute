@@ -103,7 +103,7 @@ def main():
     ap.add_argument("--storepass", default=os.environ.get("PS_STOREPASS", "puntosalute"))
     ap.add_argument("--alias", default="puntosalute")
     ap.add_argument("--version-name", default=None)
-    ap.add_argument("--version-code", default="1")
+    ap.add_argument("--version-code", default=None)
     a = ap.parse_args()
 
     main_dir = os.path.join(ROOT, "android", "app", "src", "main")
@@ -116,6 +116,10 @@ def main():
     if not version_name:
         with open(os.path.join(ROOT, "VERSION")) as f:
             version_name = f.read().strip()
+
+    if not a.version_code:
+        x, y, z = (int(n) for n in version_name.split("."))
+        a.version_code = str(x * 10000 + y * 100 + z)  # stessa formula di android/app/build.gradle.kts
 
     work = tempfile.mkdtemp(prefix="ps-build-")
     try:

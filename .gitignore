@@ -13,3 +13,4 @@ android/.idea/
 # cache strumenti build SDK-less
 .cache/
 tools/.cache/
+dist/
