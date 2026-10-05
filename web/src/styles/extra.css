@@ -304,3 +304,4 @@
 .opt.static { cursor: default; pointer-events: none; }
 .casegen { border: 1.5px dashed rgb(var(--c-studio) / .45); }
 .hr { border: 0; border-top: 1px solid var(--line); margin: 8px 0; width: 100%; }
+.ach { white-space: normal; text-align: left; height: auto; line-height: 1.25; padding-top: 7px; padding-bottom: 7px; }

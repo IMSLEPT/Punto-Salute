@@ -1,4 +1,4 @@
-import{a as H,b as I}from"./chunk-QK2SBX7Q.js";import{a as F}from"./chunk-AWC6F7MB.js";import{j as P}from"./chunk-Q5OJJUGS.js";import{l as D}from"./chunk-M5JPAZNF.js";import{C as y,K as C,M,c as o,d as g,e as f,f as h,p as z}from"./chunk-TRUL5U5D.js";var a=null;async function Y(s,{query:L}){var A;s.innerHTML=`<div class="page flush anat">
+import{a as H,b as I}from"./chunk-RZRJBNPK.js";import{a as F}from"./chunk-AWC6F7MB.js";import{j as P}from"./chunk-Q5OJJUGS.js";import{l as D}from"./chunk-M5JPAZNF.js";import{C as y,K as C,M,c as o,d as g,e as f,f as h,p as z}from"./chunk-TRUL5U5D.js";var a=null;async function Y(s,{query:L}){var A;s.innerHTML=`<div class="page flush anat">
     <div class="anat-stage" id="stage"><div class="anat-load" id="aload"><div class="spin"></div><p>Preparo il modello 3D\u2026</p></div></div>
     <div class="anat-top">
       <div class="anat-sex seg" id="sexseg" hidden><button data-sex="f" class="on">\u2640</button><button data-sex="m">\u2642</button></div>
