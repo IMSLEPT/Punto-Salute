@@ -20,6 +20,7 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
@@ -42,6 +43,7 @@ public class MainActivity extends Activity {
     private static final String START_URL = ORIGIN + "/index.html";
 
     private WebView webView;
+    private View splashOverlay;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -50,7 +52,24 @@ public class MainActivity extends Activity {
 
         webView = new WebView(this);
         webView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        setContentView(webView);
+
+        // Schermata di avvio: stessa grafica (sfondo bianco + logo) della splash di sistema, tenuta sopra la WebView
+        // finche' la Home non e' pronta, cosi' non compare nessuna schermata intermedia.
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(Color.WHITE);
+        root.addView(webView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        splashOverlay = new View(this);
+        int splashId = getResources().getIdentifier("splash", "drawable", getPackageName());
+        if (splashId != 0) splashOverlay.setBackgroundResource(splashId); else splashOverlay.setBackgroundColor(Color.WHITE);
+        root.addView(splashOverlay, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        setContentView(root);
+        // rete di sicurezza: se la web app non segnala "pronta", la splash sparisce comunque dopo qualche secondo
+        splashOverlay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideSplash();
+            }
+        }, 6000);
 
         WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
@@ -78,6 +97,17 @@ public class MainActivity extends Activity {
             return;
         }
         webView.loadUrl(START_URL);
+    }
+
+    private void hideSplash() {
+        final View s = splashOverlay;
+        if (s == null || s.getVisibility() != View.VISIBLE) return;
+        s.animate().alpha(0f).setDuration(180).withEndAction(new Runnable() {
+            @Override
+            public void run() {
+                s.setVisibility(View.GONE);
+            }
+        }).start();
     }
 
     @Override
@@ -248,9 +278,20 @@ public class MainActivity extends Activity {
 
     private class Bridge {
 
+        /** La web app ha mostrato la Home: si toglie la splash. */
+        @JavascriptInterface
+        public void appReady() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    hideSplash();
+                }
+            });
+        }
+
         @JavascriptInterface
         public String version() {
-            return "1.2.1";
+            return "1.2.2";
         }
 
         @JavascriptInterface

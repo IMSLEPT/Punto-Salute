@@ -182,7 +182,7 @@ startRouter(async (cur, rt0, restore) => {
   if (restore) { const y = savedScroll(); view.scrollTop = y || 0; } else view.scrollTop = 0;
   void view.offsetWidth;
   view.classList.add('enter');
-  if (first) { first = false; const b = $('#boot'); if (b) { b.classList.add('gone'); setTimeout(() => b.remove(), 400); } }
+  if (first) { first = false; const b = $('#boot'); if (b) { b.classList.add('gone'); setTimeout(() => b.remove(), 400); } try { window.PuntoSalute && PuntoSalute.appReady && PuntoSalute.appReady(); } catch { /* noop */ } }
 });
 
 // ------------------------------------------------------------------ eventi globali

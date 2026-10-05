@@ -89,7 +89,7 @@ export function renderHome(root) {
     </div>
     ${cont ? `<section class="cont" style="--c:var(${t.c})"><div class="ch">${icon('clock')}Continua a studiare</div>
       <button class="cr" data-go="${routeFor(cont)}"><div class="tile">${colorIcon('doc')}</div>
-      <div class="grow"><div class="nm">${esc(cont.title)}</div><div class="sb">${esc(plain(cont.summary || '').slice(0, 80))}</div>
+      <div class="grow"><div class="nm">${esc(cont.title)}</div><div class="sb">${esc(plain(cont.summary || ''))}</div>
       <div class="bar"><div class="progress"><i style="width:${pr}%"></i></div><em>${pr}%</em></div></div>${icon('chevron-right', 'go')}</button></section>` : ''}
     <div class="hsec">Tutte le sezioni</div>
     <div class="hgrid" style="padding-top:12px">${rest.map(moduleTile).join('')}</div>

@@ -102,7 +102,7 @@ function runQuiz(root, { list, title, exam = false, minutes = 0, back = '/studio
     const shown = !exam && a != null;
     root.innerHTML = `<div class="page stack-lg">
       <div class="row"><div class="grow"><div class="xs muted">${esc(q.t)}</div><b>${esc(title)} · ${i + 1}/${qs.length}</b></div>${deadline ? `<span class="badge" style="--c:${C}">${icon('timer')}<span id="clock">…</span></span>` : ''}</div>
-      <div class="bar"><i style="width:${(i / qs.length) * 100}%"></i></div>
+      <div class="qbar"><i style="width:${(i / qs.length) * 100}%"></i></div>
       <div class="card pad"><div style="font-weight:650;line-height:1.4">${fmtMd(q.q)}</div></div>
       <div class="stack">${q.opts.map((o, k) => {
         let cls = 'opt';
@@ -201,7 +201,7 @@ export function renderFlash(root) {
       const e = q[i], t = TYPES[e.type];
       root.innerHTML = `<div class="page stack-lg">
         <div class="row"><div class="grow"><div class="xs muted">${esc(t.label)}</div><b>Flashcard · ${i + 1}/${q.length}</b></div></div>
-        <div class="bar"><i style="width:${(i / q.length) * 100}%"></i></div>
+        <div class="qbar"><i style="width:${(i / q.length) * 100}%"></i></div>
         <button class="card pad flash" id="flip" style="--c:var(${t.c})">${flipped
           ? `<div class="stack"><div class="xs muted">${esc(e.title)}</div><div style="line-height:1.5">${esc(plain(e.summary))}</div></div>`
           : `<div class="center"><div class="tile-ic soft" style="--c:var(${t.c});margin:0 auto 12px">${icon(t.icon)}</div><div style="font-size:1.25rem;font-weight:750">${esc(e.title)}</div><div class="xs muted" style="margin-top:8px">Tocca per vedere la risposta</div></div>`}</button>
