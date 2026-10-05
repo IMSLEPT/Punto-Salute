@@ -70,16 +70,16 @@ export async function renderAnatomy(root, { query }) {
         <div class="row"><div class="grow"><h2>${esc(e.title)}</h2><div class="small muted">${esc((e.aliases || []).slice(0, 3).join(' · '))}</div></div>
           <button class="btn sm ghost" data-go="/e/${e.id}">Scheda</button></div>
         <p class="sum">${rt(e.summary || '', ctx)}</p>
-        <div class="chips" id="atabs">${tabs.map(([k, l], i) => `<button class="chip ${i === 0 ? 'active' : ''}" data-tab="${k}">${l}</button>`).join('')}</div>
+        <div class="chips" id="atabs">${tabs.map(([k, l], i) => `<button class="chip ${i === 0 ? 'active' : ''}" data-sec="${k}">${l}</button>`).join('')}</div>
         <div class="body" id="atab"></div>
         ${mapBlock(e.id, { limit: 6, title: 'Collegamenti clinici' })}
       </div>`;
     const showTab = (k) => {
       $('#atab', root).innerHTML = block(e.sections[k], { self: e.id, seen: new Set() });
-      $$('#atabs .chip', root).forEach((c) => c.classList.toggle('active', c.dataset.tab === k));
+      $$('#atabs .chip', root).forEach((c) => c.classList.toggle('active', c.dataset.sec === k));
     };
     if (tabs[0]) showTab(tabs[0][0]);
-    $('#atabs', root).addEventListener('click', (ev) => { const b = ev.target.closest('[data-tab]'); if (b) showTab(b.dataset.tab); });
+    $('#atabs', root).addEventListener('click', (ev) => { const b = ev.target.closest('[data-sec]'); if (b) showTab(b.dataset.sec); });
     dock.classList.add('expanded');
     dock.scrollTop = 0;
   };

@@ -185,7 +185,7 @@ startRouter(async (cur, rt0, restore) => {
 // ------------------------------------------------------------------ eventi globali
 document.addEventListener('click', (ev) => {
   const t = ev.target;
-  const tab = t.closest('[data-tab]');
+  const tab = t.closest('#tabbar [data-tab]');
   if (tab) { if (tab.dataset.tab === 'cerca') openSearch(); else navigate(tab.dataset.path, { replace: true }); return; }
   if (t.closest('[data-back]')) { window.__psBack(); return; }
   if (t.closest('[data-open-search]')) { openSearch(); return; }

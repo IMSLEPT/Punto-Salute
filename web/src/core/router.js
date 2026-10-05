@@ -24,6 +24,7 @@ function parse(hash) {
 export function currentRoute() { return current; }
 
 export function navigate(path, { replace = false } = {}) {
+  if (typeof path !== 'string' || !path.startsWith('/')) { console.warn('navigate: percorso non valido', path); return; }
   const view = document.getElementById('view');
   if (view) scrollPos.set(history.state?.k, view.scrollTop);
   const target = '#' + path;
