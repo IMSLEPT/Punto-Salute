@@ -80,7 +80,7 @@ export async function renderAnatomy(root, { query }) {
   // creazione scena (asincrona per far comparire prima l'interfaccia)
   await new Promise((r) => setTimeout(r, 30));
   if (api) { try { api.dispose(); } catch { /* noop */ } api = null; }
-  api = createAnatomy(stage, {
+  api = await createAnatomy(stage, {
     onSelect: (ent) => { showInfo(ent); sync(); },
     onFrame: (cam, dom) => {
       const sel = api && api.selected();

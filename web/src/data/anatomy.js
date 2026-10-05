@@ -1,5 +1,6 @@
 // Anatomia: ogni scheda corrisponde a una struttura selezionabile nel modello 3D (id = mesh).
 import more from './anatomy2.js';
+import more3 from './anatomy3.js';
 
 const A = (id, title, aliases, cat, summary, sections, rel = [], extra = {}) => ({
   id, type: 'anat', title, aliases, cat, summary, sections, rel, mesh: id, sources: ['textbooks'], rev: '2026-10', v: '1.0', verify: false, ...extra,
@@ -512,4 +513,4 @@ const base = [
     }, ['polmone-destro', 'cuore', 'pneumotorace'], {}),
 ];
 
-export default [...base, ...more];
+export default [...base, ...more, ...more3];

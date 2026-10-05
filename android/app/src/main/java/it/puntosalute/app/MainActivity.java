@@ -153,6 +153,7 @@ public class MainActivity extends Activity {
         MIME.put("ico", "image/x-icon");
         MIME.put("woff2", "font/woff2");
         MIME.put("woff", "font/woff");
+        MIME.put("glb", "model/gltf-binary");
         MIME.put("txt", "text/plain");
         MIME.put("webmanifest", "application/manifest+json");
     }

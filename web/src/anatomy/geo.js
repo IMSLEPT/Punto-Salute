@@ -182,14 +182,16 @@ export function longBone(a, b, r = 0.012, { r0 = null, r1 = null, mid = 0, epi =
   return merge(geos);
 }
 
-function plainPos(x) {
-  const g = x.index ? x.toNonIndexed() : x.clone();
+function plainPos(x, indexed) {
+  let g = x;
+  if (indexed) g = x.clone(); else g = x.index ? x.toNonIndexed() : x.clone();
   for (const k of Object.keys(g.attributes)) if (k !== 'position') g.deleteAttribute(k);
   return g;
 }
 
 export function merge(geos) {
-  const g = mergeGeometries(geos.map(plainPos));
+  const indexed = geos.every((g) => g.index);
+  const g = mergeGeometries(geos.map((x) => plainPos(x, indexed)));
   if (!g) throw new Error('merge fallito');
   g.computeVertexNormals();
   return g;

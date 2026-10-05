@@ -2,7 +2,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { buildSkin } from './body-skin.js';
-import { buildSkeleton } from './body-skeleton.js';
+import { buildSternum } from './body-sternum.js';
+import { loadReal, mergeReal, REAL_COLORS } from './real.js';
+import { buildFit } from './fit.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { buildMuscles } from './body-muscles.js';
 import { buildTorsoOrgans } from './body-organs.js';
 import { buildVessels } from './body-vessels.js';
@@ -25,7 +28,7 @@ export const LAYERS = [
   { id: 'organi', label: 'Organi', icon: 'cell' },
 ];
 
-export function createAnatomy(container, { onSelect, onFrame } = {}) {
+export async function createAnatomy(container, { onSelect, onFrame } = {}) {
   let renderer;
   try {
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -33,6 +36,8 @@ export function createAnatomy(container, { onSelect, onFrame } = {}) {
     return { error: 'WebGL non disponibile su questo dispositivo.' };
   }
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
   renderer.domElement.style.touchAction = 'none';
@@ -40,7 +45,7 @@ export function createAnatomy(container, { onSelect, onFrame } = {}) {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 20);
-  const home = { target: new THREE.Vector3(0, 0.90, 0), dist: 4.3 };
+  const home = { target: new THREE.Vector3(0, 0.78, 0.1), dist: 3.7 };
   camera.position.set(0, 1.0, home.dist);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -56,9 +61,12 @@ export function createAnatomy(container, { onSelect, onFrame } = {}) {
   controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
   controls.update();
 
-  // luci
-  scene.add(new THREE.HemisphereLight(0xffffff, 0x8aa0b8, 0.95));
-  const key = new THREE.DirectionalLight(0xffffff, 1.15);
+  // illuminazione ambientale fisicamente plausibile + luci direzionali
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.55;
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8aa0b8, 0.35));
+  const key = new THREE.DirectionalLight(0xffffff, 1.0);
   key.position.set(1.2, 2.4, 2.4);
   scene.add(key);
   const rim = new THREE.DirectionalLight(0x9fd8ff, 0.5);
@@ -75,7 +83,9 @@ export function createAnatomy(container, { onSelect, onFrame } = {}) {
   const root = new THREE.Group();
   scene.add(root);
 
+  let fit = null;
   function add(ent, layers, geometry, opts = {}) {
+    if (!opts.real && fit) fit.apply(geometry);
     const mkey = ent + (opts.matKey ? '\u0000' + opts.matKey : '');
     let mat = mats.get(mkey);
     if (!mat) {
@@ -101,7 +111,23 @@ export function createAnatomy(container, { onSelect, onFrame } = {}) {
     entMeshes.get(ent).push(mesh);
     return mesh;
   }
-  for (const b of [buildSkin, buildSkeleton, buildMuscles, buildTorsoOrgans, buildVessels, buildNerves, buildMisc]) b(add);
+  // ---- scheletro e muscoli reali (BodyParts3D) + parti procedurali adattate
+  let realParts;
+  try { realParts = await loadReal(); } catch (e) { console.error(e); return { error: 'Impossibile caricare il modello anatomico.' }; }
+  fit = buildFit(realParts);
+  const groups = new Map();
+  for (const p of realParts) {
+    if (!p.ent) continue;
+    const k = p.ent + '|' + p.layer;
+    if (!groups.has(k)) groups.set(k, { ent: p.ent, layer: p.layer, geos: [] });
+    groups.get(k).geos.push(p.geo);
+  }
+  for (const g of groups.values()) {
+    const col = g.layer === 'muscoli' ? REAL_COLORS.muscoli : g.ent === 'dischi-intervertebrali' ? '#aab4b0' : g.ent.startsWith('legamenti') || g.ent.startsWith('tendine') ? '#e6d8b0' : REAL_COLORS.scheletro;
+    add(g.ent, [g.layer], mergeReal(g.geos), { color: col, roughness: g.layer === 'muscoli' ? 0.55 : 0.6, real: true });
+  }
+  buildSternum(add, realParts);
+  for (const b of [buildSkin, buildMuscles, buildTorsoOrgans, buildVessels, buildNerves, buildMisc]) b(add);
 
   // ---------------------------------------------------------------- stato
   const active = new Set(['cute', 'organi']);
