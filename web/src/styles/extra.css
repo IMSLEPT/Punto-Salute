@@ -1,0 +1,5 @@
+/* figure e componenti aggiuntivi */
+.fig { margin: 0; }
+.fig svg { width: 100%; height: auto; }
+.fig figcaption { font-size: .78rem; color: var(--ink-2); margin-top: 8px; line-height: 1.4; }
+.figwrap { overflow: hidden; }

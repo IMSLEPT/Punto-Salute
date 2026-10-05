@@ -1,0 +1,15 @@
+node_modules/
+web/node_modules/
+.DS_Store
+*.log
+# Gradle / Android Studio
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+.idea/
+*.iml
+# cache strumenti build SDK-less
+.cache/
+tools/.cache/

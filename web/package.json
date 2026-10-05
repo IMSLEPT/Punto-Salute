@@ -1,0 +1,22 @@
+{
+  "name": "punto-salute-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Punto Salute - manuale infermieristico digitale interattivo (web app offline inclusa nell'APK)",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "validate": "node tools/validate.mjs",
+    "test": "node tests/e2e.mjs"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.1.0",
+    "esbuild": "^0.24.0",
+    "lucide-static": "^0.460.0",
+    "playwright-core": "^1.49.0"
+  }
+}
