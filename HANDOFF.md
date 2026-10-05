@@ -35,33 +35,33 @@ python3 tools/build_apk.py --out dist/PuntoSalute.apk   # APK firmato SENZA Andr
   Formato contenuti: stringa | array (bullet) | `{ol:[]}` `{ul:[]}` `{p}` `{note|warn|danger|ok}` `{table:{head,rows}}` `{kv}` `{svg:'figId'}`.
 - `anatomy/`: scena Three.js procedurale (geo, shape, body-*.js, scene.js). Ogni mesh ha `ent` = id scheda anatomica; livelli: cute, scheletro, muscoli, cardiovascolare, vasi, nervoso, respiratorio, digerente, urinario, riproduttivo, endocrino, linfatico, organi.
 
-## FATTO (aggiornato 2026-10-05, chat 2)
-- Toolchain APK senza SDK + progetto **Gradle** (`android/settings|build.gradle.kts`, `app/build.gradle.kts`; wrapper jar assente: la CI usa `gradle/actions/setup-gradle` 8.7) + workflow `.github/workflows/build-apk.yml` (job Gradle e job SDK-less). Versione unica in `VERSION`.
-- APK `dist/PuntoSalute-1.0.0.apk` (3,5 MB, firma v2 verificata con apksigtool, minSdk 24/targetSdk 34, versionCode 10000). `dist/` è in .gitignore.
-- Anatomia 3D: BodyParts3D 4.0 (CC BY 4.0) + organi/vasi/nervi/cute procedurali adattati (`anatomy/fit.js`).
-- **Contenuti (555 schede, 0 link orfani, 0 errori di validazione)**: 110 anatomia, 17 fisiologia, 51 patologie (`pathologies.js`, `pathologies2.js`, `pathologies3.js`), 27 procedure (`procedures.js`, `procedures2.js`), 12 dispositivi, 9 provette, 27 esami, 23 farmaci (`drugs.js`, senza posologie), 17 scale (`scales.js`, `scales2.js`: + 4AT, PAINAD, RASS, Lawton, Apgar, Morse, Tinetti), 10 calcolatori, 34 diagnosi infermieristiche (titoli indicativi), 7 schede assistenza (incl. Gordon e Henderson), 6 emergenze (incl. SCA), 16 specialistiche, 174 termini/segni (`terms.js`, `glossary.js`, parte di `extras.js`). `data/figmap.js` associa le figure SVG alle schede.
-- **UI**: assistenza + costruttore di piano (`ui/assistenza.js`: accertamento, Gordon, diagnosi dall'elenco con suggerimenti, obiettivi, interventi, rivalutazione, condivisione testo, salvataggio locale), modalità studio (`ui/studio.js`: 59 quiz scritti a mano in `data/quizbank.js` + ~330 generati dalle schede, flashcard con Leitner, 6 casi clinici in `data/cases.js`, simulazione d'esame 20 domande/20 min), glossario A–Z, pagina specialità, Fonti e licenze (`ui/more.js`), figure SVG (`viz/devices.js`: Foley, drenaggio toracico 3 camere, PICC/CVC/port, elettrodi ECG, misura SNG; `viz/tubes.js`).
-- Bug corretto: i listener registrati sul contenitore `#view` si accumulavano tra una rotta e l'altra (reset in `main.js`).
-- Strumenti: `web/tools/validate.mjs` (ID duplicati/orfani, fonti, quiz, casi, entità 3D), `web/tests/e2e.mjs` (apre tutte le 555 schede e le rotte, prova ricerca, piano, quiz, esame, flashcard, caso, termine, calcolatore: tutto verde in Chromium headless).
+## FATTO (aggiornato 2026-10-05, chat 2 – v1.1.0)
+- Toolchain APK senza SDK + progetto Gradle + CI (`.github/workflows/build-apk.yml`, `feed.yml`). APK `dist/PuntoSalute-1.1.0.apk` (firma v2 verificata; **permesso INTERNET aggiunto solo per l'aggiornamento facoltativo delle fonti**).
+- **Contenuti: 663 schede**, 0 link orfani, 0 errori di validazione: 110 anatomia, 17 fisiologia, 68 patologie (`pathologies.js`…`pathologies4.js`), 43 procedure (`procedures.js`…`procedures3.js`), 54 esami (`exams.js`, `exams2.js`), 38 farmaci (`drugs.js`, `drugs2.js`, senza posologie), 33 **schemi** (`schemi.js`), 17 scale, 10 calcolatori, 34 diagnosi infermieristiche, 7 assistenza, 12 dispositivi, 9 provette, 6 emergenze, 16 specialistiche, 174 termini.
+- **Fonti aggiornate al 5/10/2026** (verificate sul web): ERC 2025, Surviving Sepsis Campaign 2026, AHA/ASA ictus 2026, GOLD 2026, GINA 2026, ADA 2026, ESC AF/HTN 2024 (HF 2021+2023, ACS 2023, EP 2019), CLSI PRE02 (ex GP41), NPIAP 4ª ed., NANDA-I 13ª ed. 2024–2026, INS 2024, UKKA iperkaliemia (rev. 2026), KDIGO AKI 2026 in bozza. Schede corrette di conseguenza (FA: CHA₂DS₂-VA; asma: ICS-formoterolo al bisogno; iperkaliemia: leganti moderni; sepsi; ictus; diabete CGM/AID; BLS 2025).
+- **Sezione Schemi** (`/schemi`): flussi, mnemonici, cicli, mappe e tabelle (`viz/schemi.js`, `data/schemi.js`), collegati alle schede e alla ricerca.
+- **Aggiornamento automatico delle fonti**: (1) app: Profilo → "Aggiornamento delle fonti" (spento di default; `core/updates.js`, ponte nativo `fetchFeed`, solo https e host GitHub, max 512 KB, nessun dato inviato; il feed contiene SOLO edizioni delle fonti, novità e avvisi per scheda, non il testo clinico); (2) `web/tools/build-feed.mjs` genera `web/feed/sources.json` da `sources.js` + `web/feed/notices.json`; (3) workflow `feed.yml` lo pubblica su GitHub Pages (**richiede Pages abilitato; il repo è privato → Pages richiede un piano che lo consenta, oppure un repo pubblico dedicato al feed**; l'URL predefinito è `https://imslept.github.io/Punto-Salute/feed/sources.json`); (4) routine mensile (`trig_01TqktEsnKdLgcsXsdeGWSri`, il 1° del mese alle 06:07 Europe/Rome) che riverifica le fonti e fa commit: **non ancora eseguita, primo ciclo 1/11/2026**.
+- **Debug**: tasto Calcolatore della Home inattivo (stopPropagation) corretto; rotte sconosciute mostrano "Pagina non trovata" invece di tornare alla Home; errori JS non gestiti → avviso senza uscire; `onRenderProcessGone` (se la WebView muore l'app riparte invece di chiudersi); `[hidden]` globale (il selettore ♀/♂ era sempre visibile); chip dei livelli 3D e tabelle senza overflow. Crawler `web/tests/crawl.mjs` (clic su ogni elemento + overflow) e `anat-stress.mjs`.
 
 ## NON TESTATO
-- La shell Java (`MainActivity`) e l'APK NON sono mai stati eseguiti su dispositivo/emulatore (nessuno disponibile qui). Il progetto Gradle non è stato compilato (SDK non scaricabile qui): verificare con la CI.
-- Prestazioni 3D su telefoni reali; rendering in dark mode di nuove pagine/figure solo parzialmente controllato.
-- Contenuti clinici scritti in modo didattico e rivisti per coerenza, **non** validati da un revisore clinico: da far rivedere prima di un uso reale.
+- Nessuna prova su dispositivo reale (nessun emulatore qui): installazione, tasto indietro, barre di sistema, fluidità 3D, fetch del feed dal ponte nativo (testato con ponte simulato).
+- Il crash "torna alla Home" segnalato dall'utente non è stato riprodotto con certezza: cause trovate e corrette (rotta non registrata → Home, renderer WebView terminato). Se riaccade, annotare quale tasto.
+- Contenuti clinici scritti in modo didattico e verificati dove possibile sul web, **non validati da un revisore clinico**.
 
 ## DA FARE (priorità)
-1. Provare l'APK su un telefono e correggere ciò che emerge (installazione, back, barre di sistema, 3D, ricerca).
-2. Scala **Conley** (richiesta dall'utente): non inclusa perché gli item non sono verificabili a memoria; aggiungere solo da fonte ufficiale/licenza. Altre scale da valutare: Glasgow pediatrico, Ramsay, Waterlow (licenza).
-3. Contenuti da ampliare: altre patologie (ICA come patologia è ok; mancano es. anemia falciforme, tumori comuni, ustioni, epistassi, pneumotorace iperteso come emergenza, depressione, trauma cranico), altri farmaci (antiaritmici, digossina, antipsicotici, antiepilettici, vaccini), altre procedure (clisma, lavanda gastrica, ossigeno ad alti flussi, ventilazione NIV, sutura/rimozione punti, lavaggio vescicale, urostomia/stomie dettaglio), più quiz/casi.
-4. Figure SVG mancanti: Redon/JP, stomie, siti di iniezione IM, PICC dettaglio, catetere ad ago di Huber.
-5. Rifiniture 3D (sterno un po' pesante, rapporto semplificazione obliqui, etichette) e dark mode delle nuove pagine.
-6. Chiave di firma di produzione (non committarla) e pubblicazione.
+1. Provare l'APK su telefono e segnalare i tasti problematici.
+2. Abilitare GitHub Pages (o creare un repo pubblico per il feed) e verificare che l'URL del feed risponda.
+3. Contenuti ancora da ampliare (richiesta "tutto sull'infermieristica"): più patologie (oncologia, pediatria, ostetricia, salute mentale: schizofrenia, bipolare…), farmaci (antibiotici per classe, antivirali, ormoni), assistenza specialistica (pediatrica, oncologica, palliativa, fine vita, terapia intensiva, salute mentale), temi legali/deontologici (Codice deontologico, L. 219/2017, L. 24/2017: verificare le versioni vigenti), più schemi, più quiz/casi, glossario. Scala Conley (non verificabile a memoria).
+4. Rifiniture 3D, dark mode di nuove pagine, figure SVG mancanti (siti IM, Redon, stomie).
+5. Chiave di firma di produzione (non committarla).
 
 ## Comandi
 ```
-cd web && npm ci && node tools/validate.mjs && node build.mjs && node tests/e2e.mjs
-cd .. && python3 tools/build_apk.py --out dist/PuntoSalute-1.0.0.apk && python3 -m apksigtool verify dist/PuntoSalute-1.0.0.apk
-node web/tests/shot.mjs /tmp/shots /rotta ...     # screenshot Chromium headless
+cd web && npm ci && node tools/validate.mjs && node build.mjs && node tests/e2e.mjs && node tests/feed.mjs
+node tests/crawl.mjs [--noclick] [--all] [--w=360] [--fs=1.25]    # debug: clic su ogni elemento / overflow
+node tests/anat-stress.mjs
+node tools/build-feed.mjs                                           # rigenera web/feed/sources.json
+cd .. && python3 tools/build_apk.py --out dist/PuntoSalute-1.1.0.apk && python3 -m apksigtool verify dist/PuntoSalute-1.1.0.apk
 ```
 
 ## Regole di contenuto (importanti)

@@ -3,7 +3,7 @@
 Manuale infermieristico digitale interattivo, **offline**, per Android (minSdk 24).
 Guscio nativo Java con `WebView` + web app (JavaScript vanilla, esbuild, Three.js) inclusa negli asset: nessun permesso, nessuna rete, nessun dato inviato.
 
-**Moduli:** ricerca universale · anatomia 3D · assistenza infermieristica (processo, Gordon, Henderson, diagnosi con titoli indicativi NANDA-I/NOC/NIC, costruttore di piano) · procedure · provette ed esami (ordine di prelievo, protocollo locale configurabile) · drenaggi, cateteri e dispositivi · patologie · specialistiche · ABCDE ed emergenze (didattiche) · farmacologia (senza posologie) · calcolatore con procedimento · terminologia · scale con punteggio automatico · modalità studio (quiz, flashcard, casi clinici, simulazione d’esame).
+**Moduli:** ricerca universale · schemi di studio · anatomia 3D · assistenza infermieristica (processo, Gordon, Henderson, diagnosi con titoli indicativi NANDA-I/NOC/NIC, costruttore di piano) · procedure · provette ed esami (ordine di prelievo, protocollo locale configurabile) · drenaggi, cateteri e dispositivi · patologie · specialistiche · ABCDE ed emergenze (didattiche) · farmacologia (senza posologie) · calcolatore con procedimento · terminologia · scale con punteggio automatico · modalità studio (quiz, flashcard, casi clinici, simulazione d’esame).
 Ogni scheda riporta fonti, versione, data di revisione e l’avviso di verificare protocolli locali e fonti ufficiali.
 
 ## Build
@@ -38,5 +38,7 @@ La versione è in `VERSION` (versionCode = major·10000 + minor·100 + patch).
 - Modelli 3D di scheletro, muscoli, dischi e legamenti: **BodyParts3D 4.0 © DBCLS, CC BY 4.0** (semplificati/ottimizzati); organi, vasi, nervi e cute: realizzati ex novo.
 - Three.js (MIT), Lucide (ISC), Inter (SIL OFL 1.1).
 - NANDA-I, NIC e NOC sono materiale protetto: l’app riporta solo titoli indicativi. Le scale di valutazione sono parafrasate: verificare licenze e versioni ufficiali.
+
+**Rete:** l’app funziona offline; il permesso INTERNET serve solo all’aggiornamento facoltativo (spento di default) delle edizioni delle fonti.
 
 Strumento didattico e di consultazione: non sostituisce linee guida, protocolli aziendali, prescrizioni né giudizio clinico.
