@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Schermata di avvio: sfondo bianco + logo, identica alla splash di sistema di Android 12+ (stessa immagine, stessa dimensione 288dp) -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/ps_white" />
     <item
-        android:width="144dp"
-        android:height="144dp"
+        android:width="288dp"
+        android:height="288dp"
         android:gravity="center"
-        android:drawable="@drawable/splash_logo" />
+        android:drawable="@drawable/splash_icon" />
 </layer-list>

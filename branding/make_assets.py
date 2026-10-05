@@ -80,8 +80,17 @@ y0, x0 = (432 - h) // 2, (432 - w) // 2
 mono[y0:y0 + h, x0:x0 + w, 3] = (alpha * 255).astype(np.uint8)
 Image.fromarray(mono, 'RGBA').save(os.path.join(d, 'ic_launcher_mono.png'), optimize=True)
 
-# --- splash (96dp @ xxxhdpi = 384px) con il logo su bianco
-sp = Image.new('RGB', (384, 384), (255, 255, 255))
-place(sp, fit(master, 300), 0.5)
-sp.save(os.path.join(d, 'splash_logo.png'), optimize=True)
+# --- icona della splash (tela 768 px = 288dp): il logo sta dentro il cerchio centrale di 2/3, come richiede la splash di Android 12+
+_m = (255 * 3 - np.array(master.convert('RGB')).astype(int).sum(2)) > 40
+_ys, _xs = np.where(_m)
+_box = master.convert('RGB').crop((_xs.min() - 2, _ys.min() - 2, _xs.max() + 3, _ys.max() + 3))
+_mm = _m[_ys.min() - 2:_ys.max() + 3, _xs.min() - 2:_xs.max() + 3]
+_yy, _xx = np.where(_mm)
+_h, _w = _mm.shape
+_rmax = np.sqrt((_xx - _w / 2) ** 2 + (_yy - _h / 2) ** 2).max()
+_s = 0.31 * 768 / _rmax
+_pin = _box.resize((round(_w * _s), round(_h * _s)), Image.LANCZOS)
+sp = Image.new('RGB', (768, 768), (255, 255, 255))
+sp.paste(_pin, ((768 - _pin.width) // 2, (768 - _pin.height) // 2))
+sp.save(os.path.join(d, 'splash_icon.png'), optimize=True)
 print('ok', master.size)

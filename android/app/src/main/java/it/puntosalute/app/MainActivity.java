@@ -50,6 +50,17 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Android 12+: la splash di sistema (sfondo bianco + logo) viene tolta subito, senza animazione di uscita,
+        // perche' sotto c'e' gia' la splash dell'app identica; resta cosi' visibile il logo fino alla Home.
+        if (Build.VERSION.SDK_INT >= 31) {
+            getSplashScreen().setOnExitAnimationListener(new android.window.SplashScreen.OnExitAnimationListener() {
+                @Override
+                public void onSplashScreenExit(android.window.SplashScreenView view) {
+                    view.remove();
+                }
+            });
+        }
+
         webView = new WebView(this);
         webView.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
@@ -291,7 +302,7 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.2.2";
+            return "1.2.3";
         }
 
         @JavascriptInterface
