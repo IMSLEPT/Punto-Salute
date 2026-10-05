@@ -4,6 +4,9 @@ import anatomy from '../data/anatomy.js';
 import physiology from '../data/physiology.js';
 import pathologies from '../data/pathologies.js';
 import pathologies2 from '../data/pathologies2.js';
+import pathologies3 from '../data/pathologies3.js';
+import extras from '../data/extras.js';
+import scales2 from '../data/scales2.js';
 import procedures from '../data/procedures.js';
 import procedures2 from '../data/procedures2.js';
 import devices from '../data/devices.js';
@@ -19,7 +22,7 @@ import specs from '../data/specs.js';
 import terms from '../data/terms.js';
 import { SOURCES } from '../data/sources.js';
 
-export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, procedures, procedures2, devices, tubes, exams, drugs, care, ndx, scales, calcs, emergencies, specs, terms);
+export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, procedures, procedures2, devices, tubes, exams, drugs, care, ndx, scales, scales2, calcs, emergencies, specs, terms, extras);
 export const BY_ID = new Map();
 export const BY_TYPE = {};
 export { SOURCES };

@@ -45,6 +45,7 @@ export const SOURCES = {
   '4at': { t: 'Bellelli G et al. Validation of the 4AT, a new instrument for rapid delirium screening. Age Ageing', y: '2014;43:496-502' },
   cpss: { t: 'Kothari RU et al. Cincinnati Prehospital Stroke Scale. Ann Emerg Med', y: '1999;33:373-378' },
   sepsis3: { t: 'Singer M et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA', y: '2016;315:801-810' },
+  morse: { t: 'Morse JM, Morse RM, Tylko SJ. Development of a scale to identify the fall-prone patient. Can J Aging', y: '1989;8:366-377 (verificare termini d’uso e soglie adottate)' },
   apgar: { t: 'Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg', y: '1953;32:260-267' },
   'mn-rac': { t: 'Ministero della Salute – Raccomandazioni per la sicurezza dei pazienti (n. 1 KCl; 3 identificazione; 5 AB0; 7 terapia farmacologica; 12 LASA; 13 cadute; 14 antineoplastici; 17 riconciliazione)', y: 'edizione corrente' },
   aifa: { t: 'AIFA – Banca dati farmaci e Riassunto delle Caratteristiche del Prodotto (RCP)', y: 'consultare la versione in vigore' },

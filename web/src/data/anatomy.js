@@ -54,7 +54,7 @@ const base = [
       funz: 'Protezione degli organi toracici e meccanica respiratoria (le coste si sollevano e si abbassano).',
       fisio: 'L’inspirazione solleva le coste (movimento “a manico di secchio”) e abbassa il diaframma, aumentando il volume toracico.',
       pat: ['fratture costali (dolore, ipoventilazione, [[pneumotorace]])', 'volet costale'],
-      inf: ['Dopo trauma toracico: dolore pleurico, respiro superficiale, enfisema sottocutaneo.', 'Per inserire un [[drenaggio-toracico]] si passa sopra il margine superiore della costola sottostante.'],
+      inf: ['Dopo trauma toracico: dolore pleurico, respiro superficiale, enfisema sottocutaneo.', 'Per inserire un [[drenaggio-toracico-gestione|drenaggio toracico]] si passa sopra il margine superiore della costola sottostante.'],
     }, ['sterno', 'polmone-destro', 'pneumotorace', 'drenaggio-toracico-dev'], {}),
 
   A('sterno', 'Sterno', ['osso sterno', 'manubrio e xifoide'], 'Scheletrico',
@@ -103,7 +103,7 @@ const base = [
       fisio: 'Fratture del collo chirurgico nell’anziano osteoporotico: spesso da caduta.',
       pat: ['fratture prossimali (osteoporosi)', 'fratture diafisarie con lesione del nervo radiale'],
       inf: ['Dopo frattura valuta sensibilità, motilità, colorito e polso distali (controllo neurovascolare).'],
-    }, ['osteoporosi', 'nervo-radiale-info', 'arteria-brachiale'], {}),
+    }, ['osteoporosi', 'arteria-brachiale'], {}),
 
   A('avambraccio-ossa', 'Radio e ulna', ['avambraccio', 'ossa dell’avambraccio'], 'Scheletrico',
     'Le due ossa dell’avambraccio: radio (laterale) e ulna (mediale).',
