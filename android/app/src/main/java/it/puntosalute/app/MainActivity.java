@@ -250,7 +250,7 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.1.0";
+            return "1.2.0";
         }
 
         @JavascriptInterface
@@ -288,7 +288,7 @@ public class MainActivity extends Activity {
             });
         }
 
-        /** Scarica il feed delle fonti (solo https, host consentiti, max 512 KB) e lo consegna a window.__psFeed(ok, corpo). */
+        /** Scarica il feed delle fonti (solo https, host consentiti, max 2 MB) e lo consegna a window.__psFeed(ok, corpo). */
         @JavascriptInterface
         public void fetchFeed(final String url) {
             new Thread(new Runnable() {
@@ -315,7 +315,7 @@ public class MainActivity extends Activity {
                         int n, total = 0;
                         while ((n = in.read(buf)) > 0) {
                             total += n;
-                            if (total > 512 * 1024) throw new IOException("feed troppo grande");
+                            if (total > 2 * 1024 * 1024) throw new IOException("feed troppo grande");
                             bo.write(buf, 0, n);
                         }
                         result = bo.toString("UTF-8");

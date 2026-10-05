@@ -5,7 +5,7 @@ name: Feed fonti (GitHub Pages)
 on:
   push:
     branches: [main, ccr-fbfcd40c-7lsjut]
-    paths: ["web/feed/**", "web/src/data/sources.js", "web/tools/build-feed.mjs"]
+    paths: ["web/feed/**", "web/src/data/**", "web/tools/build-feed.mjs", "web/src/core/patches.js"]
   schedule:
     - cron: "17 5 * * 1"   # ogni lunedì
   workflow_dispatch:
@@ -32,7 +32,7 @@ jobs:
       - name: Prepara il sito
         run: |
           mkdir -p _site/feed
-          cp web/feed/sources.json _site/feed/sources.json
+          cp web/feed/feed.json web/feed/sources.json _site/feed/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

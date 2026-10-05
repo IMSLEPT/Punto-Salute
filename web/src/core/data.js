@@ -28,6 +28,7 @@ import terms from '../data/terms.js';
 import glossary from '../data/glossary.js';
 import { SOURCES } from '../data/sources.js';
 import FIGMAP from '../data/figmap.js';
+import { applyStoredPatches } from './patches.js';
 
 export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, pathologies4, procedures, procedures2, procedures3, devices, tubes, exams, exams2, drugs, drugs2, care, ndx, scales, scales2, calcs, emergencies, specs, terms, glossary, extras, schemi);
 export const BY_ID = new Map();
@@ -41,6 +42,8 @@ for (const e of ALL) {
   (BY_TYPE[e.type] ||= []).push(e);
 }
 export const get = (id) => BY_ID.get(id);
+// patch di contenuto scaricate dal feed (prima di indice di ricerca e grafo dei collegamenti)
+export const PATCHED = applyStoredPatches(get);
 
 // ---------------------------------------------------------------- grafo
 const fwd = new Map();   // id -> Set(id)  (collegamenti dichiarati e inline)

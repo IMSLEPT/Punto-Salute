@@ -136,23 +136,30 @@ function resetView() {
   view.onclick = view.oninput = view.onchange = null;
 }
 
-routeNotFound((r) => {
-  r.innerHTML = `<div class="page"><div class="empty">${icon('search-x')}<h3>Pagina non trovata</h3><p>Il contenuto richiesto non esiste in questa versione dell’app.</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn" data-go="/">Vai alla Home</button></div></div></div>`;
+routeNotFound((r, cur) => {
+  const p = (cur && cur.path) || location.hash;
+  console.warn('Rotta non trovata:', p);
+  const last = decodeURIComponent(String(p).split('/').filter(Boolean).pop() || '').replace(/-/g, ' ');
+  r.innerHTML = `<div class="page"><div class="empty">${icon('search-x')}<h3>Pagina non trovata</h3><p>Il contenuto richiesto non esiste in questa versione dell’app.</p><p class="xs muted" style="overflow-wrap:anywhere">Percorso: ${esc(p)}</p><div class="row wrap" style="justify-content:center;margin-top:14px"><button class="btn" data-go="/">Vai alla Home</button>${last ? `<button class="btn ghost" data-search="${esc(last)}">Cerca “${esc(last)}”</button>` : ''}</div></div></div>`;
   return { title: 'Non trovata' };
 });
 
 // errori non gestiti: l'app non si blocca né torna alla home, avvisa e resta dov'è
 let lastErrToast = 0;
+const BENIGN = /ResizeObserver|Script error|Non-Error promise rejection|AbortError|The operation was aborted/i;
 function softError(e) {
+  const msg = String((e && e.message) || e || '');
+  if (BENIGN.test(msg)) return;            // avvisi innocui del browser: nessun messaggio all'utente
   console.error(e);
-  if (Date.now() - lastErrToast > 4000) { lastErrToast = Date.now(); toast('Qualcosa non ha funzionato: riprova'); }
+  try { store.set('lastError', { t: Date.now(), m: msg.slice(0, 200) }); } catch { /* noop */ }
+  if (Date.now() - lastErrToast > 8000) { lastErrToast = Date.now(); toast('Si è verificato un errore. Se si ripete, riavvia l’app.'); }
 }
-window.addEventListener('error', (ev) => softError(ev.error || ev.message));
+window.addEventListener('error', (ev) => { if (ev.error) softError(ev.error); });
 window.addEventListener('unhandledrejection', (ev) => softError(ev.reason));
 
 import { applyStoredFeed, checkUpdates } from './core/updates.js';
 applyStoredFeed();
-setTimeout(() => { checkUpdates().catch(() => {}); }, 4000);
+setTimeout(() => { checkUpdates().then((f) => { if (f && f.changed) toast('Contenuti aggiornati: li vedrai al prossimo avvio'); }).catch(() => {}); }, 4000);
 
 let first = true;
 startRouter(async (cur, rt0, restore) => {

@@ -1,0 +1,263 @@
+{
+ "schema": 2,
+ "generated": "2026-10-05",
+ "appVersion": "1.2.0",
+ "disabled": false,
+ "sources": {
+  "textbooks": {
+   "t": "Testi universitari di riferimento (es. Brunner & Suddarth – Infermieristica medico-chirurgica; Potter & Perry – Fondamenti di infermieristica; Harrison – Principi di medicina interna; Guyton & Hall – Fisiologia medica)",
+   "y": "consultare l’edizione in adozione"
+  },
+  "ins": {
+   "t": "Infusion Nurses Society (INS) – Infusion Therapy Standards of Practice",
+   "y": "9ª ed., 2024"
+  },
+  "gavecelt": {
+   "t": "GAVeCeLT – Raccomandazioni e consensus per impianto e gestione degli accessi venosi (PICC, midline, CVC, port)",
+   "y": "edizione corrente"
+  },
+  "who-phleb": {
+   "t": "OMS – WHO guidelines on drawing blood: best practices in phlebotomy",
+   "y": "2010"
+  },
+  "clsi-gp41": {
+   "t": "CLSI PRE02 – Collection of Diagnostic Venous Blood Specimens (già GP41)",
+   "y": "8ª ed. (sostituisce GP41 7ª ed., 2017)"
+  },
+  "clsi-m47": {
+   "t": "CLSI M47 – Principles and Procedures for Blood Cultures",
+   "y": "edizione corrente"
+  },
+  "who-hh": {
+   "t": "OMS – WHO Guidelines on Hand Hygiene in Health Care",
+   "y": "2009"
+  },
+  "cdc-cauti": {
+   "t": "CDC/HICPAC – Guideline for Prevention of Catheter-associated Urinary Tract Infections",
+   "y": "2009, rev. 2019"
+  },
+  "cdc-crbsi": {
+   "t": "CDC/HICPAC – Guidelines for the Prevention of Intravascular Catheter-Related Infections",
+   "y": "2011, agg. 2017"
+  },
+  "epic3": {
+   "t": "epic3 – National Evidence-Based Guidelines for Preventing Healthcare-Associated Infections in NHS Hospitals in England",
+   "y": "2014"
+  },
+  "espen-en": {
+   "t": "ESPEN – Guidelines on Clinical Nutrition: nutrizione enterale",
+   "y": "edizioni correnti"
+  },
+  "espen-pn": {
+   "t": "ESPEN – Guidelines on Clinical Nutrition: nutrizione parenterale",
+   "y": "edizioni correnti"
+  },
+  "bts-o2": {
+   "t": "British Thoracic Society – Guideline for oxygen use in adults in healthcare and emergency settings",
+   "y": "2017 (nuova linea guida sulle saturazioni target in preparazione per il 2026: verificare)"
+  },
+  "bts-pleural": {
+   "t": "British Thoracic Society – Pleural Disease Guidelines",
+   "y": "edizione corrente"
+  },
+  "gold": {
+   "t": "GOLD – Global Strategy for the Diagnosis, Management and Prevention of COPD",
+   "y": "Report 2026 (pubblicato a novembre 2025)"
+  },
+  "gina": {
+   "t": "GINA – Global Strategy for Asthma Management and Prevention",
+   "y": "Aggiornamento 2026"
+  },
+  "esc-hf": {
+   "t": "ESC – Guidelines for the diagnosis and treatment of acute and chronic heart failure",
+   "y": "2021, con aggiornamento mirato 2023"
+  },
+  "esc-acs": {
+   "t": "ESC – Guidelines for the management of acute coronary syndromes",
+   "y": "2023"
+  },
+  "esc-htn": {
+   "t": "ESC – Guidelines for the management of elevated blood pressure and hypertension",
+   "y": "2024"
+  },
+  "esc-af": {
+   "t": "ESC – Guidelines for the management of atrial fibrillation (AF-CARE)",
+   "y": "2024"
+  },
+  "esc-pe": {
+   "t": "ESC – Guidelines on acute pulmonary embolism",
+   "y": "2019"
+  },
+  "kdigo": {
+   "t": "KDIGO – Clinical Practice Guidelines (CKD 2024; AKI/AKD: bozza 2026 in revisione pubblica, ultima versione approvata 2012)",
+   "y": "verificare lo stato di pubblicazione della versione finale AKI/AKD 2026"
+  },
+  "uk-hk": {
+   "t": "UK Kidney Association – Clinical Practice Guideline: Management of Hyperkalaemia in Adults",
+   "y": "aggiornamento 2023, rivisto nel 2026"
+  },
+  "ada": {
+   "t": "American Diabetes Association – Standards of Care in Diabetes",
+   "y": "2026 (pubblicati a dicembre 2025)"
+  },
+  "sid-amd": {
+   "t": "SID-AMD – Standard italiani per la cura del diabete mellito",
+   "y": "edizione corrente"
+  },
+  "aha-stroke": {
+   "t": "AHA/ASA – Guideline for the Early Management of Patients With Acute Ischemic Stroke",
+   "y": "2026 (pubblicata online il 26 gennaio 2026; sostituisce le edizioni 2018/2019)"
+  },
+  "erc": {
+   "t": "European Resuscitation Council (ERC) – Guidelines 2025 (con Italian Resuscitation Council – IRC, versione italiana)",
+   "y": "2025 (sostituiscono le linee guida 2021)"
+  },
+  "ssc": {
+   "t": "Surviving Sepsis Campaign – International Guidelines for Management of Sepsis and Septic Shock (SCCM/ESICM)",
+   "y": "2026 (pubblicate il 23 marzo 2026; sostituiscono quelle del 2021)"
+  },
+  "eaaci": {
+   "t": "EAACI – Guidelines on the management of anaphylaxis",
+   "y": "2021"
+  },
+  "npiap": {
+   "t": "EPUAP/NPIAP/PPPIA – International Guideline: Prevention and Treatment of Pressure Ulcers/Injuries",
+   "y": "4ª edizione, linea guida online “living” (dal 2025); la 3ª edizione risale al 2019"
+  },
+  "rcp-news2": {
+   "t": "Royal College of Physicians – National Early Warning Score (NEWS) 2",
+   "y": "2017"
+  },
+  "gcs": {
+   "t": "Teasdale G, Jennett B. Assessment of coma and impaired consciousness. Lancet",
+   "y": "1974;2:81-84"
+  },
+  "braden": {
+   "t": "Bergstrom N, Braden BJ, Laguzza A, Holman V. The Braden Scale for Predicting Pressure Sore Risk. Nurs Res",
+   "y": "1987;36:205-210 (© B. Braden e N. Bergstrom – verificare licenza d’uso)"
+  },
+  "barthel": {
+   "t": "Mahoney FI, Barthel DW. Functional evaluation: the Barthel Index. Md State Med J",
+   "y": "1965;14:61-65"
+  },
+  "katz": {
+   "t": "Katz S et al. Studies of illness in the aged. The index of ADL. JAMA",
+   "y": "1963;185:914-919"
+  },
+  "lawton": {
+   "t": "Lawton MP, Brody EM. Assessment of older people: self-maintaining and instrumental activities of daily living. Gerontologist",
+   "y": "1969;9:179-186"
+  },
+  "tinetti": {
+   "t": "Tinetti ME. Performance-oriented assessment of mobility problems in elderly patients. J Am Geriatr Soc",
+   "y": "1986;34:119-126"
+  },
+  "must": {
+   "t": "BAPEN – Malnutrition Universal Screening Tool (MUST)",
+   "y": "verificare termini d’uso BAPEN"
+  },
+  "flacc": {
+   "t": "Merkel SI et al. The FLACC: a behavioral scale for scoring postoperative pain in young children. Pediatr Nurs",
+   "y": "1997;23:293-297"
+  },
+  "painad": {
+   "t": "Warden V, Hurley AC, Volicer L. Development and psychometric evaluation of the PAINAD scale. J Am Med Dir Assoc",
+   "y": "2003;4:9-15"
+  },
+  "rass": {
+   "t": "Sessler CN et al. The Richmond Agitation-Sedation Scale. Am J Respir Crit Care Med",
+   "y": "2002;166:1338-1344"
+  },
+  "4at": {
+   "t": "Bellelli G et al. Validation of the 4AT, a new instrument for rapid delirium screening. Age Ageing",
+   "y": "2014;43:496-502"
+  },
+  "cpss": {
+   "t": "Kothari RU et al. Cincinnati Prehospital Stroke Scale. Ann Emerg Med",
+   "y": "1999;33:373-378"
+  },
+  "sepsis3": {
+   "t": "Singer M et al. The Third International Consensus Definitions for Sepsis and Septic Shock (Sepsis-3). JAMA",
+   "y": "2016;315:801-810"
+  },
+  "morse": {
+   "t": "Morse JM, Morse RM, Tylko SJ. Development of a scale to identify the fall-prone patient. Can J Aging",
+   "y": "1989;8:366-377 (verificare termini d’uso e soglie adottate)"
+  },
+  "apgar": {
+   "t": "Apgar V. A proposal for a new method of evaluation of the newborn infant. Curr Res Anesth Analg",
+   "y": "1953;32:260-267"
+  },
+  "mn-rac": {
+   "t": "Ministero della Salute – Raccomandazioni per la sicurezza dei pazienti (n. 1 KCl; 3 identificazione; 5 AB0; 7 terapia farmacologica; 12 LASA; 13 cadute; 14 antineoplastici; 17 riconciliazione)",
+   "y": "edizione corrente"
+  },
+  "aifa": {
+   "t": "AIFA – Banca dati farmaci e Riassunto delle Caratteristiche del Prodotto (RCP)",
+   "y": "consultare la versione in vigore"
+  },
+  "ismp": {
+   "t": "ISMP – List of High-Alert Medications in Acute Care Settings",
+   "y": "edizione corrente"
+  },
+  "henderson": {
+   "t": "Henderson V. – Principi fondamentali dell’assistenza infermieristica (ICN, 1960) e The Nature of Nursing (1966)",
+   "y": ""
+  },
+  "gordon": {
+   "t": "Gordon M. – Manual of Nursing Diagnosis (modelli funzionali di salute)",
+   "y": "edizioni varie"
+  },
+  "nanda": {
+   "t": "NANDA International – Nursing Diagnoses: Definitions and Classification 2024–2026 (13ª ed., Thieme). Materiale protetto da copyright: l’app riporta solo titoli indicativi, senza definizioni né codici.",
+   "y": "13ª edizione, 2024–2026"
+  },
+  "nic": {
+   "t": "Nursing Interventions Classification (NIC) – University of Iowa / Elsevier. Materiale protetto da copyright: nell’app compaiono solo aree di intervento indicative",
+   "y": "verificare l’edizione in uso"
+  },
+  "noc": {
+   "t": "Nursing Outcomes Classification (NOC) – University of Iowa / Elsevier. Materiale protetto da copyright: nell’app compaiono solo aree di risultato indicative",
+   "y": "verificare l’edizione in uso"
+  },
+  "dm-sangue": {
+   "t": "Decreto 2 novembre 2015 – Disposizioni relative ai requisiti di qualità e sicurezza del sangue e degli emocomponenti (G.U. n. 300 del 28/12/2015)",
+   "y": "2015"
+  },
+  "aha-ecg": {
+   "t": "AHA/ACCF/HRS – Recommendations for the Standardization and Interpretation of the Electrocardiogram",
+   "y": "2007"
+  },
+  "who-ps": {
+   "t": "OMS – WHO Surgical Safety Checklist e linee guida per la sicurezza del paziente",
+   "y": "edizione corrente"
+  },
+  "aiom-ca": {
+   "t": "AIOM – Linee guida oncologiche",
+   "y": "edizione corrente"
+  },
+  "nice-ng": {
+   "t": "NICE – Linee guida cliniche (es. delirium, cadute, sepsi, ipertensione)",
+   "y": "edizioni correnti"
+  }
+ },
+ "notices": [
+  {
+   "id": "2026-10-05-audit",
+   "date": "2026-10-05",
+   "title": "Edizioni delle fonti verificate",
+   "text": "Verificate le edizioni correnti: ERC 2025, Surviving Sepsis Campaign 2026, AHA/ASA ictus 2026, GOLD 2026, GINA 2026, ADA 2026, ESC AF/ipertensione 2024, CLSI PRE02 (ex GP41), NPIAP 4ª ed. Le schede interessate sono state aggiornate nella versione 1.1.",
+   "rel": [
+    "sepsi",
+    "ictus",
+    "asma",
+    "bpco",
+    "diabete-mellito",
+    "bls"
+   ]
+  }
+ ],
+ "alerts": {},
+ "patches": {},
+ "revoked": []
+}

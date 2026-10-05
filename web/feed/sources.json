@@ -1,7 +1,8 @@
 {
  "schema": 1,
  "generated": "2026-10-05",
- "appVersion": "1.0.0",
+ "appVersion": "1.2.0",
+ "disabled": false,
  "sources": {
   "textbooks": {
    "t": "Testi universitari di riferimento (es. Brunner & Suddarth – Infermieristica medico-chirurgica; Potter & Perry – Fondamenti di infermieristica; Harrison – Principi di medicina interna; Guyton & Hall – Fisiologia medica)",

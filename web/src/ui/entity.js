@@ -44,7 +44,9 @@ export function metaBlock(e) {
   const srcKeys = [...new Set([...(e.sources || []), ...(DEFAULT_SOURCES[e.type] || [])])];
   const srcs = sourceList({ sources: srcKeys });
   const al = alertsFor(e.id);
+  const pt = e.patch ? `<div class="callout note" style="margin-top:16px">${icon('info')}<div><b>Scheda aggiornata il ${esc(e.patch.d)}.</b> ${esc(e.patch.why)}<br><span class="xs muted">Fonte: ${esc(e.patch.src)}${e.patch.url ? ` · <a class="lk" data-ext="${esc(e.patch.url)}">apri</a>` : ''} — aggiornamento automatico, non rivisto da un clinico.</span></div></div>` : '';
   return `
+    ${pt}
     ${al.map((a) => `<div class="callout danger" style="margin-top:16px">${icon('octagon-alert')}<div><b>Aggiornamento di fonte${a.d ? ' (' + esc(a.d) + ')' : ''}.</b> ${esc(a.t)}${a.s ? ` <span class="xs muted">${esc(a.s)}</span>` : ''}</div></div>`).join('')}
     ${e.verify !== false && verify ? `<div class="callout warn" style="margin-top:16px">${icon('triangle-alert')}<div><b>Verifica locale.</b> ${esc(e.verifyText || verify)}</div></div>` : ''}
     <div class="srcbox"><details><summary>${icon('library')} Fonti, versione e revisione</summary>

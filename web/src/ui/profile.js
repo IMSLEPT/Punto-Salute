@@ -5,7 +5,7 @@ import { toast, shareText, confirmDialog } from '../core/ui.js';
 import { ALL, BY_TYPE } from '../core/data.js';
 import { CONTENT_VERSION, REVISION } from './entity.js';
 import { logoImg, wordmark } from './home.js';
-import { updates, checkUpdates } from '../core/updates.js';
+import { updates, checkUpdates, patchCount, resetFeed } from '../core/updates.js';
 
 export function renderProfile(root) {
   const s = settings.get();
@@ -33,10 +33,12 @@ export function renderProfile(root) {
     </div>
 
     <div class="card pad stack">
-      <h3>Aggiornamento delle fonti</h3>
-      <p class="small muted">Facoltativo e spento di default. Se attivo, l’app scarica (al massimo una volta a settimana, solo in lettura, senza inviare dati) un elenco aggiornato delle <b>edizioni delle fonti</b>, le novità e gli avvisi sulle schede. Il testo clinico delle schede cambia solo con gli aggiornamenti dell’app.</p>
+      <h3>Aggiornamento automatico dei contenuti</h3>
+      <p class="small muted">L’app controlla una volta al giorno (solo in lettura, senza inviare dati) se ci sono <b>nuove edizioni delle fonti, avvisi e correzioni al testo delle schede</b>. Le schede aggiornate mostrano data, motivo e fonte. Le modifiche sono automatiche e <b>non sono riviste da un clinico</b>: verifica sempre la fonte ufficiale.</p>
       <label class="row" style="justify-content:space-between"><span>Controlla gli aggiornamenti</span><span class="seg" style="width:130px" id="upd"><button data-v="1" class="${upd.on ? 'on' : ''}">Sì</button><button data-v="0" class="${upd.on ? '' : 'on'}">No</button></span></label>
-      <div class="row wrap"><button class="btn sm ghost" id="updnow">${icon('rotate-ccw')}Controlla ora</button><span class="xs muted" id="updst">${esc(upd.status || (upd.last ? 'Ultimo controllo: ' + new Date(upd.last).toLocaleDateString('it-IT') : 'Mai controllato'))}</span></div>
+      <label class="row" style="justify-content:space-between"><span>Applica anche il testo delle schede</span><span class="seg" style="width:130px" id="updtxt"><button data-v="1" class="${upd.text !== false ? 'on' : ''}">Sì</button><button data-v="0" class="${upd.text !== false ? '' : 'on'}">No</button></span></label>
+      <div class="row wrap"><button class="btn sm ghost" id="updnow">${icon('rotate-ccw')}Controlla ora</button><button class="btn sm ghost" id="updreset">Ripristina contenuti dell’app</button></div>
+      <div class="xs muted" id="updst">${esc(upd.status || (upd.last ? 'Ultimo controllo: ' + new Date(upd.last).toLocaleDateString('it-IT') : 'Mai controllato'))}${patchCount() ? ` · ${patchCount()} schede aggiornate in uso` : ''}</div>
     </div>
 
     <div class="card pad stack">
@@ -57,10 +59,15 @@ export function renderProfile(root) {
   seg('#fs', (v) => { settings.set({ fs: parseFloat(v) }); window.__psTheme(); });
   seg('#motion', (v) => { settings.set({ motion: v === '1' }); window.__psTheme(); });
   seg('#upd', (v) => { updates.set({ on: v === '1' }); if (v === '1') root.querySelector('#updnow').click(); });
+  seg('#updtxt', (v) => { updates.set({ text: v === '1' }); toast('Cambierà al prossimo avvio dell’app'); });
   root.querySelector('#updnow').onclick = async () => {
     const st = root.querySelector('#updst'); st.textContent = 'Controllo in corso…';
-    await checkUpdates({ force: true });
+    const f = await checkUpdates({ force: true });
     st.textContent = updates.cfg().status;
+    if (f && f.changed) { toast('Applico gli aggiornamenti…'); setTimeout(() => location.reload(), 900); }
+  };
+  root.querySelector('#updreset').onclick = async () => {
+    if (await confirmDialog({ title: 'Ripristinare i contenuti dell’app?', text: 'Le correzioni scaricate vengono rimosse e tornano i testi originali della versione installata.', ok: 'Ripristina' })) { resetFeed(); toast('Contenuti ripristinati'); setTimeout(() => location.reload(), 700); }
   };
   root.querySelector('#export').onclick = () => shareText('Backup Punto Salute', JSON.stringify(store.exportAll()));
   root.querySelector('#import').onclick = () => {

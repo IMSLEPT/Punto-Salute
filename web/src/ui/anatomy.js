@@ -44,7 +44,8 @@ export async function renderAnatomy(root, { query }) {
   };
   const watchTimer = setInterval(() => { if (!root.isConnected || !stage.isConnected) { clearInterval(watchTimer); return; } watchCanvas(); }, 800);
   const fitStage = () => { root.style.setProperty('--dock', Math.min(dock.offsetHeight, root.clientHeight * 0.46) + 'px'); };
-  new ResizeObserver(fitStage).observe(dock);
+  let roRaf = 0;
+  new ResizeObserver(() => { cancelAnimationFrame(roRaf); roRaf = requestAnimationFrame(fitStage); }).observe(dock);
   const sync = () => {
     const act = api.layers();
     $$('.lay', root).forEach((b) => b.classList.toggle('on', act.has(b.dataset.lay)));
