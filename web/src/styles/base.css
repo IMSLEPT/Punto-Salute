@@ -86,6 +86,7 @@
   --c-terminologia: 217 119 6;
   --c-scale: 101 163 13;
   --c-studio: 99 102 241;
+  --c-schemi: 14 116 144;
   --c-esami: 2 132 199;
   --c-fisiologia: 14 165 233;
 }
@@ -166,6 +167,7 @@ img, svg { display: block; max-width: 100%; }
 .ic { width: 20px; height: 20px; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ------------------------------------------------------------------ componenti base */
+[hidden] { display: none !important; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); box-shadow: var(--shadow-1); }
 .card.pad { padding: 16px; }
 .stack > * + * { margin-top: 12px; }
@@ -363,11 +365,11 @@ img, svg { display: block; max-width: 100%; }
 .body .callout { margin: 10px 0; }
 .body h4 { font-size: .86rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin: 14px 0 6px; }
 .tablewrap { overflow-x: auto; margin: 10px -16px; padding: 0 16px; }
-.tbl { border-collapse: separate; border-spacing: 0; width: 100%; font-size: .84rem; min-width: 420px; }
+.tbl { border-collapse: separate; border-spacing: 0; width: 100%; font-size: .84rem; }
 .tbl th { text-align: left; font-size: .7rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); padding: 8px 10px; background: var(--surface-2); position: sticky; top: 0; }
 .tbl th:first-child { border-radius: 10px 0 0 10px; }
 .tbl th:last-child { border-radius: 0 10px 10px 0; }
-.tbl td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl td { overflow-wrap: anywhere; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .tbl tr:last-child td { border-bottom: 0; }
 .tbl td:first-child { font-weight: 650; }
 

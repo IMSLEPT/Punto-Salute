@@ -44,13 +44,14 @@ export const LAYOUTS = {
   ],
   term: [['def', 'Definizione'], ['ctx', 'Contesto clinico'], ['dd', 'Possibili cause e associazioni'], ['inf', 'Cosa osservare e riferire']],
   sign: [['def', 'Definizione'], ['ctx', 'Contesto clinico'], ['dd', 'Possibili cause e associazioni'], ['inf', 'Cosa osservare e riferire']],
+  schema: [['sch', 'Lo schema'], ['pun', 'Da ricordare'], ['err', 'Errori frequenti']],
   spec: [['cos', 'Ambito']],
   scale: [['cos', 'Descrizione']],
   calc: [['cos', 'Descrizione']],
 };
 
 /** Sezioni aperte di default. */
-export const OPEN = { proc: ['tec'], patho: ['fisio'], dev: ['cos'], tube: ['cod'], emerg: ['azioni', 'alg'], anat: ['pos', 'funz'], exam: ['cos', 'rif'] };
+export const OPEN = { schema: ['sch', 'pun'], proc: ['tec'], patho: ['fisio'], dev: ['cos'], tube: ['cod'], emerg: ['azioni', 'alg'], anat: ['pos', 'funz'], exam: ['cos', 'rif'] };
 
 /** Tipi per cui mostrare l'avviso "verifica protocollo locale / fonte ufficiale". */
 export const VERIFY = {
@@ -66,5 +67,5 @@ export const VERIFY = {
 export const DEFAULT_SOURCES = {
   patho: ['textbooks'], anat: ['textbooks'], physio: ['textbooks'], proc: ['textbooks'], dev: ['textbooks'], tube: ['clsi-gp41', 'who-phleb'],
   exam: ['textbooks'], drug: ['aifa', 'textbooks'], ndx: ['nanda', 'textbooks'], care: ['textbooks'], emerg: ['erc'], term: ['textbooks'], sign: ['textbooks'],
-  spec: ['textbooks'], scale: [], calc: ['mn-rac'],
+  spec: ['textbooks'], scale: [], calc: ['mn-rac'], schema: ['textbooks'],
 };

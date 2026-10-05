@@ -2,7 +2,7 @@ import './styles/base.css';
 import './styles/extra.css';
 import { $, $$, el, esc, icon } from './core/dom.js';
 import { settings, favs, store, notes } from './core/store.js';
-import { route, startRouter, navigate, currentRoute, savedScroll } from './core/router.js';
+import { route, routeNotFound, startRouter, navigate, currentRoute, savedScroll } from './core/router.js';
 import { openSheet, openModal, shareText, toast, closeTopOverlay } from './core/ui.js';
 import { BY_ID, get, relatedGroups } from './core/data.js';
 import { TYPES, MODULES } from './core/types.js';
@@ -17,6 +17,7 @@ import { LOGO } from './ui/common.js';
 import { renderTubes } from './ui/tubes.js';
 import './viz/tubes.js';
 import './viz/devices.js';
+import './viz/schemi.js';
 import { renderScales, renderScale, renderCalcHub, renderCalc } from './ui/tools.js';
 import { renderAssistenza, renderPlans, renderPlan } from './ui/assistenza.js';
 import { renderStudio, renderQuiz, renderExam, renderFlash, renderCases, renderCase } from './ui/studio.js';
@@ -112,6 +113,7 @@ R('/dispositivi', (r) => renderTypeList(r, { types: ['dev'], module: 'dispositiv
 R('/farmaci', (r) => renderTypeList(r, { types: ['drug'], module: 'farmaci', groupKey: 'cat' }));
 R('/specialistiche', (r) => renderTypeList(r, { types: ['spec'], module: 'specialistiche', groupKey: 'cat' }));
 R('/spec/:id', (r, { params }) => renderSpec(r, params.id));
+R('/schemi', (r) => renderTypeList(r, { types: ['schema'], module: 'schemi', groupKey: 'cat' }));
 R('/glossario', (r) => renderGlossary(r));
 R('/fonti', (r) => renderSources(r));
 R('/assistenza', (r) => renderAssistenza(r));
@@ -133,6 +135,24 @@ function resetView() {
   for (const [t, f, o] of viewListeners.splice(0)) view.removeEventListener(t, f, o);
   view.onclick = view.oninput = view.onchange = null;
 }
+
+routeNotFound((r) => {
+  r.innerHTML = `<div class="page"><div class="empty">${icon('search-x')}<h3>Pagina non trovata</h3><p>Il contenuto richiesto non esiste in questa versione dell’app.</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn" data-go="/">Vai alla Home</button></div></div></div>`;
+  return { title: 'Non trovata' };
+});
+
+// errori non gestiti: l'app non si blocca né torna alla home, avvisa e resta dov'è
+let lastErrToast = 0;
+function softError(e) {
+  console.error(e);
+  if (Date.now() - lastErrToast > 4000) { lastErrToast = Date.now(); toast('Qualcosa non ha funzionato: riprova'); }
+}
+window.addEventListener('error', (ev) => softError(ev.error || ev.message));
+window.addEventListener('unhandledrejection', (ev) => softError(ev.reason));
+
+import { applyStoredFeed, checkUpdates } from './core/updates.js';
+applyStoredFeed();
+setTimeout(() => { checkUpdates().catch(() => {}); }, 4000);
 
 let first = true;
 startRouter(async (cur, rt0, restore) => {

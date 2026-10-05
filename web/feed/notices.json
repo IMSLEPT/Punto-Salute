@@ -1,0 +1,6 @@
+{
+  "notices": [
+    { "id": "2026-10-05-audit", "date": "2026-10-05", "title": "Edizioni delle fonti verificate", "text": "Verificate le edizioni correnti: ERC 2025, Surviving Sepsis Campaign 2026, AHA/ASA ictus 2026, GOLD 2026, GINA 2026, ADA 2026, ESC AF/ipertensione 2024, CLSI PRE02 (ex GP41), NPIAP 4ª ed. Le schede interessate sono state aggiornate nella versione 1.1.", "rel": ["sepsi", "ictus", "asma", "bpco", "diabete-mellito", "bls"] }
+  ],
+  "alerts": {}
+}

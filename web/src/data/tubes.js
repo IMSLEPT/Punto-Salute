@@ -14,7 +14,7 @@ const T = (id, ord, title, aliases, color, cap, additive, exams, extra) => ({
   figs: [{ id: 'tube', color, cap, fill: extra.fill || 90, caption: extra.cap }], rel: extra.rel || [], sources: ['clsi-gp41', 'who-phleb'], rev: '2026-10', v: '1.0', verify: true,
 });
 
-export const ORDER_NOTE = 'Ordine CLSI GP41: 1) flaconi per emocoltura, 2) citrato (azzurro), 3) siero (rosso/giallo), 4) eparina (verde), 5) EDTA (viola/rosa), 6) inibitore della glicolisi (grigio). Il tappo VES (nero) segue le istruzioni del produttore/laboratorio. Verifica sempre il manuale prelievi della tua struttura.';
+export const ORDER_NOTE = 'Ordine CLSI (PRE02, già GP41): 1) flaconi per emocoltura, 2) citrato (azzurro), 3) siero (rosso/giallo), 4) eparina (verde), 5) EDTA (viola/rosa), 6) inibitore della glicolisi (grigio). Il tappo VES (nero) segue le istruzioni del produttore/laboratorio. Verifica sempre il manuale prelievi della tua struttura.';
 
 export default [
   T('tube-emocoltura', 1, 'Flaconi per emocoltura', ['emocoltura', 'flaconi aerobi anaerobi', 'blood culture'], '#f5f5f5', '#2563eb', 'Terreno di coltura (aerobi e anaerobi), spesso con resine antibiotiche',

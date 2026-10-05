@@ -6,6 +6,7 @@ import pathologies from '../data/pathologies.js';
 import pathologies2 from '../data/pathologies2.js';
 import pathologies3 from '../data/pathologies3.js';
 import extras from '../data/extras.js';
+import schemi from '../data/schemi.js';
 import scales2 from '../data/scales2.js';
 import procedures from '../data/procedures.js';
 import procedures2 from '../data/procedures2.js';
@@ -24,7 +25,7 @@ import glossary from '../data/glossary.js';
 import { SOURCES } from '../data/sources.js';
 import FIGMAP from '../data/figmap.js';
 
-export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, procedures, procedures2, devices, tubes, exams, drugs, care, ndx, scales, scales2, calcs, emergencies, specs, terms, glossary, extras);
+export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, procedures, procedures2, devices, tubes, exams, drugs, care, ndx, scales, scales2, calcs, emergencies, specs, terms, glossary, extras, schemi);
 export const BY_ID = new Map();
 export const BY_TYPE = {};
 export { SOURCES };

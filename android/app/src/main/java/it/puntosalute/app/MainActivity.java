@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -201,6 +202,22 @@ public class MainActivity extends Activity {
             return new ByteArrayInputStream(new byte[0]);
         }
 
+        /** Se il processo di rendering della WebView termina (memoria, aggiornamento WebView) l'app non si chiude: riparte. */
+        @Override
+        public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+            Toast.makeText(MainActivity.this, "Ripristino dell'app in corso…", Toast.LENGTH_SHORT).show();
+            try {
+                if (webView != null) {
+                    webView.destroy();
+                    webView = null;
+                }
+            } catch (Exception ignored) { /* noop */ }
+            Intent restart = getIntent();
+            finish();
+            startActivity(restart);
+            return true;
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             Uri uri = request.getUrl();
@@ -233,7 +250,7 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public String version() {
-            return "1.0.0";
+            return "1.1.0";
         }
 
         @JavascriptInterface
@@ -269,6 +286,54 @@ public class MainActivity extends Activity {
                     MainActivity.this.openExternal(url);
                 }
             });
+        }
+
+        /** Scarica il feed delle fonti (solo https, host consentiti, max 512 KB) e lo consegna a window.__psFeed(ok, corpo). */
+        @JavascriptInterface
+        public void fetchFeed(final String url) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String result;
+                    boolean ok = false;
+                    java.net.HttpURLConnection c = null;
+                    try {
+                        Uri u = Uri.parse(url);
+                        String host = u.getHost() == null ? "" : u.getHost().toLowerCase();
+                        boolean allowed = "https".equals(u.getScheme())
+                                && (host.endsWith(".github.io") || host.equals("raw.githubusercontent.com") || host.endsWith(".githubusercontent.com"));
+                        if (!allowed) throw new IOException("indirizzo non consentito");
+                        c = (java.net.HttpURLConnection) new java.net.URL(url).openConnection();
+                        c.setConnectTimeout(8000);
+                        c.setReadTimeout(10000);
+                        c.setInstanceFollowRedirects(false);
+                        c.setRequestProperty("Accept", "application/json");
+                        if (c.getResponseCode() != 200) throw new IOException("HTTP " + c.getResponseCode());
+                        InputStream in = c.getInputStream();
+                        java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream();
+                        byte[] buf = new byte[8192];
+                        int n, total = 0;
+                        while ((n = in.read(buf)) > 0) {
+                            total += n;
+                            if (total > 512 * 1024) throw new IOException("feed troppo grande");
+                            bo.write(buf, 0, n);
+                        }
+                        result = bo.toString("UTF-8");
+                        ok = true;
+                    } catch (Exception e) {
+                        result = String.valueOf(e.getMessage());
+                    } finally {
+                        if (c != null) c.disconnect();
+                    }
+                    final String js = "window.__psFeed && window.__psFeed(" + ok + "," + org.json.JSONObject.quote(result) + ")";
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (webView != null) webView.evaluateJavascript(js, null);
+                        }
+                    });
+                }
+            }).start();
         }
 
         @JavascriptInterface

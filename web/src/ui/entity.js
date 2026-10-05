@@ -9,6 +9,7 @@ import { shareText, toast } from '../core/ui.js';
 import { figure } from '../viz/index.js';
 import { navigate } from '../core/router.js';
 
+import { alertsFor } from '../core/updates.js';
 export const REVISION = '2026-10';
 export const CONTENT_VERSION = '1.0';
 
@@ -42,7 +43,9 @@ export function metaBlock(e) {
   const verify = VERIFY[e.type];
   const srcKeys = [...new Set([...(e.sources || []), ...(DEFAULT_SOURCES[e.type] || [])])];
   const srcs = sourceList({ sources: srcKeys });
+  const al = alertsFor(e.id);
   return `
+    ${al.map((a) => `<div class="callout danger" style="margin-top:16px">${icon('octagon-alert')}<div><b>Aggiornamento di fonte${a.d ? ' (' + esc(a.d) + ')' : ''}.</b> ${esc(a.t)}${a.s ? ` <span class="xs muted">${esc(a.s)}</span>` : ''}</div></div>`).join('')}
     ${e.verify !== false && verify ? `<div class="callout warn" style="margin-top:16px">${icon('triangle-alert')}<div><b>Verifica locale.</b> ${esc(e.verifyText || verify)}</div></div>` : ''}
     <div class="srcbox"><details><summary>${icon('library')} Fonti, versione e revisione</summary>
       <ul>${srcs.map((s) => `<li><b>${esc(s.t)}</b>${s.y ? ' — ' + esc(s.y) : ''}</li>`).join('')}</ul>

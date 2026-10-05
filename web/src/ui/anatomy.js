@@ -32,6 +32,17 @@ export async function renderAnatomy(root, { query }) {
   const dockBody = $('#dockbody', root);
 
   const requested = query.s || null;
+  const watchCanvas = () => {
+    const cv = stage.querySelector('canvas');
+    if (!cv || cv.__psWatched) return;
+    cv.__psWatched = true;
+    cv.addEventListener('webglcontextlost', (e) => {
+      e.preventDefault();
+      const ld = $('#aload', root);
+      if (ld) { ld.hidden = false; ld.style.display = ''; ld.innerHTML = '<p>La grafica 3D si è interrotta.</p><button class="btn" id="areload">Ricarica il modello</button>'; ld.querySelector('#areload').onclick = () => renderAnatomy(root, { query }); }
+    }, false);
+  };
+  const watchTimer = setInterval(() => { if (!root.isConnected || !stage.isConnected) { clearInterval(watchTimer); return; } watchCanvas(); }, 800);
   const fitStage = () => { root.style.setProperty('--dock', Math.min(dock.offsetHeight, root.clientHeight * 0.46) + 'px'); };
   new ResizeObserver(fitStage).observe(dock);
   const sync = () => {

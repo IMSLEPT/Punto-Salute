@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Nessun permesso: l'app e' interamente offline e non trasmette alcun dato. -->
+    <!-- INTERNET serve SOLO all'aggiornamento facoltativo delle fonti (spento di default, sola lettura, nessun dato inviato).
+         Tutti i contenuti clinici sono inclusi nell'app e funzionano offline. La WebView continua a bloccare ogni altro host. -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="false"

@@ -1,0 +1,41 @@
+name: Feed fonti (GitHub Pages)
+
+# Pubblica web/feed/sources.json: l'app (se l'utente attiva l'aggiornamento) lo legge ogni settimana.
+# Richiede GitHub Pages abilitato per il repository (Settings → Pages → Source: GitHub Actions).
+on:
+  push:
+    branches: [main, ccr-fbfcd40c-7lsjut]
+    paths: ["web/feed/**", "web/src/data/sources.js", "web/tools/build-feed.mjs"]
+  schedule:
+    - cron: "17 5 * * 1"   # ogni lunedì
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Genera il feed
+        working-directory: web
+        run: node tools/build-feed.mjs
+      - name: Prepara il sito
+        run: |
+          mkdir -p _site/feed
+          cp web/feed/sources.json _site/feed/sources.json
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4

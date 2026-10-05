@@ -46,8 +46,16 @@ function resolve(restore = false) {
       return;
     }
   }
+  if (notFound) {
+    current = { path, params: {}, query, pattern: '*', opts: {} };
+    onChange(current, { handler: notFound, opts: {} }, restore);
+    return;
+  }
   navigate('/', { replace: true });
 }
+
+let notFound = null;
+export function routeNotFound(handler) { notFound = handler; }
 
 export function startRouter(cb) {
   onChange = cb;

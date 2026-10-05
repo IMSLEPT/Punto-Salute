@@ -5,7 +5,8 @@ import { countType, get, BY_TYPE } from '../core/data.js';
 import { recents, store } from '../core/store.js';
 import { routeFor, plain } from '../core/text.js';
 import { DISCLAIMER } from './common.js';
-import { REVISION, CONTENT_VERSION } from './entity.js';
+import { REVISION, CONTENT_VERSION, chipFor } from './entity.js';
+import { notices } from '../core/updates.js';
 import { openSheet } from '../core/ui.js';
 import logoUrl from '../assets/logo.png';
 import stethUrl from '../assets/steth.jpg';
@@ -57,6 +58,7 @@ export function openNews() {
     html: `<div class="stack">
       <div class="callout ok">${icon('circle-check')}<div><b>Versione contenuti ${CONTENT_VERSION}</b> · revisione ${REVISION}. Tutto il contenuto è incluso nell’app e funziona offline.</div></div>
       <p class="muted">Ogni scheda riporta fonti, versione e data di revisione. Procedure, linee guida e classificazioni cambiano nel tempo: confronta sempre con la fonte ufficiale e con il protocollo della tua struttura.</p>
+      ${notices().map((n) => `<div class="callout note">${icon('info')}<div><b>${esc(n.title)}</b> <span class="xs muted">${esc(n.date)}</span><br>${esc(n.text)}${n.rel.length ? `<div class="chips wrap" style="margin-top:8px">${n.rel.map((id) => get(id)).filter(Boolean).map((e) => chipFor(e)).join('')}</div>` : ''}</div></div>`).join('')}
       <p class="muted small">Puoi annotare il protocollo locale in ogni scheda e configurare le provette secondo il manuale prelievi della tua azienda.</p></div>`,
   });
 }
@@ -94,6 +96,5 @@ export function renderHome(root) {
     <div class="hfoot">${DISCLAIMER}</div>
   </div>`;
   root.querySelector('[data-news]').addEventListener('click', (e) => { e.stopPropagation(); openNews(); });
-  root.querySelector('[data-stop]').addEventListener('click', (e) => e.stopPropagation(), true);
   return { title: 'Punto Salute', bar: 'none', tab: 'home', bars: ['#FFFFFF', false] };
 }

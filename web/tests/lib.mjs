@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-export const WWW = path.resolve(here, '../../android/app/src/main/assets/www');
+export const WWW = process.env.PS_WWW || path.resolve(here, '../../android/app/src/main/assets/www');
 const MIME = { html: 'text/html', js: 'text/javascript', css: 'text/css', json: 'application/json', svg: 'image/svg+xml', woff2: 'font/woff2', png: 'image/png' };
 
 export function serve(port = 0) {

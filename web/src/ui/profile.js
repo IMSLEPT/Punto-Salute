@@ -5,9 +5,11 @@ import { toast, shareText, confirmDialog } from '../core/ui.js';
 import { ALL, BY_TYPE } from '../core/data.js';
 import { CONTENT_VERSION, REVISION } from './entity.js';
 import { logoImg, wordmark } from './home.js';
+import { updates, checkUpdates } from '../core/updates.js';
 
 export function renderProfile(root) {
   const s = settings.get();
+  const upd = updates.cfg();
   const quiz = store.get('quizStats', { done: 0, correct: 0 });
   const seen = store.get('seen', {});
   const nSeen = Object.keys(seen).length;
@@ -31,6 +33,13 @@ export function renderProfile(root) {
     </div>
 
     <div class="card pad stack">
+      <h3>Aggiornamento delle fonti</h3>
+      <p class="small muted">Facoltativo e spento di default. Se attivo, l’app scarica (al massimo una volta a settimana, solo in lettura, senza inviare dati) un elenco aggiornato delle <b>edizioni delle fonti</b>, le novità e gli avvisi sulle schede. Il testo clinico delle schede cambia solo con gli aggiornamenti dell’app.</p>
+      <label class="row" style="justify-content:space-between"><span>Controlla gli aggiornamenti</span><span class="seg" style="width:130px" id="upd"><button data-v="1" class="${upd.on ? 'on' : ''}">Sì</button><button data-v="0" class="${upd.on ? '' : 'on'}">No</button></span></label>
+      <div class="row wrap"><button class="btn sm ghost" id="updnow">${icon('rotate-ccw')}Controlla ora</button><span class="xs muted" id="updst">${esc(upd.status || (upd.last ? 'Ultimo controllo: ' + new Date(upd.last).toLocaleDateString('it-IT') : 'Mai controllato'))}</span></div>
+    </div>
+
+    <div class="card pad stack">
       <h3>Dati e privacy</h3>
       <p class="small muted">Punto Salute non richiede la rete e non invia alcun dato: note, preferiti, piani e progressi restano su questo dispositivo. <b>Non inserire dati identificativi di pazienti reali</b> nelle note o nei piani.</p>
       <div class="row wrap"><button class="btn sm ghost" id="export">${icon('upload')}Esporta backup</button><button class="btn sm ghost" id="import">${icon('download')}Importa backup</button><button class="btn sm danger" id="reset">${icon('trash-2')}Cancella dati</button></div>
@@ -47,6 +56,12 @@ export function renderProfile(root) {
   seg('#theme', (v) => { settings.set({ theme: v }); window.__psTheme(); });
   seg('#fs', (v) => { settings.set({ fs: parseFloat(v) }); window.__psTheme(); });
   seg('#motion', (v) => { settings.set({ motion: v === '1' }); window.__psTheme(); });
+  seg('#upd', (v) => { updates.set({ on: v === '1' }); if (v === '1') root.querySelector('#updnow').click(); });
+  root.querySelector('#updnow').onclick = async () => {
+    const st = root.querySelector('#updst'); st.textContent = 'Controllo in corso…';
+    await checkUpdates({ force: true });
+    st.textContent = updates.cfg().status;
+  };
   root.querySelector('#export').onclick = () => shareText('Backup Punto Salute', JSON.stringify(store.exportAll()));
   root.querySelector('#import').onclick = () => {
     const t = prompt('Incolla qui il backup JSON');

@@ -15,11 +15,12 @@ export const TYPES = {
   scale:  { label: 'Scala di valutazione',   plural: 'Scale',                   icon: 'gauge',           c: '--c-scale' },
   calc:   { label: 'Calcolo',                plural: 'Calcoli',                 icon: 'calculator',      c: '--c-calcolatore' },
   emerg:  { label: 'Emergenza',              plural: 'Emergenze',               icon: 'siren',           c: '--c-emergenze' },
+  schema: { label: 'Schema',               plural: 'Schemi',                  icon: 'network',         c: '--c-schemi' },
   spec:   { label: 'Specialità',             plural: 'Specialistiche',          icon: 'hospital',        c: '--c-specialistiche' },
 };
 
 /** Ordine e titolo dei gruppi nella mappa dei collegamenti. */
-export const MAP_ORDER = ['anat', 'physio', 'patho', 'sign', 'exam', 'tube', 'ndx', 'care', 'proc', 'dev', 'drug', 'scale', 'calc', 'emerg', 'spec', 'term'];
+export const MAP_ORDER = ['anat', 'physio', 'patho', 'sign', 'exam', 'tube', 'ndx', 'care', 'proc', 'dev', 'drug', 'scale', 'calc', 'emerg', 'schema', 'spec', 'term'];
 
 export const rgbVar = (t) => `var(${(TYPES[t] || TYPES.term).c})`;
 
@@ -36,5 +37,6 @@ export const MODULES = [
   { id: 'farmaci',       route: '/farmaci',       name: 'Farmacologia',       sub: 'Classi, vie, 10 G, high-alert',       icon: 'pill',           c: '--c-farmaci',       count: 'drug' },
   { id: 'calcolatore',   route: '/calcolatore',   name: 'Calcolatore',        sub: 'Dosi, diluizioni, mL/h, bilancio',    icon: 'calculator',     c: '--c-calcolatore',   count: 'calc' },
   { id: 'terminologia',  route: '/glossario',     name: 'Terminologia',       sub: 'Dizionario medico collegato',         icon: 'languages',      c: '--c-terminologia',  count: 'term+sign' },
+  { id: 'schemi',        route: '/schemi',        name: 'Schemi',             sub: 'Mappe, flussi e tabelle per studiare', icon: 'network',        c: '--c-schemi',        count: 'schema' },
   { id: 'scale',         route: '/scale',         name: 'Scale e valutazione',sub: 'Glasgow, NEWS2, Braden, Barthel…',    icon: 'gauge',          c: '--c-scale',         count: 'scale' },
 ];
