@@ -305,3 +305,17 @@
 .casegen { border: 1.5px dashed rgb(var(--c-studio) / .45); }
 .hr { border: 0; border-top: 1px solid var(--line); margin: 8px 0; width: 100%; }
 .ach { white-space: normal; text-align: left; height: auto; line-height: 1.25; padding-top: 7px; padding-bottom: 7px; }
+
+/* scorciatoia dell'assistente accanto alle notifiche */
+.hact { margin-left: auto; display: flex; align-items: center; gap: 2px; }
+.hact .bell { margin-left: 0; }
+.bell.aibtn { background: rgb(14 165 233 / .12); border-radius: 50%; width: 42px; height: 42px; margin-right: 4px; }
+.bell.aibtn .ic { width: 27px; height: 27px; stroke-width: 1.7; }
+.robot { display: block; flex: none; }
+.awelcome { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 6px 0 2px; }
+.awelcome .robot { filter: drop-shadow(0 8px 14px rgb(14 116 144 / .22)); }
+.awelcome .ahead { font-size: 1.1rem; }
+.abot { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.abot .robot { border-radius: 10px; background: #e2f6f9; padding: 2px; }
+:root[data-theme='dark'] .abot .robot { background: #12324a; }
+.card h3 > .ic { display: inline-block; width: 20px; height: 20px; vertical-align: -3px; margin-right: 6px; }

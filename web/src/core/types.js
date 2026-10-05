@@ -37,7 +37,7 @@ export const MODULES = [
   { id: 'farmaci',       route: '/farmaci',       name: 'Farmacologia',       sub: 'Classi, vie, 10 G, high-alert',       icon: 'pill',           c: '--c-farmaci',       count: 'drug' },
   { id: 'calcolatore',   route: '/calcolatore',   name: 'Calcolatore',        sub: 'Dosi, diluizioni, mL/h, bilancio',    icon: 'calculator',     c: '--c-calcolatore',   count: 'calc' },
   { id: 'terminologia',  route: '/glossario',     name: 'Terminologia',       sub: 'Dizionario medico collegato',         icon: 'languages',      c: '--c-terminologia',  count: 'term+sign' },
-  { id: 'assistente',    route: '/assistente',    name: 'Assistente',         sub: 'Domande, schemi e funzioni',          icon: 'sparkles',       c: '--c-schemi',        count: null },
+  { id: 'assistente',    route: '/assistente',    name: 'Assistente',         sub: 'Domande, schemi e funzioni',          icon: 'robot',       c: '--c-schemi',        count: null },
   { id: 'schemi',        route: '/schemi',        name: 'Schemi',             sub: 'Mappe, flussi e tabelle per studiare', icon: 'network',        c: '--c-schemi',        count: 'schema' },
   { id: 'scale',         route: '/scale',         name: 'Scale e valutazione',sub: 'Glasgow, NEWS2, Braden, Barthel…',    icon: 'gauge',          c: '--c-scale',         count: 'scale' },
 ];

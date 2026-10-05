@@ -1,4 +1,4 @@
-import{j as P}from"./chunk-Q5OJJUGS.js";import{a as z,b as M}from"./chunk-S5DIMPP3.js";import{C as k,L as S,N as C,c as h,e as c,f as l,g as E,i as w,n as L,p as u,q as T}from"./chunk-TRUL5U5D.js";function m(a,e="",s={}){let t=u[a.type],v=e?M(a.title,e):c(a.title),d=s.sub??C(a.summary||"");return`<button class="item" data-go="${S(a)}">
+import{j as P}from"./chunk-DJBEWPEL.js";import{a as z,b as M}from"./chunk-F43JTA2I.js";import{C as k,L as S,N as C,c as h,e as c,f as l,g as E,i as w,n as L,p as u,q as T}from"./chunk-377OYBFX.js";function m(a,e="",s={}){let t=u[a.type],v=e?M(a.title,e):c(a.title),d=s.sub??C(a.summary||"");return`<button class="item" data-go="${S(a)}">
     <div class="tile-ic sm" style="--c:var(${t.c})">${l(s.icon||t.icon)}</div>
     <div class="grow"><div class="t">${v}</div>${d?`<div class="d">${c(d)}</div>`:""}</div>
     ${s.badge?`<span class="badge" style="--c:var(${t.c})">${c(s.badge)}</span>`:""}

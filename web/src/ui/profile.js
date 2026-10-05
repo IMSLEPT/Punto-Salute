@@ -7,6 +7,7 @@ import { CONTENT_VERSION, REVISION } from './entity.js';
 import { logoImg, wordmark } from './home.js';
 import { updates, checkUpdates, patchCount, resetFeed } from '../core/updates.js';
 import { aiCard, bindAi } from './aisettings.js';
+import { backupCard, bindBackup } from './backupui.js';
 import { currentRoute } from '../core/router.js';
 
 export function renderProfile(root) {
@@ -45,10 +46,12 @@ export function renderProfile(root) {
 
     ${aiCard()}
 
+    ${backupCard()}
+
     <div class="card pad stack">
       <h3>Dati e privacy</h3>
       <p class="small muted">Tutti i contenuti funzionano offline. La rete si usa solo per funzioni facoltative: controllo giornaliero degli aggiornamenti (sola lettura, nessun dato inviato) e, <b>solo se li attivi</b>, assistente AI e ricerca web (inviano la tua domanda al servizio scelto). Note, preferiti, piani e progressi restano su questo dispositivo. <b>Non inserire dati identificativi di pazienti reali</b> in note, piani o domande.</p>
-      <div class="row wrap"><button class="btn sm ghost" id="export">${icon('upload')}Esporta backup</button><button class="btn sm ghost" id="import">${icon('download')}Importa backup</button><button class="btn sm danger" id="reset">${icon('trash-2')}Cancella dati</button></div>
+      <div class="row wrap"><button class="btn sm danger" id="reset">${icon('trash-2')}Cancella dati</button></div>
     </div>
 
     <div class="card pad stack">
@@ -59,6 +62,7 @@ export function renderProfile(root) {
   </div>`;
 
   bindAi(root);
+  bindBackup(root, () => renderProfile(root));
   if ((currentRoute().query || {}).sec === 'ai') setTimeout(() => root.querySelector('#aicard')?.scrollIntoView({ block: 'start' }), 60);
   const seg = (id, fn) => root.querySelector(id).addEventListener('click', (e) => { const b = e.target.closest('[data-v]'); if (!b) return; root.querySelectorAll(id + ' button').forEach((x) => x.classList.toggle('on', x === b)); fn(b.dataset.v); });
   seg('#theme', (v) => { settings.set({ theme: v }); window.__psTheme(); });
@@ -74,12 +78,6 @@ export function renderProfile(root) {
   };
   root.querySelector('#updreset').onclick = async () => {
     if (await confirmDialog({ title: 'Ripristinare i contenuti dell’app?', text: 'Le correzioni scaricate vengono rimosse e tornano i testi originali della versione installata.', ok: 'Ripristina' })) { resetFeed(); toast('Contenuti ripristinati'); setTimeout(() => location.reload(), 700); }
-  };
-  root.querySelector('#export').onclick = () => shareText('Backup Punto Salute', JSON.stringify(store.exportAll()));
-  root.querySelector('#import').onclick = () => {
-    const t = prompt('Incolla qui il backup JSON');
-    if (!t) return;
-    try { store.importAll(JSON.parse(t)); toast('Backup importato'); window.__psTheme(); renderProfile(root); } catch { toast('Backup non valido'); }
   };
   root.querySelector('#reset').onclick = async () => {
     if (await confirmDialog({ title: 'Cancellare tutti i dati?', text: 'Note, preferiti, piani, configurazione provette e progressi verranno eliminati da questo dispositivo.', ok: 'Cancella', danger: true })) {

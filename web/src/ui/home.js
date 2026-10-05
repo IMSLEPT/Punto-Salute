@@ -76,7 +76,7 @@ export function renderHome(root) {
 
   root.innerHTML = `<div class="page flush homebg">
     <header class="hhead">${logoImg()}<div>${wordmark()}<small>Dalla conoscenza alla cura</small></div>
-      <button class="bell" data-news aria-label="Novità">${icon('bell')}${newDot ? '<i></i>' : ''}</button></header>
+      <div class="hact"><button class="bell aibtn" data-go="/assistente" aria-label="Assistente AI">${icon('robot')}</button><button class="bell" data-news aria-label="Novità">${icon('bell')}${newDot ? '<i></i>' : ''}</button></div></header>
     <section class="greet"><h2>${greeting()}</h2><p>La conoscenza di oggi è una cura migliore domani.</p>
       <img class="steth" src="${stethUrl}" alt="" width="163" height="137"></section>
     <button class="hsearch" data-open-search aria-label="Cerca">${icon('search')}<span>Cerca tra patologie, procedure, farmaci…</span></button>

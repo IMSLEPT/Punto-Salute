@@ -7,6 +7,7 @@ import { toast } from '../core/ui.js';
 import { respond, respondAsk, chatStore, STARTERS } from '../ai/assistant.js';
 import { aiCfg } from '../ai/llm.js';
 import { searchWeb } from '../ai/websearch.js';
+import { robotMascot } from './robot.js';
 
 const textOf = (html) => { try { return new DOMParser().parseFromString(`<div>${html}</div>`, 'text/html').body.textContent.replace(/\s+/g, ' ').trim(); } catch { return ''; } };
 
@@ -24,7 +25,7 @@ function botHtml(m) {
   const badge = m.mode === 'ai' ? `<span class="abadge ai">${icon('sparkles')}AI · ${esc(String(m.model || '').split('/').pop().slice(0, 28))}</span>` : m.mode === 'web' ? `<span class="abadge">${icon('globe')}Web</span>` : (m.src && m.src.length) ? `<span class="abadge">${icon('library')}Dalle schede</span>` : `<span class="abadge">${icon('sparkles')}Assistente</span>`;
   const src = (m.srcNames && m.srcNames.length) ? `<div class="asrc xs muted">${icon('library')}<span>Fonti: ${esc(m.srcNames.join(' · '))}. Contenuto didattico: verifica il protocollo locale.</span></div>` : '';
   const detail = m.detail ? `<details class="adet"><summary>Vedi le schede usate</summary>${m.detail}</details>` : '';
-  return `<div class="amsg bot"><div class="abub">${badge}${m.html}${detail}${src}</div>${m.chips && m.chips.length ? `<div class="achips">${m.chips.map(chipHtml).join('')}</div>` : ''}</div>`;
+  return `<div class="amsg bot"><div class="abub"><div class="abot">${robotMascot(30)}${badge}</div>${m.html}${detail}${src}</div>${m.chips && m.chips.length ? `<div class="achips">${m.chips.map(chipHtml).join('')}</div>` : ''}</div>`;
 }
 const userHtml = (t) => `<div class="amsg user"><div class="abub">${esc(t)}</div></div>`;
 
@@ -42,7 +43,7 @@ export function renderAssistant(root, query = {}) {
   let busy = false;
 
   const scroll = () => { requestAnimationFrame(() => { log.scrollTop = log.scrollHeight; }); };
-  const welcome = () => `<div class="amsg bot"><div class="abub"><div class="ahead"><b>Ciao, sono l’assistente di Punto Salute</b></div><p>Rispondo usando <b>solo le schede dell’app</b> (con fonti e revisione), posso fare confronti, riassunti, mappe e schemi, aprire strumenti e cercare sul web. Non riporto posologie né faccio diagnosi.</p></div><div class="achips">${STARTERS.map((t) => chipHtml({ t, q: t })).join('')}</div></div>`;
+  const welcome = () => `<div class="amsg bot"><div class="abub"><div class="awelcome">${robotMascot(96)}<div class="ahead"><b>Ciao, sono l’assistente di Punto Salute</b></div></div><p>Rispondo usando <b>solo le schede dell’app</b> (con fonti e revisione), posso fare confronti, riassunti, mappe e schemi, aprire strumenti e cercare sul web. Non riporto posologie né faccio diagnosi.</p></div><div class="achips">${STARTERS.map((t) => chipHtml({ t, q: t })).join('')}</div></div>`;
 
   const draw = () => {
     log.innerHTML = (state.msgs.length ? '' : welcome()) + state.msgs.map((m) => (m.role === 'user' ? userHtml(m.text) : botHtml(m))).join('');

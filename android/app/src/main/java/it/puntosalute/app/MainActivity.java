@@ -38,13 +38,14 @@ import java.util.Map;
  */
 public class MainActivity extends Activity {
 
-    static final String APP_VERSION = "1.3.0";
+    static final String APP_VERSION = "1.3.1";
     private static final String HOST = "appassets.androidplatform.net";
     private static final String ORIGIN = "https://" + HOST;
     private static final String START_URL = ORIGIN + "/index.html";
 
     private WebView webView;
     private View splashOverlay;
+    private ValueCallback<Uri[]> fileCb;
 
     @SuppressLint({"SetJavaScriptEnabled", "AddJavascriptInterface"})
     @Override
@@ -107,7 +108,25 @@ public class MainActivity extends Activity {
         }
 
         webView.setWebViewClient(new AssetClient());
-        webView.setWebChromeClient(new WebChromeClient());
+        // selezione di file (ripristino del backup): apre il selettore di documenti di Android
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onShowFileChooser(WebView view, ValueCallback<Uri[]> callback, FileChooserParams params) {
+                if (fileCb != null) { fileCb.onReceiveValue(null); fileCb = null; }
+                fileCb = callback;
+                try {
+                    Intent pick = new Intent(Intent.ACTION_GET_CONTENT);
+                    pick.addCategory(Intent.CATEGORY_OPENABLE);
+                    pick.setType("*/*");
+                    startActivityForResult(Intent.createChooser(pick, "Scegli il file di backup"), 4711);
+                } catch (Exception e) {
+                    fileCb = null;
+                    callback.onReceiveValue(null);
+                    return false;
+                }
+                return true;
+            }
+        });
         webView.addJavascriptInterface(new Bridge(), "PuntoSalute");
         webView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
@@ -126,6 +145,20 @@ public class MainActivity extends Activity {
                 s.setVisibility(View.GONE);
             }
         }).start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 4711) {
+            if (fileCb != null) {
+                Uri[] res = null;
+                if (resultCode == RESULT_OK && data != null && data.getData() != null) res = new Uri[] { data.getData() };
+                fileCb.onReceiveValue(res);
+                fileCb = null;
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
