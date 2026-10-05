@@ -6,7 +6,7 @@ let bad = 0;
 const ok = (c, m) => { console.log(c ? 'ok  ' : 'KO  ', m); if (!c) bad++; };
 await page.goto(url + '/#/anatomia');
 await page.waitForSelector('#dock'); await page.waitForTimeout(2500);
-const h = () => page.evaluate(() => ({ dock: document.querySelector('#dock').getBoundingClientRect().height, stage: document.querySelector('#stage').getBoundingClientRect().height, cls: document.querySelector('#dock').className, sx: document.querySelector('#dock').scrollLeft }));
+const h = async () => { await page.waitForTimeout(600); await page.waitForFunction(() => { const d = document.querySelector('#dock'); return !d.getAnimations().length; }, null, { timeout: 15000 }).catch(() => {}); return page.evaluate(() => ({ dock: document.querySelector('#dock').getBoundingClientRect().height, stage: document.querySelector('#stage').getBoundingClientRect().height, cls: document.querySelector('#dock').className, sx: document.querySelector('#dock').scrollLeft })); };
 const a = await h(); console.log(a);
 const g = await page.locator('[data-grab]').boundingBox();
 await page.mouse.click(g.x + g.width / 2, g.y + g.height / 2); await page.waitForTimeout(2500);
