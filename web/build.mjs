@@ -61,7 +61,7 @@ const options = {
   entryNames: 'app',
   chunkNames: 'chunks/[name]-[hash]',
   assetNames: 'assets/[name]-[hash]',
-  loader: { '.woff2': 'file', '.svg': 'text', '.png': 'file' },
+  loader: { '.woff2': 'file', '.svg': 'text', '.png': 'file', '.jpg': 'file' },
   minify: !watch,
   sourcemap: false,
   target: ['chrome87'],

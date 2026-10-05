@@ -8,6 +8,8 @@ import { DISCLAIMER } from './common.js';
 import { REVISION, CONTENT_VERSION } from './entity.js';
 import { openSheet } from '../core/ui.js';
 import logoUrl from '../assets/logo.png';
+import stethUrl from '../assets/steth.jpg';
+import { colorIcon, TILE_BG } from '../core/icons-color.js';
 
 const BOARD = {
   anatomia: { name: 'Anatomia', sub: 'Strutture, immagini e riferimenti clinici' },
@@ -22,10 +24,16 @@ export function logoImg(cls = 'lg') { return `<img class="${cls}" src="${logoUrl
 
 export function wordmark() { return `<div class="wordmark">Punto <b>Salute</b></div>`; }
 
+const COLOR_KEY = { anatomia: 'anatomia', patologie: 'patologie', procedure: 'procedure', scale: 'scale' };
+
 export function moduleTile(m) {
   const b = BOARD[m.id] || {};
+  const ck = COLOR_KEY[m.id];
+  const ico = ck
+    ? `<div class="ico big" style="background:${TILE_BG[ck]}">${colorIcon(ck)}</div>`
+    : `<div class="ico" style="color:rgb(var(${m.c}));background:rgb(var(${m.c}) / .12)">${icon(m.icon)}</div>`;
   return `<button class="hcard" data-go="${m.route}" style="--c:var(${m.c})">
-    <div class="top"><div class="ico">${icon(m.icon)}</div>${icon('chevron-right', 'chev')}</div>
+    <div class="top">${ico}${icon('chevron-right', 'chev')}</div>
     <div><div class="nm">${esc(b.name || m.name)}</div><div class="sb">${esc(b.sub || m.sub)}</div></div></button>`;
 }
 
@@ -68,17 +76,17 @@ export function renderHome(root) {
     <header class="hhead">${logoImg()}<div>${wordmark()}<small>Dalla conoscenza alla cura</small></div>
       <button class="bell" data-news aria-label="Novità">${icon('bell')}${newDot ? '<i></i>' : ''}</button></header>
     <section class="greet"><h2>${greeting()}</h2><p>La conoscenza di oggi è una cura migliore domani.</p>
-      <svg class="deco" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 2v2M5 2v2M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/></svg></section>
+      <img class="steth" src="${stethUrl}" alt="" width="163" height="137"></section>
     <button class="hsearch" data-open-search aria-label="Cerca">${icon('search')}<span>Cerca tra patologie, procedure, farmaci…</span></button>
     <div class="hgrid">
       ${top.map(moduleTile).join('')}
       <button class="hcard wide" data-go="/farmaci" style="--c:var(--c-farmaci)">
-        <div class="ico" style="width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:rgb(var(--c) / .14);color:rgb(var(--c))">${icon('pill')}</div>
-        <div class="tx"><div class="nm">Farmaci e calcoli</div><div class="sb">Principi attivi, dosaggi e calcolatori</div></div>
-        <span class="calc" data-go="/calcolatore" data-stop role="button" aria-label="Calcolatore">${icon('calculator')}</span></button>
+        <div class="ico big" style="background:${TILE_BG.farmaci}">${colorIcon('farmaci')}</div>
+        <div class="tx"><div class="nm">Farmaci<br>e calcoli</div><div class="sb">Principi attivi,<br>dosaggi e calcolatori</div></div>
+        <span class="calc" data-go="/calcolatore" data-stop role="button" aria-label="Calcolatore">${colorIcon('calc')}</span></button>
     </div>
     ${cont ? `<section class="cont" style="--c:var(${t.c})"><div class="ch">${icon('clock')}Continua a studiare</div>
-      <button class="cr" data-go="${routeFor(cont)}"><div class="tile">${icon(t.icon)}</div>
+      <button class="cr" data-go="${routeFor(cont)}"><div class="tile">${colorIcon('doc')}</div>
       <div class="grow"><div class="nm">${esc(cont.title)}</div><div class="sb">${esc(plain(cont.summary || '').slice(0, 80))}</div>
       <div class="bar"><div class="progress"><i style="width:${pr}%"></i></div><em>${pr}%</em></div></div>${icon('chevron-right', 'go')}</button></section>` : ''}
     <div class="hsec">Tutte le sezioni</div>
