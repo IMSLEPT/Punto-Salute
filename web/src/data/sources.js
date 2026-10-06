@@ -1,6 +1,18 @@
 // Registro delle fonti. Le schede citano chiavi di questo registro.
 // Nota: per le edizioni non indicate con certezza si riporta "edizione corrente": verificare sempre la versione ufficiale in vigore.
 export const SOURCES = {
+  'phq': { t: 'Kroenke K, Spitzer RL, Williams JB. The PHQ-9. J Gen Intern Med 2001;16:606-613; Spitzer RL et al. GAD-7. Arch Intern Med 2006;166:1092-1097 (uso libero)', y: '2001; 2006' },
+  'audit': { t: 'OMS – AUDIT: The Alcohol Use Disorders Identification Test (2ª ed.); Bush K et al. AUDIT-C. Arch Intern Med 1998;158:1789-1795', y: '2001; 1998' },
+  'epds': { t: 'Cox JL, Holden JM, Sagovsky R. Detection of postnatal depression: the Edinburgh Postnatal Depression Scale. Br J Psychiatry 1987;150:782-786 (riproducibile citando la fonte)', y: '1987' },
+  'ciwa': { t: 'Sullivan JT et al. Assessment of alcohol withdrawal: the revised Clinical Institute Withdrawal Assessment for Alcohol scale (CIWA-Ar). Br J Addict 1989;84:1353-1357', y: '1989' },
+  'wells': { t: 'Wells PS et al. – Regole di predizione clinica per TVP (Lancet 1997; NEJM 2003) ed embolia polmonare (Thromb Haemost 2000)', y: '1997–2003' },
+  'cha2ds2': { t: 'ESC 2024 AF Guidelines – punteggio CHA₂DS₂-VA (senza la categoria sesso); Pisters R et al. HAS-BLED. Chest 2010;138:1093-1100', y: '2024; 2010' },
+  'childpugh': { t: 'Pugh RN et al. Transection of the oesophagus for bleeding oesophageal varices. Br J Surg 1973;60:646-649 (classificazione di Child-Turcotte-Pugh)', y: '1973' },
+  'ecog': { t: 'Oken MM et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol 1982;5:649-655', y: '1982' },
+  'cpot': { t: 'Gélinas C et al. Validation of the Critical-Care Pain Observation Tool in adult patients. Am J Crit Care 2006;15:420-427', y: '2006' },
+  'norton': { t: 'Norton D, McLaren R, Exton-Smith AN. An investigation of geriatric nursing problems in hospital. 1962 (scala di Norton)', y: '1962' },
+  'conley': { t: 'Conley D, Schultz AA, Selvin R. The challenge of predicting patients at risk for falling. MEDSURG Nurs 1999;8:348-354 (versione italiana validata)', y: '1999' },
+  'bristol': { t: 'Lewis SJ, Heaton KW. Stool form scale as a useful guide to intestinal transit time. Scand J Gastroenterol 1997;32:920-924', y: '1997' },
   'esmo': { t: 'ESMO – Clinical Practice Guidelines (oncologia) ed ESMO/MASCC (terapia di supporto)', y: 'edizioni correnti' },
   'esicm-ards': { t: 'ESICM – Guidelines on acute respiratory distress syndrome (2023) e nuova definizione globale di ARDS (ATS 2024)', y: '2023–2024' },
   'easl': { t: 'EASL – Clinical Practice Guidelines (malattie del fegato)', y: 'edizioni correnti' },
