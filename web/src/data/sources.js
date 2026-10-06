@@ -1,6 +1,12 @@
 // Registro delle fonti. Le schede citano chiavi di questo registro.
 // Nota: per le edizioni non indicate con certezza si riporta "edizione corrente": verificare sempre la versione ufficiale in vigore.
 export const SOURCES = {
+  'nihss': { t: 'Brott T et al. Measurements of acute cerebral infarction: a clinical examination scale (NIH Stroke Scale). Stroke 1989;20:864-870 (scala pubblica dell’NIH)', y: '1989' },
+  'aldrete': { t: 'Aldrete JA, Kroulik D. A postanesthetic recovery score. Anesth Analg 1970;49:924-934; Aldrete JA. The post-anesthesia recovery score revisited. J Clin Anesth 1995;7:89-91', y: '1970; 1995' },
+  'curb65': { t: 'Lim WS et al. Defining community acquired pneumonia severity on presentation to hospital: an international derivation and validation study (CURB-65). Thorax 2003;58:377-382', y: '2003' },
+  'gds': { t: 'Yesavage JA et al. Development and validation of a geriatric depression screening scale. J Psychiatr Res 1982-83;17:37-49 (GDS, forma breve a 15 voci: Sheikh e Yesavage 1986)', y: '1982–1986' },
+  'minicog': { t: 'Borson S et al. The Mini-Cog: a cognitive “vital signs” measure for dementia screening in multi-lingual elderly. Int J Geriatr Psychiatry 2000;15:1021-1027', y: '2000' },
+  'larn': { t: 'SINU – LARN, Livelli di Assunzione di Riferimento di Nutrienti ed energia per la popolazione italiana (V revisione); CREA – Linee guida per una sana alimentazione', y: 'V revisione; CREA 2018 (verificare edizione in revisione)' },
   'phq': { t: 'Kroenke K, Spitzer RL, Williams JB. The PHQ-9. J Gen Intern Med 2001;16:606-613; Spitzer RL et al. GAD-7. Arch Intern Med 2006;166:1092-1097 (uso libero)', y: '2001; 2006' },
   'audit': { t: 'OMS – AUDIT: The Alcohol Use Disorders Identification Test (2ª ed.); Bush K et al. AUDIT-C. Arch Intern Med 1998;158:1789-1795', y: '2001; 1998' },
   'epds': { t: 'Cox JL, Holden JM, Sagovsky R. Detection of postnatal depression: the Edinburgh Postnatal Depression Scale. Br J Psychiatry 1987;150:782-786 (riproducibile citando la fonte)', y: '1987' },

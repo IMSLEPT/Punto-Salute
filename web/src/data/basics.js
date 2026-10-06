@@ -124,7 +124,7 @@ export default [
       reg: ['Test di Coombs diretto e indiretto cercano anticorpi sui globuli rossi o nel siero ([[gruppo-coombs]]).'],
       val: ['Piastrine 150.000–400.000/µL; leucociti 4.000–10.000/µL; reticolociti 0,5–2%; vedi [[emocromo]].'],
       alt: ['Anemie, policitemia, leucemie, piastrinopenie ([[anemia]], [[piastrinopenie]]); reazioni trasfusionali; sanguinamenti da deficit di fattori.'],
-      inf: ['Identificazione attiva del paziente e della sacca, doppio controllo al letto, osservazione dei primi minuti ([[trasfusione]], [[dm-sangue]]).'],
+      inf: ['Identificazione attiva del paziente e della sacca, doppio controllo al letto, osservazione dei primi minuti ([[trasfusione]], DM 2 novembre 2015 sul sangue e sugli emocomponenti).'],
     }, ['trasfusione', 'emocromo', 'gruppo-coombs', 'emostasi-coagulazione', 'anemia', 'piastrinopenie']),
 
   P('fisiologia-riproduttiva-ciclo', 'Fisiologia dell’apparato riproduttore e ciclo mestruale', ['ciclo mestruale', 'ovulazione', 'fecondazione', 'spermatogenesi', 'ormoni sessuali', 'menarca', 'pubertà', 'sviluppo sessuale'], 'Il ciclo mestruale (circa 28 giorni) è regolato da un dialogo ormonale ipotalamo-ipofisi-ovaio che prepara l’utero a una possibile gravidanza.',
@@ -165,7 +165,7 @@ export default [
       val: ['Il filtrato va stimato (eGFR) e non dedotto dalla sola creatinina.'],
       alt: ['Sindromi geriatriche ([[fragilita-anziano]]), [[delirium]], [[rischio-cadute]], disidratazione, [[incontinenza-urinaria]].'],
       inf: ['Presentazioni **atipiche**: polmonite o infezione urinaria possono manifestarsi con confusione o cadute senza febbre; ascoltare, dare tempo, adattare ambiente (luce, occhiali, protesi).'],
-    }, ['fragilita-anziano', 'delirium', 'rischio-cadute', 'incontinenza-urinaria', 'sarcopenia', 'barthel']),
+    }, ['fragilita-anziano', 'delirium', 'rischio-cadute', 'incontinenza-urinaria', 'barthel']),
 
   P('fisiologia-sensi-vista-udito', 'Fisiologia degli organi di senso: vista, udito, equilibrio', ['occhio', 'retina', 'udito', 'orecchio', 'labirinto', 'equilibrio', 'gusto', 'olfatto', 'tatto', 'riflesso pupillare', 'acuità visiva'], 'Recettori specializzati trasformano luce, suono e movimento in impulsi nervosi; la valutazione di pupille e udito è parte dell’esame neurologico e infermieristico.',
     {
