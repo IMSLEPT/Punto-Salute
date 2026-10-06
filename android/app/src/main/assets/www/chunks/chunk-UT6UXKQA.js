@@ -1,4 +1,4 @@
-import{j as P}from"./chunk-5XOOKLVK.js";import{a as z,b as M}from"./chunk-EX2DZ5LO.js";import{B as S,D as C,d as L,f as u,g as T,s as k}from"./chunk-6P7XPDM3.js";import{c as h,e as c,f as l,g as E,i as w}from"./chunk-IEL7MKNV.js";function m(a,e="",s={}){let t=u[a.type],v=e?M(a.title,e):c(a.title),d=s.sub??C(a.summary||"");return`<button class="item" data-go="${S(a)}">
+import{j as P}from"./chunk-ANUMQYKE.js";import{a as z,b as M}from"./chunk-FL3EBUDH.js";import{B as S,D as C,d as L,f as u,g as T,s as k}from"./chunk-X262WRGD.js";import{c as h,e as c,f as l,g as E,i as w}from"./chunk-DWGLXEXU.js";function m(a,e="",s={}){let t=u[a.type],v=e?M(a.title,e):c(a.title),d=s.sub??C(a.summary||"");return`<button class="item" data-go="${S(a)}">
     <div class="tile-ic sm" style="--c:var(${t.c})">${l(s.icon||t.icon)}</div>
     <div class="grow"><div class="t">${v}</div>${d?`<div class="d">${c(d)}</div>`:""}</div>
     ${s.badge?`<span class="badge" style="--c:var(${t.c})">${c(s.badge)}</span>`:""}

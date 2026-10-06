@@ -85,3 +85,15 @@ non riprodurre testi protetti (NANDA-I/NIC/NOC, scale con copyright: parafrasare
 - Test nuovi da lanciare: `node tests/kit.mjs && node tests/kit-ui.mjs && node tests/assistant.mjs && node tests/cases.mjs`.
 - **Infografiche illustrate** (`kit/infographic.js`, `kit/picto.js`, `kit/illus.js`): 4ª scheda della pagina Genera. 3 impaginazioni (colonne / griglia / figura al centro), 3 temi, pittogrammi per voce (regole su parole chiave → icone Lucide), figura SVG della scheda o istantanea 3D scelta, e **organi reali dai modelli 3D** (BodyParts3D CC BY 4.0): `scene.portrait()` rende fuori schermo PNG trasparenti degli organi collegati (`anatomyOf`: anat con `mesh` in `rel`/vicini) e una vista "Dove" nel corpo; scarta strutture sottili (vasi/nervi) per copertura < 8,5%. Nessuna immagine generata da AI: testi e immagini derivano dalle schede/modelli (scelta voluta per l'affidabilità clinica; un'eventuale generazione AI online sarebbe separata e marcata come non verificata). Test: `tests/kit.mjs` (tutte le schede × 3 stili), `tests/kit-ui.mjs`.
 - `PS_OUT=/tmp/x node build.mjs` costruisce in un'altra cartella (utile per provare mentre girano altri test su `www`).
+
+## v1.4.0 – Ampliamento contenuti e debug (2026-10-06)
+- Schede: 663 → **874**. Nuovi file dati: `pathologies5..11.js` (IST, infettive, cardio, respiratorie, neuro, endocrine, GI, rene, ematologia,
+  oncologia, pediatria, ostetricia/ginecologia, salute mentale/dipendenze, geriatria, cute, traumi/ambiente, occhio, reumatologia),
+  `drugs3.js` (antivirali, PrEP/PEP, antimicotici/antiparassitari, antitubercolari, trombolitici, amine, antidoti, contraccettivi…),
+  `procedures4.js`, `care2.js` (Codice deontologico FNOPI 2025, profilo e normativa, L. 24/2017 + DDL riforma in esame, L. 219/2017,
+  privacy, contenzione, TSO, rischio clinico, sicurezza operatore, isolamento, calendario vaccinale PNPV prorogato al 31/12/2026,
+  contraccezione, DM 77/2022, cure palliative), `emergencies2.js`, `exams3.js`, `scales3.js` (15 scale), `terms2.js`, `schemi2.js`.
+- Specialità nuove: ginecologia-ostetricia, pediatria, oncologia, psichiatria. Fonti: 103 chiavi.
+- Fix: ricerca (il token originale resta alternativo alla correzione refusi); export PDF/PNG in /genera usa una copia locale del
+  documento (prima un cambio di tipo durante l'attesa passava una mappa a summaryToPdf → TypeError) e rigenera se si cambia tipo durante una generazione.
+- Feed rigenerato (`web/feed/feed.json`, appVersion 1.4.0, novità "v14"): va ripubblicato nel repo del feed (non accessibile da questa sessione).

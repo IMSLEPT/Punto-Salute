@@ -1,6 +1,34 @@
 {
   "notices": [
-    { "id": "2026-10-05-audit", "date": "2026-10-05", "title": "Edizioni delle fonti verificate", "text": "Verificate le edizioni correnti: ERC 2025, Surviving Sepsis Campaign 2026, AHA/ASA ictus 2026, GOLD 2026, GINA 2026, ADA 2026, ESC AF/ipertensione 2024, CLSI PRE02 (ex GP41), NPIAP 4ª ed. Le schede interessate sono state aggiornate nella versione 1.1.", "rel": ["sepsi", "ictus", "asma", "bpco", "diabete-mellito", "bls"] }
+    {
+      "id": "2026-10-06-v14",
+      "date": "2026-10-06",
+      "title": "Versione 1.4: oltre 200 nuove schede",
+      "text": "Aggiunte infezioni sessualmente trasmesse (con PrEP/PEP e dati ISS 2024), oncologia, pediatria, ostetricia, salute mentale e dipendenze, cardiologia, neurologia, ematologia, nuovi farmaci (senza posologie), normativa (Codice deontologico FNOPI 2025, L. 24/2017 e DDL di riforma in esame, L. 219/2017, DM 77/2022), calendario vaccinale (PNPV prorogato al 31/12/2026), nuove procedure, emergenze (PBLS, politrauma, intossicazioni) e scale (PHQ-9, CIWA-Ar, Wells, CHA₂DS₂-VA, Conley).",
+      "rel": [
+        "ist-panoramica",
+        "prep-pep-hiv",
+        "calendario-vaccinale",
+        "codice-deontologico",
+        "responsabilita-professionale",
+        "tumori-solidi",
+        "pbls"
+      ]
+    },
+    {
+      "id": "2026-10-05-audit",
+      "date": "2026-10-05",
+      "title": "Edizioni delle fonti verificate",
+      "text": "Verificate le edizioni correnti: ERC 2025, Surviving Sepsis Campaign 2026, AHA/ASA ictus 2026, GOLD 2026, GINA 2026, ADA 2026, ESC AF/ipertensione 2024, CLSI PRE02 (ex GP41), NPIAP 4ª ed. Le schede interessate sono state aggiornate nella versione 1.1.",
+      "rel": [
+        "sepsi",
+        "ictus",
+        "asma",
+        "bpco",
+        "diabete-mellito",
+        "bls"
+      ]
+    }
   ],
   "alerts": {}
 }

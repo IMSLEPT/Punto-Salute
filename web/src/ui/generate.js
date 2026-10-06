@@ -53,7 +53,7 @@ export function renderGenerate(root, id, query = {}) {
   if (query.s) st.seed[kind] = (parseInt(query.s, 10) || 1);
   let cur = null;   // ultimo risultato generato per tipo
   const made = {};
-  let busy = false;
+  let busy = false, again = false;
 
   const t = TYPES[e0.type];
   root.innerHTML = `<div class="page genpage" style="--c:var(${t.c})">
@@ -74,8 +74,10 @@ export function renderGenerate(root, id, query = {}) {
   };
 
   const generate = async () => {
-    if (busy) return;
+    if (busy) { again = true; return; }   // richiesta arrivata durante una generazione: la ripeto alla fine
     busy = true;
+    cur = null;
+    if ($('#gdl', root)) drawDownloads();
     const out = $('#gout', root);
     out.innerHTML = `<div class="gwait"><div class="spin"></div><span>Preparo ${kindSpec().label.toLowerCase()}…</span></div>`;
     await new Promise((r) => setTimeout(r, 30));
@@ -110,6 +112,7 @@ export function renderGenerate(root, id, query = {}) {
     }
     if ($('#gdl', root)) drawDownloads();
     busy = false;
+    if (again && $('#gout', root)) { again = false; generate(); }
   };
 
   const drawDownloads = () => {
@@ -123,12 +126,15 @@ export function renderGenerate(root, id, query = {}) {
 
   const run = async (what) => {
     const k = kindSpec().id;
-    if (!cur) return;
+    if (!cur || busy) return;
+    // durante il cambio di scheda "cur" può riferirsi ancora al tipo precedente: non esportare un documento incoerente
+    if ((k === 'riassunto') !== (cur.kind === 'riassunto') || (k !== 'riassunto' && !cur.svg)) return;
+    const doc = cur;   // copia locale: durante le attese l'utente può cambiare tipo e "cur" cambierebbe
     const e = get(id);
     const base = safeName(e.title);
     try {
       if (k === 'riassunto') {
-        if (what === 'share') { shareText(e.title + ' — riassunto', summaryToText(cur)); return; }
+        if (what === 'share') { shareText(e.title + ' — riassunto', summaryToText(doc)); return; }
         let images = [];
         if (what === 'all') {
           toast('Preparo il PDF completo…');
@@ -136,17 +142,17 @@ export function renderGenerate(root, id, query = {}) {
           const s = buildScheme(e, { style: st.style[2], seed: st.seed[2] });
           images = [await toJpegBytes(m.svg, m.w, m.h, 1.4), await toJpegBytes(s.svg, s.w, s.h, 1.4)];
         }
-        const bytes = summaryToPdf(cur, images);
+        const bytes = summaryToPdf(doc, images);
         const r = await saveFile(`${base}-riassunto.pdf`, new Blob([bytes], { type: 'application/pdf' }));
         toast(r.ok ? (r.msg || 'PDF salvato') : `Salvataggio non riuscito: ${r.msg}`);
       } else {
         const suffix = { mappa: 'mappa-concettuale', schema: 'schema', infografica: 'infografica' }[k];
         if (what === 'png' || what === 'share') {
-          const blob = await toPng(cur.svg, cur.w, cur.h, 2);
+          const blob = await toPng(doc.svg, doc.w, doc.h, 2);
           const r = await saveFile(`${base}-${suffix}.png`, blob, { share: what === 'share' });
           toast(r.ok ? (r.msg || 'Immagine salvata') : `Salvataggio non riuscito: ${r.msg}`);
         } else if (what === 'pdf') {
-          const im = await toJpegBytes(cur.svg, cur.w, cur.h, 1.8);
+          const im = await toJpegBytes(doc.svg, doc.w, doc.h, 1.8);
           const bytes = imageToPdf(`${e.title} - ${suffix}`, im);
           const r = await saveFile(`${base}-${suffix}.pdf`, new Blob([bytes], { type: 'application/pdf' }));
           toast(r.ok ? (r.msg || 'PDF salvato') : `Salvataggio non riuscito: ${r.msg}`);

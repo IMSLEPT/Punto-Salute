@@ -1,9 +1,185 @@
 {
  "schema": 2,
- "generated": "2026-10-05",
- "appVersion": "1.2.3",
+ "generated": "2026-10-06",
+ "appVersion": "1.4.0",
  "disabled": false,
  "sources": {
+  "phq": {
+   "t": "Kroenke K, Spitzer RL, Williams JB. The PHQ-9. J Gen Intern Med 2001;16:606-613; Spitzer RL et al. GAD-7. Arch Intern Med 2006;166:1092-1097 (uso libero)",
+   "y": "2001; 2006"
+  },
+  "audit": {
+   "t": "OMS – AUDIT: The Alcohol Use Disorders Identification Test (2ª ed.); Bush K et al. AUDIT-C. Arch Intern Med 1998;158:1789-1795",
+   "y": "2001; 1998"
+  },
+  "epds": {
+   "t": "Cox JL, Holden JM, Sagovsky R. Detection of postnatal depression: the Edinburgh Postnatal Depression Scale. Br J Psychiatry 1987;150:782-786 (riproducibile citando la fonte)",
+   "y": "1987"
+  },
+  "ciwa": {
+   "t": "Sullivan JT et al. Assessment of alcohol withdrawal: the revised Clinical Institute Withdrawal Assessment for Alcohol scale (CIWA-Ar). Br J Addict 1989;84:1353-1357",
+   "y": "1989"
+  },
+  "wells": {
+   "t": "Wells PS et al. – Regole di predizione clinica per TVP (Lancet 1997; NEJM 2003) ed embolia polmonare (Thromb Haemost 2000)",
+   "y": "1997–2003"
+  },
+  "cha2ds2": {
+   "t": "ESC 2024 AF Guidelines – punteggio CHA₂DS₂-VA (senza la categoria sesso); Pisters R et al. HAS-BLED. Chest 2010;138:1093-1100",
+   "y": "2024; 2010"
+  },
+  "childpugh": {
+   "t": "Pugh RN et al. Transection of the oesophagus for bleeding oesophageal varices. Br J Surg 1973;60:646-649 (classificazione di Child-Turcotte-Pugh)",
+   "y": "1973"
+  },
+  "ecog": {
+   "t": "Oken MM et al. Toxicity and response criteria of the Eastern Cooperative Oncology Group. Am J Clin Oncol 1982;5:649-655",
+   "y": "1982"
+  },
+  "cpot": {
+   "t": "Gélinas C et al. Validation of the Critical-Care Pain Observation Tool in adult patients. Am J Crit Care 2006;15:420-427",
+   "y": "2006"
+  },
+  "norton": {
+   "t": "Norton D, McLaren R, Exton-Smith AN. An investigation of geriatric nursing problems in hospital. 1962 (scala di Norton)",
+   "y": "1962"
+  },
+  "conley": {
+   "t": "Conley D, Schultz AA, Selvin R. The challenge of predicting patients at risk for falling. MEDSURG Nurs 1999;8:348-354 (versione italiana validata)",
+   "y": "1999"
+  },
+  "bristol": {
+   "t": "Lewis SJ, Heaton KW. Stool form scale as a useful guide to intestinal transit time. Scand J Gastroenterol 1997;32:920-924",
+   "y": "1997"
+  },
+  "esmo": {
+   "t": "ESMO – Clinical Practice Guidelines (oncologia) ed ESMO/MASCC (terapia di supporto)",
+   "y": "edizioni correnti"
+  },
+  "esicm-ards": {
+   "t": "ESICM – Guidelines on acute respiratory distress syndrome (2023) e nuova definizione globale di ARDS (ATS 2024)",
+   "y": "2023–2024"
+  },
+  "easl": {
+   "t": "EASL – Clinical Practice Guidelines (malattie del fegato)",
+   "y": "edizioni correnti"
+  },
+  "sip-ped": {
+   "t": "Società Italiana di Pediatria (SIP) – Linee guida e documenti di consenso (es. gestione della febbre, bronchiolite, disidratazione)",
+   "y": "edizioni correnti"
+  },
+  "who-mnh": {
+   "t": "OMS – Raccomandazioni per la salute materna e neonatale (cure prenatali, parto, emorragia post partum 2023–2025, allattamento)",
+   "y": "edizioni correnti"
+  },
+  "ean": {
+   "t": "European Academy of Neurology (EAN) e linee guida neurologiche internazionali (es. EAN/PNS Guillain-Barré 2023)",
+   "y": "edizioni correnti"
+  },
+  "esc-ld": {
+   "t": "ESC/EAS – Guidelines for the management of dyslipidaemias (aggiornamento mirato 2025)",
+   "y": "2019, agg. 2025"
+  },
+  "mds-salute-mentale": {
+   "t": "Ministero della Salute – Salute mentale, prevenzione del suicidio, dipendenze (relazioni al Parlamento) e Raccomandazione n. 4 (suicidio in ospedale)",
+   "y": "edizioni correnti"
+  },
+  "iss-ist": {
+   "t": "Istituto Superiore di Sanità – Sistema di sorveglianza sentinella delle Infezioni Sessualmente Trasmesse (Centro Operativo AIDS), Notiziario ISS",
+   "y": "rapporto 2026 con dati al 2024"
+  },
+  "who-sti": {
+   "t": "OMS – Raccomandazioni aggiornate per il trattamento di gonorrea, clamidia e sifilide (2024); linee guida sulle IST asintomatiche e sull’erogazione dei servizi (2025)",
+   "y": "2024–2025"
+  },
+  "cdc-sti": {
+   "t": "CDC – Sexually Transmitted Infections Treatment Guidelines; linee guida Doxy-PEP (MMWR RR 2024)",
+   "y": "2021, agg. 2024"
+  },
+  "ecdc": {
+   "t": "ECDC – European Centre for Disease Prevention and Control: sorveglianza e indicazioni (IST, malattie prevenibili, resistenze)",
+   "y": "edizione corrente"
+  },
+  "mds-pnpv": {
+   "t": "Ministero della Salute – Piano Nazionale Prevenzione Vaccinale (PNPV) 2023–2025 e Calendario vaccinale",
+   "y": "prorogato al 31 dicembre 2026"
+  },
+  "mds-mpox": {
+   "t": "Ministero della Salute – Circolari su Mpox (sorveglianza, gestione, vaccinazione con MVA-BN)",
+   "y": "2022–2024, verificare aggiornamenti"
+  },
+  "mds-hiv": {
+   "t": "Ministero della Salute / AIFA – PrEP per HIV a carico del SSN (orale dal 2023; formulazione long-acting 2026) e Linee guida italiane sull’uso dei farmaci antiretrovirali",
+   "y": "2023–2026"
+  },
+  "fnopi-cd": {
+   "t": "FNOPI – Codice deontologico delle professioni infermieristiche",
+   "y": "2025 (approvato dal Consiglio nazionale il 21/02/2025, presentato al Congresso di Rimini a marzo 2025)"
+  },
+  "norme-prof": {
+   "t": "Normativa della professione infermieristica: DM 739/1994 (profilo), L. 42/1999, L. 251/2000, L. 43/2006, L. 3/2018 (Ordini)",
+   "y": "testi vigenti"
+  },
+  "l24-2017": {
+   "t": "Legge 8 marzo 2017, n. 24 (Gelli-Bianco) – sicurezza delle cure e responsabilità professionale; DDL delega di riforma delle professioni sanitarie e della responsabilità (in esame parlamentare 2025–2026)",
+   "y": "2017; riforma in corso"
+  },
+  "l219-2017": {
+   "t": "Legge 22 dicembre 2017, n. 219 – Consenso informato e disposizioni anticipate di trattamento (DAT)",
+   "y": "2017"
+  },
+  "l38-2010": {
+   "t": "Legge 15 marzo 2010, n. 38 – Accesso alle cure palliative e alla terapia del dolore",
+   "y": "2010"
+  },
+  "dm77-2022": {
+   "t": "DM 23 maggio 2022, n. 77 – Modelli e standard per l’assistenza territoriale (Case della Comunità, infermiere di famiglia e di comunità)",
+   "y": "2022"
+  },
+  "dlgs81": {
+   "t": "D.Lgs. 81/2008 (sicurezza sul lavoro) e D.Lgs. 19/2014 (prevenzione delle ferite da taglienti nel settore sanitario)",
+   "y": "testi vigenti"
+  },
+  "gdpr": {
+   "t": "Regolamento UE 2016/679 (GDPR) e D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018",
+   "y": "testi vigenti"
+  },
+  "iss-snlg": {
+   "t": "Istituto Superiore di Sanità – Sistema Nazionale Linee Guida (SNLG): es. emorragia post partum, gravidanza fisiologica, diabete gestazionale",
+   "y": "edizioni correnti"
+  },
+  "apa-dsm": {
+   "t": "American Psychiatric Association – DSM-5-TR, Manuale diagnostico e statistico dei disturbi mentali",
+   "y": "2022"
+  },
+  "esc-endocard": {
+   "t": "ESC – Guidelines for the management of endocarditis",
+   "y": "2023"
+  },
+  "esc-valv": {
+   "t": "ESC/EACTS – Guidelines for the management of valvular heart disease",
+   "y": "2025"
+  },
+  "esc-pad": {
+   "t": "ESC – Guidelines for the management of peripheral arterial and aortic diseases",
+   "y": "2024"
+  },
+  "esc-pericard": {
+   "t": "ESC – Guidelines for the management of myocarditis and pericarditis",
+   "y": "2025"
+  },
+  "esc-sincope": {
+   "t": "ESC – Guidelines for the diagnosis and management of syncope",
+   "y": "2018"
+  },
+  "idsa-cdiff": {
+   "t": "IDSA/SHEA – Clinical Practice Guideline: Clostridioides difficile infection (focused update)",
+   "y": "2021"
+  },
+  "eaco": {
+   "t": "EAPC / SICP – Raccomandazioni sulle cure palliative (European Association for Palliative Care; Società Italiana di Cure Palliative)",
+   "y": "edizioni correnti"
+  },
   "textbooks": {
    "t": "Testi universitari di riferimento (es. Brunner & Suddarth – Infermieristica medico-chirurgica; Potter & Perry – Fondamenti di infermieristica; Harrison – Principi di medicina interna; Guyton & Hall – Fisiologia medica)",
    "y": "consultare l’edizione in adozione"
@@ -242,6 +418,21 @@
   }
  },
  "notices": [
+  {
+   "id": "2026-10-06-v14",
+   "date": "2026-10-06",
+   "title": "Versione 1.4: oltre 200 nuove schede",
+   "text": "Aggiunte infezioni sessualmente trasmesse (con PrEP/PEP e dati ISS 2024), oncologia, pediatria, ostetricia, salute mentale e dipendenze, cardiologia, neurologia, ematologia, nuovi farmaci (senza posologie), normativa (Codice deontologico FNOPI 2025, L. 24/2017 e DDL di riforma in esame, L. 219/2017, DM 77/2022), calendario vaccinale (PNPV prorogato al 31/12/2026), nuove procedure, emergenze (PBLS, politrauma, intossicazioni) e scale (PHQ-9, CIWA-Ar, Wells, CHA₂DS₂-VA, Conley).",
+   "rel": [
+    "ist-panoramica",
+    "prep-pep-hiv",
+    "calendario-vaccinale",
+    "codice-deontologico",
+    "responsabilita-professionale",
+    "tumori-solidi",
+    "pbls"
+   ]
+  },
   {
    "id": "2026-10-05-audit",
    "date": "2026-10-05",

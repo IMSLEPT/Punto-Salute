@@ -95,6 +95,8 @@ export function search(q, { types = null, limit = 80 } = {}) {
     return best && bd <= max ? best : tk;
   });
   const groups = expand(fixed);
+  // il token originale resta come alternativa: la correzione dei refusi non deve far perdere corrispondenze nel testo
+  fixed.forEach((f, i) => { if (f !== tokens[i] && !groups[i].includes(tokens[i])) groups[i].push(tokens[i]); });
   const res = [];
   for (const rec of IDX) {
     if (types && !types.includes(rec.e.type)) continue;
