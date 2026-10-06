@@ -37,9 +37,9 @@ for (const e of ALL) {
 }
 for (const [id, from] of [...dang].sort()) console.log(`DANGLING ${id}  <- ${[...from].slice(0, 4).join(', ')}${from.size > 4 ? '…' : ''}`);
 // quiz e casi
-const qb = (await import(pathToFileURL(path.join(D, 'quizbank.js')).href)).default;
+const qb = [...(await import(pathToFileURL(path.join(D, 'quizbank.js')).href)).default, ...(await import(pathToFileURL(path.join(D, 'quizbank2.js')).href)).default];
 const cs = (await import(pathToFileURL(path.join(D, 'cases.js')).href)).default;
-for (const q of qb) { if (q.o.length !== 4) E('quiz: opzioni != 4: ' + q.q); for (const r of q.rel) if (!ids.has(r)) E(`quiz: id inesistente ${r}`); }
+for (const q of qb) { if (q.o.length !== 4 || new Set(q.o).size !== 4) E('quiz: opzioni != 4 o duplicate: ' + q.q); for (const r of q.rel) if (!ids.has(r)) E(`quiz: id inesistente ${r}`); }
 for (const c of cs) for (const r of c.rel) if (!ids.has(r)) E(`caso ${c.id}: id inesistente ${r}`);
 console.log(`quiz scritti a mano: ${qb.length}, casi: ${cs.length}`);
 // mesh 3D -> schede

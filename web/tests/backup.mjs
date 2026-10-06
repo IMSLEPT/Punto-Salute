@@ -66,7 +66,7 @@ await page.setInputFiles('#bkpick', '/tmp/junk.json'); await page.waitForTimeout
 ok(/non è un backup/.test(await page.textContent('#bkst')), 'file estraneo rifiutato');
 const tampered = JSON.parse(fs.readFileSync('/tmp/backup_enc.json', 'utf8')); tampered.ct = tampered.ct.slice(0, -8) + 'AAAAAAAA';
 fs.writeFileSync('/tmp/tampered.json', JSON.stringify(tampered));
-await page.setInputFiles('#bkpick', '/tmp/tampered.json'); await page.waitForSelector('#bkpw2'); await page.fill('#bkpw2', 'password-di-prova'); await page.click('.modal [data-yes]'); await page.waitForTimeout(500);
+await page.setInputFiles('#bkpick', '/tmp/tampered.json'); await page.waitForSelector('#bkpw2'); await page.fill('#bkpw2', 'password-di-prova'); await page.click('.modal [data-yes]'); await page.waitForFunction(() => /Password errata o file danneggiato/.test(document.querySelector('#bkst')?.textContent || ''), null, { timeout: 8000 }).catch(() => {});
 ok(/Password errata o file danneggiato/.test(await page.textContent('#bkst')), 'file manomesso rilevato (GCM)');
 const evil = { format: 'punto-salute-backup', v: 1, enc: 'none', payload: { app: 'punto-salute-backup', v: 1, data: { '__proto__': { x: 1 }, 'a b': 1, favs: ['evil'], '../x': 2 } } };
 fs.writeFileSync('/tmp/evil.json', JSON.stringify(evil));

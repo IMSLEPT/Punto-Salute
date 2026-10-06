@@ -20,6 +20,7 @@ import './viz/devices.js';
 import './viz/schemi.js';
 import { renderScales, renderScale, renderCalcHub, renderCalc } from './ui/tools.js';
 import { renderAssistenza, renderPlans, renderPlan } from './ui/assistenza.js';
+import { renderUniversita } from './ui/universita.js';
 import { renderStudio, renderQuiz, renderExam, renderFlash } from './ui/studio.js';
 import { renderCases, renderCase } from './ui/cases.js';
 import { renderGlossary, renderSpec, renderSources } from './ui/more.js';
@@ -120,6 +121,7 @@ R('/schemi', (r) => renderTypeList(r, { types: ['schema'], module: 'schemi', gro
 R('/glossario', (r) => renderGlossary(r));
 R('/fonti', (r) => renderSources(r));
 R('/assistenza', (r) => renderAssistenza(r));
+R('/universita', (r) => renderUniversita(r));
 R('/assistenza/piano', (r) => renderPlans(r));
 R('/assistenza/piano/:id', (r, { params }) => renderPlan(r, params.id));
 R('/studio', (r) => renderStudio(r));

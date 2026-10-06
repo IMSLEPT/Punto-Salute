@@ -13,6 +13,7 @@ import pathologies8 from '../data/pathologies8.js';
 import pathologies9 from '../data/pathologies9.js';
 import pathologies10 from '../data/pathologies10.js';
 import pathologies11 from '../data/pathologies11.js';
+import pathologies12 from '../data/pathologies12.js';
 import extras from '../data/extras.js';
 import university from '../data/university.js';
 import human from '../data/human.js';
@@ -50,7 +51,7 @@ import { SOURCES } from '../data/sources.js';
 import FIGMAP from '../data/figmap.js';
 import { applyStoredPatches } from './patches.js';
 
-export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, pathologies4, pathologies5, pathologies6, pathologies7, pathologies8, pathologies9, pathologies10, pathologies11, procedures, procedures2, procedures3, procedures4, devices, tubes, exams, exams2, exams3, drugs, drugs2, drugs3, care, care2, ndx, scales, scales2, scales3, scales4, clinical3, calcs, emergencies, emergencies2, specs, terms, terms2, glossary, extras, basics, human, university, schemi, schemi2);
+export const ALL = [].concat(anatomy, physiology, pathologies, pathologies2, pathologies3, pathologies4, pathologies5, pathologies6, pathologies7, pathologies8, pathologies9, pathologies10, pathologies11, pathologies12, procedures, procedures2, procedures3, procedures4, devices, tubes, exams, exams2, exams3, drugs, drugs2, drugs3, care, care2, ndx, scales, scales2, scales3, scales4, clinical3, calcs, emergencies, emergencies2, specs, terms, terms2, glossary, extras, basics, human, university, schemi, schemi2);
 export const BY_ID = new Map();
 export const BY_TYPE = {};
 export { SOURCES };

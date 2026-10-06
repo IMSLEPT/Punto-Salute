@@ -8,7 +8,9 @@ import { toast } from '../core/ui.js';
 import { search } from '../core/search.js';
 import { pageHead, DISCLAIMER } from './common.js';
 import { chipFor } from './entity.js';
-import BANK from '../data/quizbank.js';
+import BANK1 from '../data/quizbank.js';
+import BANK2 from '../data/quizbank2.js';
+const BANK = BANK1.concat(BANK2);
 import { caseStats } from './cases.js';
 
 const C = '--c-studio';

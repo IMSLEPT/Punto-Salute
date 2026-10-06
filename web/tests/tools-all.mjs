@@ -18,7 +18,7 @@ for (const e of ALL.filter((x) => x.type === 'scale')) {
   let expect = 0;
   for (const g of e.scale.groups) {
     const i = Math.floor(Math.random() * g.opts.length);
-    await page.evaluate(([id, i]) => document.querySelectorAll(`input[name=${id}]`)[i].click(), [g.id, i]);
+    await page.evaluate(([id, i]) => document.querySelectorAll(`input[name="${id}"]`)[i].click(), [g.id, i]);
     expect += g.opts[i][1];
   }
   await page.waitForTimeout(200);

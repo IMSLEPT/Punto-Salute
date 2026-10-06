@@ -1,6 +1,20 @@
 {
   "notices": [
     {
+      "id": "2026-10-06-v15-universita",
+      "date": "2026-10-06",
+      "title": "Versione 1.5: sezione Università",
+      "text": "Nuova sezione Università con il percorso di laurea in Infermieristica anno per anno (mappa indicativa L/SNT1), scienze di base e fisiologia, scienze umane, etica e diritto, metodologia e inglese, area critica (ventilazione, ECG, anestesia, trapianti), tirocinio e prova finale; nuove scale (NIHSS, Aldrete, CURB-65, GDS-15, Mini-Cog), 247 quiz e nuove patologie. Per l’esame vale il programma del docente.",
+      "rel": [
+        "percorso-laurea",
+        "anno-1-contenuti",
+        "anno-2-contenuti",
+        "anno-3-contenuti",
+        "tirocinio-guida",
+        "prova-finale-abilitazione"
+      ]
+    },
+    {
       "id": "2026-10-06-aggiornamenti",
       "date": "2026-10-06",
       "title": "Novità verificate oggi",

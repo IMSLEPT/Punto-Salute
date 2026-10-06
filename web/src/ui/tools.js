@@ -82,7 +82,7 @@ export function renderScale(root, id) {
       return;
     }
     const groups = e.scale.groups;
-    const vals = groups.map((g) => { const c = $(`input[name=${g.id}]:checked`, root); return c ? +c.value : null; });
+    const vals = groups.map((g) => { const c = $(`input[name="${g.id}"]:checked`, root); return c ? +c.value : null; });
     const done = vals.filter((x) => x !== null).length;
     if (done < groups.length) { out.innerHTML = `<div class="small muted" style="margin-top:12px">Compilate ${done} su ${groups.length} voci</div>`; return; }
     const tot = vals.reduce((a, b) => a + b, 0);

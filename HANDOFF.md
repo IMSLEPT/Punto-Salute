@@ -97,3 +97,17 @@ non riprodurre testi protetti (NANDA-I/NIC/NOC, scale con copyright: parafrasare
 - Fix: ricerca (il token originale resta alternativo alla correzione refusi); export PDF/PNG in /genera usa una copia locale del
   documento (prima un cambio di tipo durante l'attesa passava una mappa a summaryToPdf → TypeError) e rigenera se si cambia tipo durante una generazione.
 - Feed rigenerato (`web/feed/feed.json`, appVersion 1.4.0, novità "v14"): va ripubblicato nel repo del feed (non accessibile da questa sessione).
+
+## v1.5.0 – Sezione Università e aggiornamenti verificati (2026-10-06)
+- Schede: 874 → **951**; quiz scritti a mano 59 → **247** (`quizbank2.js`, registrato in `ui/studio.js` e `tools/validate.mjs`); scale 32 → 37.
+- Nuovi file dati: `basics.js` (scienze di base e fisiologia), `human.js` (scienze umane, etica, diritto, management, SSN, igiene, microbiologia, patologia generale,
+  EBP, inglese, informatica, terminologia, sigle, farmacologia generale, nutrizione, violenza), `university.js` (percorso di laurea, mappe anno 1/2/3, tirocinio,
+  prova finale, dopo la laurea), `clinical3.js` (ventilazione, terapia intensiva, anestesia, monitoraggio emodinamico, ECG, trapianti, ECMO, esame obiettivo, calcoli, neonato, distocia di spalla, vertigini),
+  `pathologies12.js`, `scales4.js` (NIHSS, Aldrete, CURB-65, GDS-15, Mini-Cog).
+- UI: nuova pagina `/universita` (`ui/universita.js`) con tile in Home; la ricerca tiene il token originale oltre alla correzione dei refusi.
+- **Aggiornamento dei contenuti**: il piano di studi ufficiale UniFI (www.infermieristica.unifi.it) NON è raggiungibile dalla sessione (egress bloccato): la mappa segue la classe L/SNT1 e va
+  confrontata con il Manifesto degli studi. Il feed è controllato dall'app a ogni apertura (max ogni 6 ore); la routine di Claude Code è ora **settimanale** (lunedì ~06:17 Roma),
+  cerca novità degli ultimi 7-10 giorni e **ripubblica il feed** su IMSLEPT/punto-salute-feed (raggiungibile con add_repo, access push).
+- Novità verificate il 6/10/2026 (come avvisi nel feed, testo schede da rivedere): ESC 2026 scompenso cardiaco (28/8/2026) e Quinta Definizione Universale di infarto; OMS doxy-PEP (05/2026);
+  PNPV prorogato al 31/12/2026 e PNP 2026–2031 (05/2026); DDL responsabilità professionale approvato dalla Camera il 28/1/2026, ora al Senato.
+- `tests/crawl.mjs`: su `/e/percorso-laurea` segnala "rotta-diversa" perché fa `.click()` su link dentro sezioni chiuse; con clic reali (Playwright) i link funzionano: artefatto del crawler.

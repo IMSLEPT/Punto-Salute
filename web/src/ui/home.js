@@ -19,6 +19,7 @@ const BOARD = {
   scale: { name: 'Scale', sub: 'Valutazioni e strumenti clinici' },
 };
 
+export const UNIVERSITA = { id: 'universita', route: '/universita', name: 'Università', sub: 'Percorso di laurea, materie e tirocinio', icon: 'graduation-cap', c: '--c-studio' };
 export const STUDIO = { id: 'studio', route: '/studio', name: 'Modalità studio', sub: 'Quiz, flashcard e casi clinici', icon: 'graduation-cap', c: '--c-studio' };
 
 export function logoImg(cls = 'lg') { return `<img class="${cls}" src="${logoUrl}" alt="Punto Salute" width="46" height="54">`; }
@@ -66,7 +67,7 @@ export function openNews() {
 export function renderHome(root) {
   const mods = Object.fromEntries(MODULES.map((m) => [m.id, m]));
   const top = ['anatomia', 'patologie', 'procedure', 'scale'].map((id) => mods[id]);
-  const rest = ['assistente', 'assistenza', 'provette', 'dispositivi', 'specialistiche', 'emergenze', 'terminologia'].map((id) => mods[id]).concat([STUDIO]);
+  const rest = ['assistente', 'assistenza', 'provette', 'dispositivi', 'specialistiche', 'emergenze', 'terminologia'].map((id) => mods[id]).concat([UNIVERSITA, STUDIO]);
 
   const rec = recents.list().map(get).filter(Boolean);
   const cont = rec.find((e) => !['term', 'sign'].includes(e.type) && sectionProgress(e.id) < 100) || rec[0] || get('braden') || BY_TYPE.scale?.[0];
