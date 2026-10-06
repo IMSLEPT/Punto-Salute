@@ -5,6 +5,7 @@ import { TYPES, MODULES } from '../core/types.js';
 import { plain } from '../core/text.js';
 import { pageHead, itemRow, listOf, DISCLAIMER } from './common.js';
 import { CONTENT_VERSION, REVISION } from './entity.js';
+import { updates } from '../core/updates.js';
 
 export function renderGlossary(root) {
   const m = MODULES.find((x) => x.id === 'terminologia');
@@ -70,7 +71,7 @@ export function renderSources(root) {
     ${pageHead({ title: 'Fonti e licenze', sub: `Contenuti v${CONTENT_VERSION} · revisione ${REVISION}`, icon: 'library', c: '--c-terminologia' })}
     <div class="callout warn">${icon('triangle-alert')}<div><b>Uso didattico.</b> Punto Salute non sostituisce linee guida, protocolli aziendali, prescrizioni mediche né il giudizio clinico. Ogni scheda riporta fonti, versione e data di revisione: verifica sempre la versione ufficiale in vigore e il protocollo della tua struttura.</div></div>
     <div class="callout note">${icon('info')}<div><b>Materiale protetto.</b> Le classificazioni NANDA-I, NIC e NOC sono marchi e opere protette: l’app riporta solo titoli indicativi, senza definizioni, codici né attività ufficiali. Le scale di valutazione sono parafrasate: verifica licenza e versione.</div></div>
-    <div class="callout ok">${icon('circle-check')}<div><b>Edizioni verificate il 5 ottobre 2026</b> sui siti ufficiali delle società scientifiche (ERC 2025, Surviving Sepsis Campaign 2026, AHA/ASA ictus 2026, GOLD 2026, GINA 2026, ADA 2026, ESC 2023–2024, NPIAP 4ª ed.). Le linee guida cambiano: dove l’edizione non è indicata come definitiva, controlla sempre la versione in vigore.</div></div>
+    <div class="callout ok">${icon('circle-check')}<div><b>Edizioni verificate il 6 ottobre 2026</b> (ERC 2025, Surviving Sepsis Campaign 2026, AHA/ASA ictus 2026, GOLD 2026, GINA 2026, ADA 2026, ESC 2023–2026, OMS IST 2026, NPIAP 4ª ed., Ministero della Salute e AIFA). ${(() => { const g = (updates.feed() || {}).generated; return g ? `Ultimo aggiornamento scaricato dal feed: <b>${esc(g)}</b>.` : 'Gli aggiornamenti arrivano dal feed quando il telefono è online.'; })()} Le linee guida cambiano: dove l’edizione non è indicata come definitiva, controlla sempre la versione in vigore.</div></div>
     <div><div class="sec-title"><h2>Fonti di riferimento</h2></div><div class="list">${all.map(([k, s]) => `<div class="item" style="align-items:flex-start"><div class="grow"><div class="t" style="font-weight:600">${esc(s.t)}</div><div class="d">${esc(s.y || '')}</div></div></div>`).join('')}</div></div>
     <div><div class="sec-title"><h2>Licenze e attribuzioni</h2></div><div class="list">${LICENSES.map(([t, d]) => `<div class="item" style="align-items:flex-start"><div class="grow"><div class="t" style="font-weight:600">${esc(t)}</div><div class="d">${esc(d)}</div></div></div>`).join('')}</div></div>
     <div class="small muted">Punto Salute funziona interamente offline e non raccoglie dati. Note, preferiti, piani e progressi restano sul dispositivo.</div></div>`;

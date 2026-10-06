@@ -7,7 +7,7 @@ import { BY_ID } from './data.js';
 import { validatePatches } from './patches.js';
 
 export const DEFAULT_FEED = 'https://raw.githubusercontent.com/IMSLEPT/punto-salute-feed/main/feed.json';
-const DAY = 86400000;
+const DAY = 6 * 3600000;   // controllo del feed al massimo ogni 6 ore (al lancio dell'app)
 const isStr = (x, n) => typeof x === 'string' && x.length <= n;
 
 export const updates = {
@@ -60,7 +60,7 @@ window.__psFeed = (ok, body) => {
   try { p.resolve(JSON.parse(body)); } catch { p.reject(new Error('risposta non valida')); }
 };
 
-/** Scarica il feed (al massimo una volta al giorno se non forzato). Se cambiano le patch, l'app si ricarica per applicarle. */
+/** Scarica il feed (al massimo ogni 6 ore se non forzato). Se cambiano le patch, l'app si ricarica per applicarle. */
 export function checkUpdates({ force = false } = {}) {
   const c = updates.cfg();
   if (!force && (!c.on || Date.now() - c.last < DAY)) return Promise.resolve(null);

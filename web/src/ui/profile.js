@@ -37,7 +37,7 @@ export function renderProfile(root) {
 
     <div class="card pad stack">
       <h3>Aggiornamento automatico dei contenuti</h3>
-      <p class="small muted">L’app controlla una volta al giorno (solo in lettura, senza inviare dati) se ci sono <b>nuove edizioni delle fonti, avvisi e correzioni al testo delle schede</b>. Le schede aggiornate mostrano data, motivo e fonte. Le modifiche sono automatiche e <b>non sono riviste da un clinico</b>: verifica sempre la fonte ufficiale.</p>
+      <p class="small muted">L’app controlla ogni volta che la apri, al massimo ogni 6 ore (solo in lettura, senza inviare dati) se ci sono <b>nuove edizioni delle fonti, avvisi e correzioni al testo delle schede</b>. Le schede aggiornate mostrano data, motivo e fonte. Le modifiche sono automatiche e <b>non sono riviste da un clinico</b>: verifica sempre la fonte ufficiale.</p>
       <label class="row" style="justify-content:space-between"><span>Controlla gli aggiornamenti</span><span class="seg" style="width:130px" id="upd"><button data-v="1" class="${upd.on ? 'on' : ''}">Sì</button><button data-v="0" class="${upd.on ? '' : 'on'}">No</button></span></label>
       <label class="row" style="justify-content:space-between"><span>Applica anche il testo delle schede</span><span class="seg" style="width:130px" id="updtxt"><button data-v="1" class="${upd.text !== false ? 'on' : ''}">Sì</button><button data-v="0" class="${upd.text !== false ? '' : 'on'}">No</button></span></label>
       <div class="row wrap"><button class="btn sm ghost" id="updnow">${icon('rotate-ccw')}Controlla ora</button><button class="btn sm ghost" id="updreset">Ripristina contenuti dell’app</button></div>
@@ -50,7 +50,7 @@ export function renderProfile(root) {
 
     <div class="card pad stack">
       <h3>Dati e privacy</h3>
-      <p class="small muted">Tutti i contenuti funzionano offline. La rete si usa solo per funzioni facoltative: controllo giornaliero degli aggiornamenti (sola lettura, nessun dato inviato) e, <b>solo se li attivi</b>, assistente AI e ricerca web (inviano la tua domanda al servizio scelto). Note, preferiti, piani e progressi restano su questo dispositivo. <b>Non inserire dati identificativi di pazienti reali</b> in note, piani o domande.</p>
+      <p class="small muted">Tutti i contenuti funzionano offline. La rete si usa solo per funzioni facoltative: controllo periodico degli aggiornamenti (sola lettura, nessun dato inviato) e, <b>solo se li attivi</b>, assistente AI e ricerca web (inviano la tua domanda al servizio scelto). Note, preferiti, piani e progressi restano su questo dispositivo. <b>Non inserire dati identificativi di pazienti reali</b> in note, piani o domande.</p>
       <div class="row wrap"><button class="btn sm danger" id="reset">${icon('trash-2')}Cancella dati</button></div>
     </div>
 

@@ -1,6 +1,19 @@
 {
   "notices": [
     {
+      "id": "2026-10-06-aggiornamenti",
+      "date": "2026-10-06",
+      "title": "Novità verificate oggi",
+      "text": "ESC 2026: nuove linee guida sullo scompenso cardiaco e Quinta Definizione Universale di infarto. OMS maggio 2026: prima raccomandazione sulla doxy-PEP. Italia: PNPV prorogato al 31/12/2026 e nuovo Piano della Prevenzione 2026–2031; DDL sulla responsabilità professionale approvato dalla Camera. Le schede interessate riportano un avviso.",
+      "rel": [
+        "scompenso-cardiaco",
+        "infarto-miocardico",
+        "prep-pep-hiv",
+        "calendario-vaccinale",
+        "responsabilita-professionale"
+      ]
+    },
+    {
       "id": "2026-10-06-v14",
       "date": "2026-10-06",
       "title": "Versione 1.4: oltre 200 nuove schede",
@@ -30,5 +43,48 @@
       ]
     }
   ],
-  "alerts": {}
+  "alerts": {
+    "scompenso-cardiaco": [
+      {
+        "d": "2026-10-06",
+        "t": "Il 28/8/2026 l’ESC ha presentato le nuove linee guida sullo scompenso cardiaco (2026): nuova classificazione (scompare la frazione “moderatamente ridotta”: ridotta < 50%, preservata ≥ 50%), stadi A–D e maggiore enfasi su prevenzione, inizio in ospedale degli SGLT2 inibitori dopo stabilizzazione e prima indicazione ai farmaci GLP-1 nell’obesità con frazione preservata. Questa scheda cita ancora la 2021 (agg. 2023): verifica il testo ufficiale.",
+        "s": "ESC – Guidelines for the management of heart failure 2026"
+      }
+    ],
+    "infarto-miocardico": [
+      {
+        "d": "2026-10-06",
+        "t": "Pubblicata la Quinta Definizione Universale di Infarto Miocardico (ESC/ACC/AHA/WHF, 2026): i tipi 1–5 sono sostituiti da infarto primario (anche da dissezione, spasmo o embolia coronarica), secondario (squilibrio domanda-offerta di ossigeno) e correlato a procedura; sono previste soglie di troponina differenziate per sesso. Verifica la definizione aggiornata prima dello studio.",
+        "s": "Fifth Universal Definition of MI 2026"
+      }
+    ],
+    "prep-pep-hiv": [
+      {
+        "d": "2026-10-06",
+        "t": "A maggio 2026 l’OMS ha emesso la prima raccomandazione sulla doxy-PEP (doxiciclina dopo un rapporto a rischio) per uomini che fanno sesso con uomini e donne transgender, con monitoraggio delle resistenze. Lenacapavir (PrEP semestrale) è autorizzato dall’EMA: la disponibilità e la rimborsabilità in Italia vanno verificate con AIFA.",
+        "s": "OMS 05/2026; EMA"
+      }
+    ],
+    "calendario-vaccinale": [
+      {
+        "d": "2026-10-06",
+        "t": "Il PNPV 2023–2025 è prorogato al 31/12/2026 (Stato-Regioni, 18/12/2025) in attesa del nuovo piano; a maggio 2026 è stato approvato il Piano Nazionale della Prevenzione 2026–2031. Consulta sempre il calendario della tua Regione.",
+        "s": "Ministero della Salute; Conferenza Stato-Regioni"
+      }
+    ],
+    "responsabilita-professionale": [
+      {
+        "d": "2026-10-06",
+        "t": "Il DDL delega su professioni sanitarie e responsabilità professionale è stato approvato dalla Camera il 28/1/2026 ed è ora all’esame del Senato: fino all’approvazione definitiva resta in vigore la disciplina attuale.",
+        "s": "Parlamento – DDL 2700"
+      }
+    ],
+    "edema-polmonare-acuto": [
+      {
+        "d": "2026-10-06",
+        "t": "Vedi l’avviso sulla scheda Scompenso cardiaco: le nuove linee guida ESC 2026 modificano classificazione e stadi dello scompenso.",
+        "s": "ESC 2026"
+      }
+    ]
+  }
 }
