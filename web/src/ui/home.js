@@ -22,7 +22,7 @@ const BOARD = {
 export const UNIVERSITA = { id: 'universita', route: '/universita', name: 'Università', sub: 'Percorso di laurea, materie e tirocinio', icon: 'graduation-cap', c: '--c-studio' };
 export const STUDIO = { id: 'studio', route: '/studio', name: 'Modalità studio', sub: 'Quiz, flashcard e casi clinici', icon: 'graduation-cap', c: '--c-studio' };
 
-export function logoImg(cls = 'lg') { return `<img class="${cls}" src="${logoUrl}" alt="Punto Salute" width="46" height="54">`; }
+export function logoImg(cls = 'lg') { return `<img class="${cls}" src="${logoUrl}" alt="Punto Salute" width="84" height="67">`; }
 
 export function wordmark() { return `<div class="wordmark">Punto <b>Salute</b></div>`; }
 
