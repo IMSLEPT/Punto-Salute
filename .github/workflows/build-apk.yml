@@ -54,6 +54,8 @@ jobs:
   # Percorso alternativo senza Android SDK/Gradle (stesso risultato, solo artefatti Maven/PyPI)
   apk-sdkless:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -73,3 +75,11 @@ jobs:
         with:
           name: PuntoSalute-apk-sdkless
           path: dist/*.apk
+      - name: Pubblica APK nelle Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          V=$(cat VERSION)
+          TAG="v${V}-build${{ github.run_number }}"
+          cp dist/PuntoSalute-sdkless.apk "dist/PuntoSalute-${V}.apk"
+          gh release create "$TAG" "dist/PuntoSalute-${V}.apk" --target "${{ github.sha }}" --title "Punto Salute ${V} (build ${{ github.run_number }})" --notes "APK firmato, pronto da installare. Commit ${{ github.sha }}."
